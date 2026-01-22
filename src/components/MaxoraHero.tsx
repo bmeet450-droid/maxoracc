@@ -76,7 +76,7 @@ const MaxoraHero = () => {
           {/* Main text with blend mode */}
           <span 
             className="relative px-2 md:px-[21px] text-justify text-white"
-            style={{ mixBlendMode: 'difference' }}
+            style={{ mixBlendMode: 'exclusion' }}
           >
             MAXORA
           </span>
