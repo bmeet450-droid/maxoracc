@@ -52,7 +52,7 @@ const MaxoraHero = () => {
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8 -mt-20">
         {/* Main MAXORA text */}
         <h1 
-          className="text-[15vw] md:text-[12vw] font-bold tracking-tighter leading-none transition-all duration-1000 ease-out"
+          className="text-[22vw] md:text-[18vw] font-bold tracking-tighter leading-none transition-all duration-1000 ease-out"
           style={{
             background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
             WebkitBackgroundClip: 'text',
