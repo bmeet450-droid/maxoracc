@@ -49,6 +49,13 @@ const VideoCollage = () => {
     '/videos/wide4.mp4',
     '/videos/wide5.mp4',
     '/videos/wide6.mp4',
+    '/videos/wide7.mov',
+    '/videos/wide8.mov',
+    '/videos/wide9.mov',
+    '/videos/wide10.mp4',
+    '/videos/wide11.mp4',
+    '/videos/wide12.mp4',
+    '/videos/wide13.mp4',
   ];
 
   // Duplicate for seamless infinite scroll
