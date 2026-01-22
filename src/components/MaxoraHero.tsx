@@ -30,8 +30,9 @@ const MaxoraHero = () => {
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8 -mt-20">
         {/* Main MAXORA text */}
         <h1 
-          className="text-[22vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 font-sans relative"
+          className="text-[28vw] md:text-[24vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative"
           style={{
+            fontFamily: 'Helvetica, Arial, sans-serif',
             opacity: isLoaded ? 1 : 0,
             transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
             transitionDelay: '200ms'
