@@ -65,7 +65,7 @@ const MaxoraHero = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-32 md:-mt-44 px-4 md:px-[95px] mx-0 text-primary-foreground">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground">
         {/* Main MAXORA text */}
         <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
         fontFamily: 'Helvetica, Arial, sans-serif',
