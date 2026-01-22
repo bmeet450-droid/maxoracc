@@ -114,8 +114,36 @@ const VideoCollage = () => {
         ))}
       </div>
 
-      {/* Overlay gradient for text readability */}
-      <div className="absolute inset-0 bg-[#0a0a0a]/70" />
+      {/* Row 5: 9:16 Portrait - scroll left */}
+      <div 
+        className="flex gap-3 animate-scroll-left"
+        style={{ width: 'max-content' }}
+      >
+        {allPortrait.map((video, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-[100px] h-[178px] md:w-[140px] md:h-[249px] rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
+          >
+            <video
+              src={video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Vertical fade overlay - darker at bottom */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.6) 30%, rgba(10,10,10,0.75) 60%, rgba(10,10,10,0.9) 100%)'
+        }}
+      />
 
       <style>{`
         @keyframes scroll-left {
