@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Palette, Layout, Video, Megaphone, Smartphone, Sparkles } from "lucide-react";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const services = [
   {
@@ -42,12 +43,21 @@ const services = [
 
 const ServicesSection = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <section id="services" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#0d0d0d' }}>
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-12 md:mb-20 text-center">
+        <div 
+          ref={headerRef}
+          className="mb-12 md:mb-20 text-center transition-all duration-700"
+          style={{
+            opacity: headerVisible ? 1 : 0,
+            transform: headerVisible ? 'translateY(0)' : 'translateY(30px)',
+          }}
+        >
           <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-2">What We Do</p>
           <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight">
             Our Services
@@ -55,13 +65,16 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {services.map((service) => {
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+        >
+          {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <div
                 key={service.id}
-                className="group relative p-6 md:p-8 rounded-2xl cursor-pointer transition-all duration-500"
+                className="group relative p-6 md:p-8 rounded-2xl cursor-pointer"
                 onMouseEnter={() => setHoveredId(service.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
@@ -69,7 +82,11 @@ const ServicesSection = () => {
                     ? 'linear-gradient(135deg, rgba(40,40,40,0.6) 0%, rgba(25,25,25,0.8) 100%)'
                     : 'linear-gradient(135deg, rgba(25,25,25,0.4) 0%, rgba(15,15,15,0.6) 100%)',
                   border: '1px solid rgba(255,255,255,0.05)',
-                  transform: hoveredId === service.id ? 'translateY(-4px)' : 'translateY(0)',
+                  opacity: gridVisible ? 1 : 0,
+                  transform: gridVisible 
+                    ? (hoveredId === service.id ? 'translateY(-4px)' : 'translateY(0)')
+                    : 'translateY(40px)',
+                  transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`,
                 }}
               >
                 {/* Icon */}
