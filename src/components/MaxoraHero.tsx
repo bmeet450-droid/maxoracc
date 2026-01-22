@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 import PremiumCTA from "./PremiumCTA";
 import VideoCollage from "./VideoCollage";
 
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
@@ -22,15 +25,47 @@ const MaxoraHero = () => {
         <div className="text-lg md:text-xl font-bold tracking-wider text-white/90 mx-0 md:mx-[29px] my-0 md:my-[9px]">
           MAXORA
         </div>
+        
+        {/* Desktop nav */}
         <div className="hidden md:flex gap-8">
           {navLinks.map(link => <a key={link} href={`#${link.toLowerCase()}`} className="text-sm text-white/60 hover:text-white/90 transition-colors duration-300 tracking-wide" data-cursor-hover>
               {link}
             </a>)}
         </div>
+        
+        {/* Mobile hamburger */}
+        <button 
+          className="md:hidden text-white/80 hover:text-white transition-colors p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
 
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-30 bg-[#0a0a0a]/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 md:hidden">
+          <button 
+            className="absolute top-4 right-4 text-white/80 hover:text-white p-2"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <X size={24} />
+          </button>
+          {navLinks.map(link => (
+            <a 
+              key={link} 
+              href={`#${link.toLowerCase()}`} 
+              className="text-2xl text-white/70 hover:text-white transition-colors duration-300 tracking-wide"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-10 md:-mt-20 px-4 md:px-[95px] mx-0 text-primary-foreground">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-24 md:-mt-32 px-4 md:px-[95px] mx-0 text-primary-foreground">
         {/* Main MAXORA text */}
         <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
         fontFamily: 'Helvetica, Arial, sans-serif',
