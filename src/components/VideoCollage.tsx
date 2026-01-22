@@ -145,6 +145,14 @@ const VideoCollage = () => {
         }}
       />
 
+      {/* Vignette effect */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.4) 70%, rgba(10,10,10,0.8) 100%)'
+        }}
+      />
+
       <style>{`
         @keyframes scroll-left {
           0% { transform: translateX(0); }
