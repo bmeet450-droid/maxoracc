@@ -83,7 +83,7 @@ const MaxoraHero = () => {
           </span>
           <style>{`
             .gradient-text-animated {
-              background: linear-gradient(90deg, #131313 0%, #B50717 25%, #BFBFBF 50%, #B50717 75%, #131313 100%);
+              background: linear-gradient(90deg, #131313 0%, #B50717 15%, #BFBFBF 35%, #BFBFBF 65%, #B50717 85%, #131313 100%);
               background-size: 200% 100%;
               -webkit-background-clip: text;
               -webkit-text-fill-color: transparent;
