@@ -141,7 +141,7 @@ const VideoCollage = () => {
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.6) 30%, rgba(10,10,10,0.75) 60%, rgba(10,10,10,0.9) 100%)'
+          background: 'linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.5) 20%, rgba(10,10,10,0.7) 40%, rgba(10,10,10,0.85) 60%, rgba(10,10,10,0.95) 80%, rgba(10,10,10,1) 100%)'
         }}
       />
 
