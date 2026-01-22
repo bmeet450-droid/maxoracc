@@ -53,8 +53,8 @@ const MaxoraHero = () => {
           </span>
           <style>{`
             @keyframes pulse-glow {
-              0%, 100% { opacity: 0.2; filter: blur(20px); }
-              50% { opacity: 0.4; filter: blur(30px); }
+              0%, 100% { opacity: 0.02; filter: blur(20px); }
+              50% { opacity: 0.1; filter: blur(30px); }
             }
           `}</style>
         </h1>
