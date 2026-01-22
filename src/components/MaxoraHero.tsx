@@ -74,7 +74,11 @@ const MaxoraHero = () => {
         transitionDelay: '200ms'
       }}>
           {/* Glow layer behind text */}
-          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-2xl opacity-20 gradient-text-animated">
+          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-3xl opacity-40 gradient-text-animated gradient-glow">
+            MAXORA
+          </span>
+          {/* Secondary glow for depth */}
+          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-xl opacity-25 gradient-text-animated" style={{ animationDelay: '-3s' }}>
             MAXORA
           </span>
           {/* Main text */}
@@ -90,9 +94,16 @@ const MaxoraHero = () => {
               background-clip: text;
               animation: gradient-shift 6s ease-in-out infinite;
             }
+            .gradient-glow {
+              animation: gradient-shift 6s ease-in-out infinite, glow-pulse 4s ease-in-out infinite;
+            }
             @keyframes gradient-shift {
               0%, 100% { background-position: 0% 50%; }
               50% { background-position: 100% 50%; }
+            }
+            @keyframes glow-pulse {
+              0%, 100% { opacity: 0.3; filter: blur(30px); }
+              50% { opacity: 0.5; filter: blur(40px); }
             }
           `}</style>
         </h1>
