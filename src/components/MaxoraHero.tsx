@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import PremiumCTA from "./PremiumCTA";
+import VideoCollage from "./VideoCollage";
+
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -10,6 +12,8 @@ const MaxoraHero = () => {
   return <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{
     background: '#0a0a0a'
   }}>
+      {/* Video Collage Background */}
+      <VideoCollage />
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-8 py-6 transition-all duration-500" style={{
       opacity: isLoaded ? 1 : 0,
