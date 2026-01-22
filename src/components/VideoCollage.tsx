@@ -78,9 +78,9 @@ const VideoCollage = () => {
         ))}
       </div>
 
-      {/* Row 2: 2.33:1 Wide - scroll right */}
+      {/* Row 2: 2.33:1 Wide - scroll left */}
       <div 
-        className="flex gap-2 md:gap-3 animate-scroll-right"
+        className="flex gap-2 md:gap-3 animate-scroll-left-wide"
         style={{ width: 'max-content' }}
       >
         {allWide.map((video, index) => (
@@ -106,9 +106,9 @@ const VideoCollage = () => {
         ))}
       </div>
 
-      {/* Row 4: 2.33:1 Wide - scroll right (reversed order) */}
+      {/* Row 4: 2.33:1 Wide - scroll right */}
       <div 
-        className="flex gap-2 md:gap-3 animate-scroll-right-slow"
+        className="flex gap-2 md:gap-3 animate-scroll-right-wide"
         style={{ width: 'max-content' }}
       >
         {[...allWide].reverse().map((video, index) => (
@@ -170,6 +170,12 @@ const VideoCollage = () => {
         }
         .animate-scroll-right-slow {
           animation: scroll-right 50s linear infinite;
+        }
+        .animate-scroll-left-wide {
+          animation: scroll-left 80s linear infinite;
+        }
+        .animate-scroll-right-wide {
+          animation: scroll-right 90s linear infinite;
         }
       `}</style>
     </div>
