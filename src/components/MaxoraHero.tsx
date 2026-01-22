@@ -99,7 +99,7 @@ const MaxoraHero = () => {
         </h1>
 
         {/* Tagline */}
-        <p className="mt-2 md:mt-3 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4" style={{
+        <p className="mt-0 md:mt-1 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4" style={{
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
         transitionDelay: '400ms'
