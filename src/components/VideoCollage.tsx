@@ -22,7 +22,7 @@ const VideoCollage = () => {
         {allVideos.map((video, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-[300px] h-[200px] md:w-[400px] md:h-[280px] rounded-3xl overflow-hidden"
+            className="relative flex-shrink-0 w-[150px] h-[267px] md:w-[200px] md:h-[356px] rounded-3xl overflow-hidden"
             style={{
               boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
             }}
@@ -49,7 +49,7 @@ const VideoCollage = () => {
         {[...allVideos].reverse().map((video, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-[280px] h-[180px] md:w-[350px] md:h-[240px] rounded-3xl overflow-hidden"
+            className="relative flex-shrink-0 w-[130px] h-[231px] md:w-[180px] md:h-[320px] rounded-3xl overflow-hidden"
             style={{
               boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
             }}
