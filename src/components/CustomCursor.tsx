@@ -59,23 +59,13 @@ const CustomCursor = () => {
           opacity: isVisible ? 1 : 0,
         }}
       >
-        {/* Inner dot */}
+        {/* Dot cursor */}
         <div
           className="absolute rounded-full bg-white transition-all duration-200 ease-out"
           style={{
-            width: isHovering ? 8 : 6,
-            height: isHovering ? 8 : 6,
+            width: isHovering ? 12 : 8,
+            height: isHovering ? 12 : 8,
             transform: 'translate(-50%, -50%)',
-          }}
-        />
-        {/* Outer ring */}
-        <div
-          className="absolute rounded-full border border-white transition-all duration-300 ease-out"
-          style={{
-            width: isHovering ? 60 : 32,
-            height: isHovering ? 60 : 32,
-            transform: 'translate(-50%, -50%)',
-            opacity: isHovering ? 0.8 : 0.5,
           }}
         />
       </div>
