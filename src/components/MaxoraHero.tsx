@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import BlurBubble from "./BlurBubble";
+import { useEffect, useState, Suspense } from "react";
 import PremiumCTA from "./PremiumCTA";
+import CircularCards3D from "./CircularCards3D";
+
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -26,10 +27,10 @@ const MaxoraHero = () => {
         </div>
       </nav>
 
-      {/* Blur Bubbles */}
-      <BlurBubble size={300} initialX={25} initialY={40} trackingStrength={2} delay={600} />
-      <BlurBubble size={200} initialX={75} initialY={35} trackingStrength={2} delay={800} />
-      <BlurBubble size={250} initialX={60} initialY={70} trackingStrength={2} delay={1000} />
+      {/* 3D Circular Cards */}
+      <Suspense fallback={null}>
+        <CircularCards3D />
+      </Suspense>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8 -mt-20">
