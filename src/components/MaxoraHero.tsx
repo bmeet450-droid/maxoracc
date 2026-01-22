@@ -34,16 +34,44 @@ const MaxoraHero = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8 -mt-20">
         {/* Main MAXORA text */}
-        <h1 className="text-[22vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 text-primary-foreground font-sans mr-[12px] bg-[#0f1729]/0" style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        textShadow: '0 0 80px rgba(255,255,255,0.1)',
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
-        transitionDelay: '200ms'
-      }}>
-          MAXORA
+        <h1 
+          className="text-[22vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 font-sans relative"
+          style={{
+            opacity: isLoaded ? 1 : 0,
+            transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
+            transitionDelay: '200ms'
+          }}
+        >
+          <span 
+            className="relative"
+            style={{
+              background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 0 80px rgba(255,255,255,0.1)',
+            }}
+          >
+            MAXORA
+          </span>
+          {/* Shimmer overlay */}
+          <span 
+            className="absolute inset-0 pointer-events-none overflow-hidden"
+            style={{
+              background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%, transparent 100%)',
+              backgroundSize: '200% 100%',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              animation: 'shimmer 3s ease-in-out infinite',
+            }}
+          >
+            MAXORA
+          </span>
+          <style>{`
+            @keyframes shimmer {
+              0% { background-position: 200% 0; }
+              100% { background-position: -200% 0; }
+            }
+          `}</style>
         </h1>
 
         {/* Tagline */}
