@@ -34,14 +34,29 @@ const MaxoraHero = () => {
         transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
         transitionDelay: '200ms'
       }}>
-          <span className="relative px-[21px] text-justify" style={{
-          background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          textShadow: '0 0 80px rgba(255,255,255,0.1)'
-        }}>
+          {/* Glow layer behind text */}
+          <span className="absolute inset-0 px-[21px] text-justify blur-2xl opacity-30" style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 50%, #ffffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            animation: 'pulse-glow 3s ease-in-out infinite'
+          }}>
             MAXORA
           </span>
+          {/* Main text */}
+          <span className="relative px-[21px] text-justify" style={{
+            background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
+            MAXORA
+          </span>
+          <style>{`
+            @keyframes pulse-glow {
+              0%, 100% { opacity: 0.2; filter: blur(20px); }
+              50% { opacity: 0.4; filter: blur(30px); }
+            }
+          `}</style>
         </h1>
 
         {/* Tagline */}
