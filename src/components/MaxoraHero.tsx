@@ -15,14 +15,14 @@ const MaxoraHero = () => {
       {/* Video Collage Background */}
       <VideoCollage />
       {/* Navigation */}
-      <nav className="relative z-20 flex items-center justify-between px-8 py-6 transition-all duration-500" style={{
+      <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" style={{
       opacity: isLoaded ? 1 : 0,
       transform: isLoaded ? 'translateY(0)' : 'translateY(-20px)'
     }}>
-        <div className="text-xl font-bold tracking-wider text-white/90 mx-[29px] my-[9px] border-dashed">
+        <div className="text-lg md:text-xl font-bold tracking-wider text-white/90 mx-0 md:mx-[29px] my-0 md:my-[9px]">
           MAXORA
         </div>
-        <div className="flex gap-8">
+        <div className="hidden md:flex gap-8">
           {navLinks.map(link => <a key={link} href={`#${link.toLowerCase()}`} className="text-sm text-white/60 hover:text-white/90 transition-colors duration-300 tracking-wide" data-cursor-hover>
               {link}
             </a>)}
@@ -30,16 +30,16 @@ const MaxoraHero = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-20 px-[95px] mx-0 text-primary-foreground">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-10 md:-mt-20 px-4 md:px-[95px] mx-0 text-primary-foreground">
         {/* Main MAXORA text */}
-        <h1 className="text-[20vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
+        <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
         fontFamily: 'Helvetica, Arial, sans-serif',
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
         transitionDelay: '200ms'
       }}>
           {/* Glow layer behind text */}
-          <span className="absolute inset-0 px-[21px] text-justify blur-2xl opacity-30" style={{
+          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-2xl opacity-30" style={{
             background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 50%, #ffffff 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -48,7 +48,7 @@ const MaxoraHero = () => {
             MAXORA
           </span>
           {/* Main text */}
-          <span className="relative px-[21px] text-justify" style={{
+          <span className="relative px-2 md:px-[21px] text-justify" style={{
             background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
@@ -64,14 +64,14 @@ const MaxoraHero = () => {
         </h1>
 
         {/* Tagline */}
-        <p className="mt-6 text-white/50 text-lg tracking-wide transition-all duration-700" style={{
+        <p className="mt-4 md:mt-6 text-white/50 text-sm md:text-lg tracking-wide transition-all duration-700 text-center px-4" style={{
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
         transitionDelay: '400ms'
       }}>Creative Minds Will Rule the Future</p>
 
         {/* CTA Button */}
-        <div className="mt-10 transition-all duration-700" style={{
+        <div className="mt-6 md:mt-10 transition-all duration-700" style={{
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
         transitionDelay: '600ms'
