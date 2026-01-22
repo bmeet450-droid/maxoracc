@@ -40,7 +40,7 @@ const PremiumCTA = ({ text = "Get Started", onClick }: PremiumCTAProps) => {
   `;
 
   const heroStyles = `
-    px-5 py-2.5 md:px-7 md:py-3 rounded-full text-sm md:text-base
+    px-4 py-2 md:px-5 md:py-2.5 rounded-full text-[0.65rem] md:text-xs
     ${isHovered ? 'scale-105' : 'scale-100'}
   `;
 

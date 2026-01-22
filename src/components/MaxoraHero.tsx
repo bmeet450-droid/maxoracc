@@ -65,7 +65,7 @@ const MaxoraHero = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground" style={{ filter: 'drop-shadow(0 0 60px rgba(0,0,0,0.8)) drop-shadow(0 0 100px rgba(0,0,0,0.6))' }}>
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground" style={{ filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.4)) drop-shadow(0 0 80px rgba(0,0,0,0.3))' }}>
         {/* Main MAXORA text */}
         <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
         fontFamily: 'Helvetica, Arial, sans-serif',
@@ -99,7 +99,7 @@ const MaxoraHero = () => {
         </h1>
 
         {/* Tagline */}
-        <p className="mt-4 md:mt-6 text-white/50 text-sm md:text-lg tracking-wide transition-all duration-700 text-center px-4" style={{
+        <p className="mt-4 md:mt-6 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4" style={{
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
         transitionDelay: '400ms'
