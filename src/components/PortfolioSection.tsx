@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const projects = [
   {
@@ -41,12 +42,21 @@ const projects = [
 
 const PortfolioSection = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <section id="work" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#0a0a0a' }}>
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="mb-12 md:mb-20">
+        <div 
+          ref={headerRef}
+          className="mb-12 md:mb-20 transition-all duration-700"
+          style={{
+            opacity: headerVisible ? 1 : 0,
+            transform: headerVisible ? 'translateY(0)' : 'translateY(30px)',
+          }}
+        >
           <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-2">Portfolio</p>
           <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight">
             Selected Work
@@ -54,16 +64,22 @@ const PortfolioSection = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {projects.map((project) => (
+        <div 
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+        >
+          {projects.map((project, index) => (
             <div
               key={project.id}
-              className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-[1.02]"
+              className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.02]"
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               style={{
                 background: 'linear-gradient(135deg, rgba(30,30,30,0.8) 0%, rgba(20,20,20,0.9) 100%)',
                 border: '1px solid rgba(255,255,255,0.05)',
+                opacity: gridVisible ? 1 : 0,
+                transform: gridVisible ? 'translateY(0)' : 'translateY(40px)',
+                transition: `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`,
               }}
             >
               {/* Placeholder gradient background */}

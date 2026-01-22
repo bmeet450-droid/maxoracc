@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { Mail, MapPin, ArrowRight } from "lucide-react";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -15,6 +16,8 @@ const ContactSection = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { ref: leftRef, isVisible: leftVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: rightRef, isVisible: rightVisible } = useScrollAnimation({ threshold: 0.2 });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +57,14 @@ const ContactSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
           {/* Left Column - Info */}
-          <div>
+          <div
+            ref={leftRef}
+            className="transition-all duration-700"
+            style={{
+              opacity: leftVisible ? 1 : 0,
+              transform: leftVisible ? 'translateX(0)' : 'translateX(-40px)',
+            }}
+          >
             <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-2">Get in Touch</p>
             <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight mb-6">
               Let's Create<br />Something Great
@@ -81,7 +91,14 @@ const ContactSection = () => {
           </div>
 
           {/* Right Column - Form */}
-          <div>
+          <div
+            ref={rightRef}
+            className="transition-all duration-700 delay-150"
+            style={{
+              opacity: rightVisible ? 1 : 0,
+              transform: rightVisible ? 'translateX(0)' : 'translateX(40px)',
+            }}
+          >
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <input
