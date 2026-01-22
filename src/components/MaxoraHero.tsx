@@ -42,22 +42,6 @@ const MaxoraHero = () => {
         }}>
             MAXORA
           </span>
-          {/* Shimmer overlay */}
-          <span className="absolute inset-0 pointer-events-none overflow-hidden" style={{
-          background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%, transparent 100%)',
-          backgroundSize: '200% 100%',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          animation: 'shimmer 2s ease-in-out infinite'
-        }}>
-            MAXORA
-          </span>
-          <style>{`
-            @keyframes shimmer {
-              0% { background-position: 200% 0; }
-              100% { background-position: -200% 0; }
-            }
-          `}</style>
         </h1>
 
         {/* Tagline */}
