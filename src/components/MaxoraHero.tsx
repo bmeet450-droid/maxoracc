@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import PremiumCTA from "./PremiumCTA";
-
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -27,39 +26,30 @@ const MaxoraHero = () => {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8 -mt-20">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-20 px-[95px] mx-0 text-primary-foreground">
         {/* Main MAXORA text */}
-        <h1 
-          className="text-[20vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full"
-          style={{
-            fontFamily: 'Helvetica, Arial, sans-serif',
-            opacity: isLoaded ? 1 : 0,
-            transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
-            transitionDelay: '200ms'
-          }}
-        >
-          <span 
-            className="relative"
-            style={{
-              background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 80px rgba(255,255,255,0.1)',
-            }}
-          >
+        <h1 className="text-[20vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
+        fontFamily: 'Helvetica, Arial, sans-serif',
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
+        transitionDelay: '200ms'
+      }}>
+          <span className="relative px-[21px] text-justify" style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          textShadow: '0 0 80px rgba(255,255,255,0.1)'
+        }}>
             MAXORA
           </span>
           {/* Shimmer overlay */}
-          <span 
-            className="absolute inset-0 pointer-events-none overflow-hidden"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%, transparent 100%)',
-              backgroundSize: '200% 100%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              animation: 'shimmer 2s ease-in-out infinite',
-            }}
-          >
+          <span className="absolute inset-0 pointer-events-none overflow-hidden" style={{
+          background: 'linear-gradient(90deg, transparent 0%, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%, transparent 100%)',
+          backgroundSize: '200% 100%',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          animation: 'shimmer 2s ease-in-out infinite'
+        }}>
             MAXORA
           </span>
           <style>{`
