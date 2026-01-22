@@ -73,39 +73,13 @@ const MaxoraHero = () => {
         transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
         transitionDelay: '200ms'
       }}>
-          {/* Glow layer behind text */}
-          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-3xl opacity-40 gradient-text-animated gradient-glow">
+          {/* Main text with blend mode */}
+          <span 
+            className="relative px-2 md:px-[21px] text-justify text-white"
+            style={{ mixBlendMode: 'difference' }}
+          >
             MAXORA
           </span>
-          {/* Secondary glow for depth */}
-          <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-xl opacity-25 gradient-text-animated" style={{ animationDelay: '-3s' }}>
-            MAXORA
-          </span>
-          {/* Main text */}
-          <span className="relative px-2 md:px-[21px] text-justify gradient-text-animated">
-            MAXORA
-          </span>
-          <style>{`
-            .gradient-text-animated {
-              background: linear-gradient(90deg, #131313 0%, #B50717 15%, #BFBFBF 35%, #BFBFBF 65%, #B50717 85%, #131313 100%);
-              background-size: 200% 100%;
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              background-clip: text;
-              animation: gradient-shift 6s ease-in-out infinite;
-            }
-            .gradient-glow {
-              animation: gradient-shift 6s ease-in-out infinite, glow-pulse 4s ease-in-out infinite;
-            }
-            @keyframes gradient-shift {
-              0%, 100% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-            }
-            @keyframes glow-pulse {
-              0%, 100% { opacity: 0.3; filter: blur(30px); }
-              50% { opacity: 0.5; filter: blur(40px); }
-            }
-          `}</style>
         </h1>
 
         {/* Tagline */}
