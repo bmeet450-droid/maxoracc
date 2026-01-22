@@ -75,7 +75,7 @@ const MaxoraHero = () => {
       }}>
           {/* Glow layer behind text */}
           <span className="absolute inset-0 px-2 md:px-[21px] text-justify blur-2xl opacity-30" style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 50%, #ffffff 100%)',
+            background: 'linear-gradient(90deg, #131313 0%, #B50717 50%, #BFBFBF 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             animation: 'pulse-glow 3s ease-in-out infinite'
@@ -84,7 +84,7 @@ const MaxoraHero = () => {
           </span>
           {/* Main text */}
           <span className="relative px-2 md:px-[21px] text-justify" style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #c0c0c0 25%, #ffffff 50%, #a0a0a0 75%, #ffffff 100%)',
+            background: 'linear-gradient(90deg, #131313 0%, #B50717 50%, #BFBFBF 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>
