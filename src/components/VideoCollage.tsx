@@ -21,7 +21,7 @@ const VideoCollage = () => {
   const allWide = [...wideVideos, ...wideVideos];
 
   return (
-    <div className="absolute inset-0 overflow-hidden z-0 flex flex-col justify-center gap-3">
+    <div className="absolute inset-0 overflow-hidden z-0 flex flex-col justify-start pt-4 gap-3">
       {/* Row 1: 9:16 Portrait - scroll left */}
       <div 
         className="flex gap-3 animate-scroll-left"
