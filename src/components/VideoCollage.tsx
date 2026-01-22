@@ -1,5 +1,5 @@
 const VideoCollage = () => {
-  const videos = [
+  const portraitVideos = [
     '/videos/video1.mp4',
     '/videos/video2.mp4',
     '/videos/video3.mp4',
@@ -7,25 +7,31 @@ const VideoCollage = () => {
     '/videos/video5.mp4',
   ];
 
-  // Duplicate videos for seamless infinite scroll
-  const allVideos = [...videos, ...videos];
+  const wideVideos = [
+    '/videos/wide1.mov',
+    '/videos/wide2.mp4',
+    '/videos/wide3.mp4',
+    '/videos/wide4.mp4',
+    '/videos/wide5.mp4',
+    '/videos/wide6.mp4',
+  ];
+
+  // Duplicate for seamless infinite scroll
+  const allPortrait = [...portraitVideos, ...portraitVideos];
+  const allWide = [...wideVideos, ...wideVideos];
 
   return (
-    <div className="absolute inset-0 overflow-hidden z-0">
-      {/* Scrolling container */}
+    <div className="absolute inset-0 overflow-hidden z-0 flex flex-col justify-center gap-3">
+      {/* Row 1: 9:16 Portrait - scroll left */}
       <div 
-        className="flex gap-4 p-4 animate-scroll-left"
-        style={{
-          width: 'max-content',
-        }}
+        className="flex gap-3 animate-scroll-left"
+        style={{ width: 'max-content' }}
       >
-        {allVideos.map((video, index) => (
+        {allPortrait.map((video, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-[150px] h-[267px] md:w-[200px] md:h-[356px] rounded-3xl overflow-hidden"
-            style={{
-              boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-            }}
+            className="relative flex-shrink-0 w-[120px] h-[213px] md:w-[160px] md:h-[284px] rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
           >
             <video
               src={video}
@@ -39,20 +45,62 @@ const VideoCollage = () => {
         ))}
       </div>
 
-      {/* Second row scrolling opposite direction */}
+      {/* Row 2: 2.33:1 Wide - scroll right */}
       <div 
-        className="flex gap-4 p-4 mt-4 animate-scroll-right"
-        style={{
-          width: 'max-content',
-        }}
+        className="flex gap-3 animate-scroll-right"
+        style={{ width: 'max-content' }}
       >
-        {[...allVideos].reverse().map((video, index) => (
+        {allWide.map((video, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-[130px] h-[231px] md:w-[180px] md:h-[320px] rounded-3xl overflow-hidden"
-            style={{
-              boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
-            }}
+            className="relative flex-shrink-0 w-[280px] h-[120px] md:w-[350px] md:h-[150px] rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
+          >
+            <video
+              src={video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Row 3: 9:16 Portrait - scroll left (reversed order) */}
+      <div 
+        className="flex gap-3 animate-scroll-left-slow"
+        style={{ width: 'max-content' }}
+      >
+        {[...allPortrait].reverse().map((video, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-[110px] h-[196px] md:w-[150px] md:h-[267px] rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
+          >
+            <video
+              src={video}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Row 4: 2.33:1 Wide - scroll right (reversed order) */}
+      <div 
+        className="flex gap-3 animate-scroll-right-slow"
+        style={{ width: 'max-content' }}
+      >
+        {[...allWide].reverse().map((video, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-[260px] h-[112px] md:w-[330px] md:h-[142px] rounded-2xl overflow-hidden"
+            style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}
           >
             <video
               src={video}
@@ -79,10 +127,16 @@ const VideoCollage = () => {
           100% { transform: translateX(0); }
         }
         .animate-scroll-left {
-          animation: scroll-left 40s linear infinite;
+          animation: scroll-left 35s linear infinite;
         }
         .animate-scroll-right {
-          animation: scroll-right 45s linear infinite;
+          animation: scroll-right 40s linear infinite;
+        }
+        .animate-scroll-left-slow {
+          animation: scroll-left 45s linear infinite;
+        }
+        .animate-scroll-right-slow {
+          animation: scroll-right 50s linear infinite;
         }
       `}</style>
     </div>
