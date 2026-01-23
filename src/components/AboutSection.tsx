@@ -17,8 +17,23 @@ const AboutSection = () => {
     <section 
       id="about" 
       className="relative py-32 md:py-48 px-4 md:px-8 overflow-hidden min-h-screen flex items-center"
-      style={{ background: 'linear-gradient(180deg, #0a0a0a 0%, #0d0d0d 50%, #0a0a0a 100%)' }}
+      style={{ background: '#0a0a0a' }}
     >
+      {/* Top fade gradient */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-48 pointer-events-none z-0"
+        style={{
+          background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 100%)',
+        }}
+      />
+      
+      {/* Bottom fade gradient */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-0"
+        style={{
+          background: 'linear-gradient(to top, #0a0a0a 0%, transparent 100%)',
+        }}
+      />
       {/* 3D Glass Droplet Effect */}
       <Suspense fallback={null}>
         <GlassDroplet />
