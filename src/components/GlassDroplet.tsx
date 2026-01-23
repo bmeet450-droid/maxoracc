@@ -178,7 +178,112 @@ const Scene = () => {
   );
 };
 
-// Foreground blur bubbles (CSS-based with backdrop-filter)
+// Main glass distortion overlay that follows mouse and distorts text
+const GlassDistortionOverlay = () => {
+  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const [floatOffset, setFloatOffset] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setPosition({ x, y });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Floating animation
+  useEffect(() => {
+    let animationId: number;
+    const animate = () => {
+      const time = Date.now() * 0.001;
+      setFloatOffset({
+        x: Math.sin(time * 0.8) * 8,
+        y: Math.cos(time * 0.6) * 6,
+      });
+      animationId = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  // Convert mouse position to center-relative for parallax
+  const offsetX = (position.x - 50) * 0.15 + floatOffset.x;
+  const offsetY = (position.y - 50) * 0.15 + floatOffset.y;
+
+  return (
+    <div 
+      className="absolute z-5 pointer-events-none"
+      style={{
+        left: `calc(50% + ${offsetX}px)`,
+        top: `calc(50% + ${offsetY}px)`,
+        transform: 'translate(-50%, -50%)',
+        width: '280px',
+        height: '280px',
+        transition: 'left 0.15s ease-out, top 0.15s ease-out',
+      }}
+    >
+      {/* SVG filter for glass distortion */}
+      <svg className="absolute" width="0" height="0">
+        <defs>
+          <filter id="glass-distort" x="-50%" y="-50%" width="200%" height="200%">
+            <feTurbulence 
+              type="fractalNoise" 
+              baseFrequency="0.015" 
+              numOctaves="2" 
+              result="noise"
+            />
+            <feDisplacementMap 
+              in="SourceGraphic" 
+              in2="noise" 
+              scale="12" 
+              xChannelSelector="R" 
+              yChannelSelector="G"
+            />
+            <feGaussianBlur stdDeviation="0.5" />
+          </filter>
+        </defs>
+      </svg>
+      
+      {/* Glass sphere distortion effect */}
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          backdropFilter: 'blur(1px)',
+          WebkitBackdropFilter: 'blur(1px)',
+          filter: 'url(#glass-distort)',
+          background: `
+            radial-gradient(ellipse 40% 35% at 35% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
+            radial-gradient(ellipse 60% 60% at 50% 50%, rgba(100,80,160,0.08) 0%, transparent 70%),
+            radial-gradient(circle at 50% 50%, rgba(139,92,246,0.03) 0%, transparent 60%)
+          `,
+          boxShadow: `
+            inset 0 0 60px rgba(255,255,255,0.05),
+            inset 0 0 30px rgba(139,92,246,0.03),
+            0 0 40px rgba(139,92,246,0.05)
+          `,
+          border: '1px solid rgba(255,255,255,0.04)',
+        }}
+      />
+      
+      {/* Highlight reflection */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          top: '15%',
+          left: '20%',
+          width: '35%',
+          height: '25%',
+          background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.12) 0%, transparent 70%)',
+          transform: 'rotate(-20deg)',
+        }}
+      />
+    </div>
+  );
+};
+
+// Foreground blur bubbles
 const ForegroundBlurBubbles = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -233,17 +338,20 @@ const ForegroundBlurBubbles = () => {
 const GlassDroplet = () => {
   return (
     <div className="absolute inset-0 pointer-events-none">
-      {/* Main 3D Canvas (background + midground) */}
+      {/* Glass distortion overlay for text */}
+      <GlassDistortionOverlay />
+      
+      {/* Main 3D Canvas */}
       <Canvas
         camera={{ position: [0, 0, 8], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-        style={{ background: 'transparent' }}
+        style={{ background: 'transparent', position: 'relative', zIndex: 10 }}
         dpr={[1, 2]}
       >
         <Scene />
       </Canvas>
       
-      {/* Foreground blur bubbles (CSS overlay) */}
+      {/* Foreground blur bubbles */}
       <ForegroundBlurBubbles />
     </div>
   );
