@@ -207,12 +207,16 @@ const PortfolioSection = () => {
             transform: sectionVisible ? 'translateY(0)' : 'translateY(30px)',
           }}
         >
-          <p className="text-white/50 text-sm tracking-wide mb-4">
-            shaping bold interactive ideas into <span className="text-white">sleek digital realities</span> — built with intent, speed, and visual clarity.
-          </p>
-          <button className="px-5 py-2.5 text-sm text-white border border-white/30 rounded-full hover:bg-white hover:text-black transition-all duration-300">
-            SEE WORKS
-          </button>
+          <h2 className="text-white text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6">
+            Frame & Vision<sup className="text-2xl md:text-3xl lg:text-4xl font-normal ml-2 align-super">({projects.length})</sup>
+          </h2>
+          <div className="w-full h-px bg-white/20 mb-6" />
+          <div className="flex flex-wrap gap-8 md:gap-16 text-white/60 text-sm tracking-wide">
+            <span>Precise</span>
+            <span>Structured</span>
+            <span>Focused</span>
+            <span>Visual Language</span>
+          </div>
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
