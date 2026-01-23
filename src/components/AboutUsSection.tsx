@@ -290,18 +290,18 @@ const AboutUsSection = () => {
         {/* "About me." heading with scroll-synced gradient - mobile only, positioned at top */}
         <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 md:hidden">
           <h2
-            className="text-4xl font-black tracking-tight"
+            className="text-4xl font-black tracking-tight bg-clip-text"
             style={{
               fontFamily: 'Helvetica, Arial, sans-serif',
-              background: `linear-gradient(to right, 
-                rgba(255, 255, 255, 1) 0%, 
-                rgba(255, 255, 255, 1) ${progress * 100 - 5}%, 
-                rgba(255, 255, 255, 0.8) ${progress * 100}%, 
-                rgba(80, 80, 80, 1) ${progress * 100 + 10}%, 
-                rgba(80, 80, 80, 1) 100%)`,
+              backgroundImage: `linear-gradient(to right, 
+                #ffffff 0%, 
+                #ffffff ${Math.max(0, progress * 100 - 5)}%, 
+                #cccccc ${progress * 100}%, 
+                #505050 ${Math.min(100, progress * 100 + 10)}%, 
+                #505050 100%)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: 'transparent',
             }}
           >
             About me.
