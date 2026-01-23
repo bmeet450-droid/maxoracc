@@ -53,7 +53,7 @@ const ContactSection = () => {
   `;
 
   return (
-    <section id="contact" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#0a0a0a' }}>
+    <section id="contact" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#000000' }}>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
           {/* Left Column - Info */}

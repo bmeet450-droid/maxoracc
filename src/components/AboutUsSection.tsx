@@ -20,13 +20,13 @@ const AboutUsSection = () => {
       id="about-us"
       ref={sectionRef}
       className="relative min-h-[200vh]"
-      style={{ background: '#0a0a0a' }}
+      style={{ background: '#000000' }}
     >
       {/* Top fade gradient */}
       <div 
         className="absolute top-0 left-0 right-0 h-48 pointer-events-none z-20"
         style={{
-          background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 100%)',
+          background: 'linear-gradient(to bottom, #000000 0%, transparent 100%)',
         }}
       />
       
@@ -34,7 +34,7 @@ const AboutUsSection = () => {
       <div 
         className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-20"
         style={{
-          background: 'linear-gradient(to top, #0a0a0a 0%, transparent 100%)',
+          background: 'linear-gradient(to top, #000000 0%, transparent 100%)',
         }}
       />
 

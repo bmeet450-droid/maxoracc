@@ -13,7 +13,7 @@ const MaxoraHero = () => {
   }, []);
   const navLinks = ['Work', 'About', 'Services', 'Contact'];
   return <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{
-    background: '#0a0a0a'
+    background: '#000000'
   }}>
       {/* Video Collage Background */}
       <VideoCollage />
@@ -44,7 +44,7 @@ const MaxoraHero = () => {
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 bg-[#0a0a0a]/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 md:hidden">
+        <div className="fixed inset-0 z-30 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center gap-8 md:hidden">
           <button 
             className="absolute top-4 right-4 text-white/80 hover:text-white p-2"
             onClick={() => setMobileMenuOpen(false)}

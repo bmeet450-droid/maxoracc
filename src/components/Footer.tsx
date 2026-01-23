@@ -2,7 +2,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-8 md:py-12 px-4 md:px-8 border-t border-white/5" style={{ background: '#0a0a0a' }}>
+    <footer className="py-8 md:py-12 px-4 md:px-8 border-t border-white/5" style={{ background: '#000000' }}>
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo */}
