@@ -88,8 +88,9 @@ const AboutUsSection = () => {
   // Image crossfade
   const imageFadeProgress = withinSlideProgress > 0.75 ? (withinSlideProgress - 0.75) / 0.25 : 0;
 
-  // Photo scale (subtle zoom effect)
-  const photoScale = 1 + withinSlideProgress * 0.05;
+  // Photo scale animation - starts at 1.05, scales down to 1 during slide, then incoming image starts at 1.08
+  const currentPhotoScale = 1.05 - withinSlideProgress * 0.05; // 1.05 -> 1.0
+  const nextPhotoScale = 1.08 - imageFadeProgress * 0.03; // 1.08 -> 1.05 (ready for next slide)
 
   // Text position classes
   const isLeftAligned = currentSlide.position === "left";
@@ -131,13 +132,12 @@ const AboutUsSection = () => {
               maxWidth: '95vw',
             }}
           >
-            {/* Current slide image */}
             <div
               className="absolute inset-0 w-full h-full"
               style={{
                 opacity: 1 - imageFadeProgress,
-                transform: `scale(${photoScale})`,
-                transition: 'transform 0.1s ease-out',
+                transform: `scale(${currentPhotoScale})`,
+                transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
               }}
             >
               <img
@@ -153,7 +153,8 @@ const AboutUsSection = () => {
                 className="absolute inset-0 w-full h-full"
                 style={{
                   opacity: imageFadeProgress,
-                  transform: 'scale(1)',
+                  transform: `scale(${nextPhotoScale})`,
+                  transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                 }}
               >
                 <img
