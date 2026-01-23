@@ -57,21 +57,14 @@ const AboutUsSection = () => {
             About
           </p>
           
-          <h2
-            className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light leading-[1.2] tracking-tight"
+          <p
+            className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-light leading-[1.4] tracking-tight"
             style={{
               color: 'rgba(255, 255, 255, 0.95)',
               fontFamily: 'Helvetica, Arial, sans-serif',
             }}
           >
-            We are a creative studio obsessed with the craft of design.
-          </h2>
-          
-          <p
-            className="mt-3 md:mt-4 text-[10px] md:text-xs lg:text-sm leading-relaxed"
-            style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-          >
-            Our work lives at the intersection of strategy, aesthetics, and technology.
+            I'm Meet Bhatt, although some may know me as Max. I'm 20, and I spend my days chasing something elusive: the moment when an image, a frame, or a piece of motion becomes more than just content.
           </p>
         </div>
 
