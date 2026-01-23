@@ -211,10 +211,10 @@ const PortfolioSection = () => {
             Frame & Vision<sup className="text-2xl md:text-3xl lg:text-4xl font-normal ml-2 align-super">({projects.length})</sup>
           </h2>
           <div className="w-full bg-white py-3 flex justify-between px-8 md:px-16">
-            <span className="text-black text-sm tracking-wide">Precise</span>
-            <span className="text-black text-sm tracking-wide">Structured</span>
-            <span className="text-black text-sm tracking-wide">Focused</span>
-            <span className="text-black text-sm tracking-wide">Visual Language</span>
+            <span className="text-black text-sm font-bold tracking-wide">Precise</span>
+            <span className="text-black text-sm font-bold tracking-wide">Structured</span>
+            <span className="text-black text-sm font-bold tracking-wide">Focused</span>
+            <span className="text-black text-sm font-bold tracking-wide">Visual Language</span>
           </div>
         </div>
 
