@@ -61,9 +61,9 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
+        <div className="grid grid-cols-12 gap-12 md:gap-16 lg:gap-24">
           {/* Left Column - Projects 1 & 3 */}
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-8">
+          <div className="col-span-12 md:col-span-5 flex flex-col gap-16 md:gap-24 lg:gap-32">
             {/* Project 1 - Large */}
             <div 
               className="cursor-pointer group"
@@ -130,7 +130,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Right Column - Projects 2 & 4 (offset down) */}
-          <div className="col-span-12 md:col-span-5 md:col-start-8 flex flex-col gap-8 md:mt-32 lg:mt-48">
+          <div className="col-span-12 md:col-span-5 md:col-start-8 flex flex-col gap-16 md:gap-24 lg:gap-32 md:mt-48 lg:mt-64">
             {/* Project 2 */}
             <div 
               className="cursor-pointer group"
