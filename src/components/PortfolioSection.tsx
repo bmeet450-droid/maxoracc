@@ -189,7 +189,28 @@ const PortfolioCard = ({
 
 const PortfolioSection = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [headingParallax, setHeadingParallax] = useState(0);
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollAnimation({ threshold: 0.1 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!headingRef.current) return;
+      const rect = headingRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate parallax based on scroll position
+      const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+      const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+      const offset = (clampedProgress - 0.5) * 80; // -40px to +40px range
+      
+      setHeadingParallax(offset);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <section 
@@ -207,8 +228,15 @@ const PortfolioSection = () => {
             transform: sectionVisible ? 'translateY(0)' : 'translateY(30px)',
           }}
         >
-          <h2 className="text-white text-7xl md:text-9xl lg:text-[12rem] font-bold tracking-tight mb-8">
-            Frame & Vision<sup className="text-2xl md:text-4xl lg:text-5xl font-normal ml-2 align-super">({projects.length})</sup>
+          <h2 
+            ref={headingRef}
+            className="text-white text-5xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
+            style={{
+              transform: `translateY(${headingParallax}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          >
+            Frame & Vision<sup className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal ml-1 md:ml-2 align-super">({projects.length})</sup>
           </h2>
           <div 
             className="w-full bg-white py-2 flex justify-between px-8 md:px-16 transition-all duration-700"
