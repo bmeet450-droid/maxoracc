@@ -21,7 +21,7 @@ const projects = [
     title: "Phytography",
     number: "02",
     image: portfolio2,
-    category: "Product Design",
+    category: "Wildlife",
     year: "2024",
   },
   {
@@ -53,7 +53,7 @@ const projects = [
     title: "Prism Composition",
     number: "06",
     image: portfolio6,
-    category: "Photography",
+    category: "Perspective Design",
     year: "2024",
   },
 ];
