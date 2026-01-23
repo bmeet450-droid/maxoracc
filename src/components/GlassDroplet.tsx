@@ -2,6 +2,7 @@ import { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshTransmissionMaterial, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Global mouse state
 const mouseState = { x: 0, y: 0 };
@@ -290,6 +291,7 @@ const GlassDistortionOverlay = () => {
 // Foreground blur bubbles
 const ForegroundBlurBubbles = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -308,7 +310,7 @@ const ForegroundBlurBubbles = () => {
     { baseX: 82, baseY: 30, size: 130, blur: 8, parallax: 0.4, opacity: 0.25 },
     { baseX: 12, baseY: 25, size: 115, blur: 12, parallax: 0.5, opacity: 0.22 },
     { baseX: 75, baseY: 75, size: 105, blur: 9, parallax: 0.42, opacity: 0.2 },
-    { baseX: 50, baseY: 50, size: 140, blur: 7, parallax: 0.38, opacity: 0.18 },
+    { baseX: 50, baseY: 50, size: isMobile ? 60 : 140, blur: 7, parallax: 0.38, opacity: 0.18 },
     
     // Medium bubbles
     { baseX: 40, baseY: 12, size: 85, blur: 14, parallax: 0.55, opacity: 0.18 },
