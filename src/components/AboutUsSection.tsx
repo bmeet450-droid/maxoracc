@@ -123,39 +123,46 @@ const AboutUsSection = () => {
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* Background images container */}
-        <div className="absolute inset-0 w-full h-full">
-          {/* Current slide image */}
-          <div
-            className="absolute inset-0 w-full h-full"
+        <div className="flex items-center justify-center w-full h-full">
+          <div 
+            className="relative w-full overflow-hidden rounded-2xl"
             style={{
-              opacity: 1 - imageFadeProgress,
-              transform: `scale(${photoScale})`,
-              transition: 'transform 0.1s ease-out',
+              aspectRatio: '2.33 / 1',
+              maxWidth: '95vw',
             }}
           >
-            <img
-              src={currentSlide.image}
-              alt={currentSlide.subtitle}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* Next slide image (for crossfade) */}
-          {currentSlideIndex < totalSlides - 1 && (
+            {/* Current slide image */}
             <div
               className="absolute inset-0 w-full h-full"
               style={{
-                opacity: imageFadeProgress,
-                transform: 'scale(1)',
+                opacity: 1 - imageFadeProgress,
+                transform: `scale(${photoScale})`,
+                transition: 'transform 0.1s ease-out',
               }}
             >
               <img
-                src={nextSlide.image}
-                alt={nextSlide.subtitle}
+                src={currentSlide.image}
+                alt={currentSlide.subtitle}
                 className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
-          )}
+            
+            {/* Next slide image (for crossfade) */}
+            {currentSlideIndex < totalSlides - 1 && (
+              <div
+                className="absolute inset-0 w-full h-full"
+                style={{
+                  opacity: imageFadeProgress,
+                  transform: 'scale(1)',
+                }}
+              >
+                <img
+                  src={nextSlide.image}
+                  alt={nextSlide.subtitle}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            )}
 
           {/* Gradient overlay for text legibility */}
           <div
@@ -184,8 +191,9 @@ const AboutUsSection = () => {
             }}
           />
           
-          {/* Film grain overlay */}
-          <FilmGrain />
+            {/* Film grain overlay */}
+            <FilmGrain />
+          </div>
         </div>
 
         {/* Text content - alternating left/right */}
