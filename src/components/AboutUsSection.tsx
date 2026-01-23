@@ -1,6 +1,9 @@
+import { useMemo } from "react";
 import useScrollProgress from "@/hooks/useScrollProgress";
 import aboutPhoto from "@/assets/about-photo.jpg";
 import FilmGrain from "./FilmGrain";
+
+const aboutText = "I'm Meet Bhatt, although some may know me as Max. I'm 20, and I spend my days chasing something elusive: the moment when an image, a frame, or a piece of motion becomes more than just content.";
 
 const AboutUsSection = () => {
   const { ref: sectionRef, progress } = useScrollProgress({ start: 0.1, end: 0.6 });
@@ -14,6 +17,12 @@ const AboutUsSection = () => {
   // Text fades in during the animation
   const textOpacity = Math.max(0, (progress - 0.3) / 0.7);
   const textTranslate = (1 - textOpacity) * 30;
+
+  // Split text into words for typing animation
+  const words = useMemo(() => aboutText.split(' '), []);
+  
+  // Calculate how many words should be visible based on text opacity
+  const visibleWordCount = Math.floor(textOpacity * words.length * 1.2);
 
   return (
     <section
@@ -44,27 +53,42 @@ const AboutUsSection = () => {
         <div
           className="absolute z-10 left-[2%] md:left-[4%] lg:left-[6%] top-1/2 -translate-y-1/2 max-w-[30%] md:max-w-[25%] backdrop-blur-sm rounded-lg p-4 md:p-6"
           style={{
-            opacity: textOpacity,
+            opacity: textOpacity > 0 ? 1 : 0,
             transform: `translateY(calc(-50% + ${textTranslate}px))`,
             transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
             backgroundColor: 'rgba(0, 0, 0, 0.15)',
           }}
         >
           <p
-            className="text-[8px] md:text-[10px] tracking-[0.4em] uppercase mb-3"
-            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+            className="text-[6px] md:text-[8px] tracking-[0.4em] uppercase mb-2"
+            style={{ 
+              color: 'rgba(255, 255, 255, 0.6)',
+              opacity: textOpacity,
+              transition: 'opacity 0.3s ease-out',
+            }}
           >
             About
           </p>
           
           <p
-            className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-light leading-[1.4] tracking-tight"
+            className="text-[10px] sm:text-xs md:text-sm lg:text-base font-light leading-[1.5] tracking-tight"
             style={{
-              color: 'rgba(255, 255, 255, 0.95)',
               fontFamily: 'Helvetica, Arial, sans-serif',
             }}
           >
-            I'm Meet Bhatt, although some may know me as Max. I'm 20, and I spend my days chasing something elusive: the moment when an image, a frame, or a piece of motion becomes more than just content.
+            {words.map((word, index) => (
+              <span
+                key={index}
+                className="inline-block mr-[0.25em] transition-all duration-300 ease-out"
+                style={{
+                  opacity: index < visibleWordCount ? 1 : 0,
+                  transform: index < visibleWordCount ? 'translateY(0)' : 'translateY(8px)',
+                  color: 'rgba(255, 255, 255, 0.95)',
+                }}
+              >
+                {word}
+              </span>
+            ))}
           </p>
         </div>
 
