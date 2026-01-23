@@ -62,7 +62,14 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
     enabled: isVisible,
   });
 
+  const animationDelay = index * 300;
+  const animationDuration = 1500;
+
   const renderChart = () => {
+    if (!isVisible) {
+      return <div style={{ height: 60 }} />;
+    }
+
     switch (stat.type) {
       case 'bar':
         return (
@@ -72,6 +79,10 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
                 dataKey="value"
                 fill="rgba(139, 92, 246, 0.6)"
                 radius={[2, 2, 0, 0]}
+                isAnimationActive={true}
+                animationBegin={animationDelay}
+                animationDuration={animationDuration}
+                animationEasing="ease-out"
               />
             </BarChart>
           </ResponsiveContainer>
@@ -86,6 +97,10 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
                 stroke="rgba(139, 92, 246, 0.8)"
                 strokeWidth={2}
                 dot={{ fill: 'rgba(139, 92, 246, 1)', strokeWidth: 0, r: 3 }}
+                isAnimationActive={true}
+                animationBegin={animationDelay}
+                animationDuration={animationDuration}
+                animationEasing="ease-out"
               />
             </LineChart>
           </ResponsiveContainer>
@@ -102,6 +117,10 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
                 outerRadius={25}
                 paddingAngle={2}
                 dataKey="value"
+                isAnimationActive={true}
+                animationBegin={animationDelay}
+                animationDuration={animationDuration}
+                animationEasing="ease-out"
               >
                 {pieData.map((_, i) => (
                   <Cell key={`cell-${i}`} fill={CHART_COLORS[i]} />
