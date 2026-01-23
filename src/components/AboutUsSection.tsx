@@ -22,6 +22,22 @@ const AboutUsSection = () => {
       className="relative min-h-[200vh]"
       style={{ background: '#0a0a0a' }}
     >
+      {/* Top fade gradient */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-48 pointer-events-none z-20"
+        style={{
+          background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 100%)',
+        }}
+      />
+      
+      {/* Bottom fade gradient */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-20"
+        style={{
+          background: 'linear-gradient(to top, #0a0a0a 0%, transparent 100%)',
+        }}
+      />
+
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* Text content - positioned over left side of photo */}
