@@ -225,10 +225,10 @@ const PortfolioSection = () => {
     <section 
       id="work" 
       ref={sectionRef}
-      className="py-48 md:py-64 lg:py-80 px-6 md:px-12 lg:px-20" 
+      className="py-32 md:py-48 px-6 md:px-12 lg:px-20" 
       style={{ background: '#000000' }}
     >
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Section Header */}
         <div 
           className="mb-16 transition-all duration-700"
@@ -263,9 +263,9 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 sm:gap-16 md:gap-24 lg:gap-32">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-20 lg:gap-24">
           {/* Left Column */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-5 lg:col-span-4 flex flex-col gap-16 sm:gap-24 md:gap-48 lg:gap-56">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40">
             <PortfolioCard
               project={projects[0]}
               isHovered={hoveredId === 1}
@@ -299,7 +299,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Right Column (offset down) */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-5 lg:col-span-4 md:col-start-8 lg:col-start-9 flex flex-col gap-16 sm:gap-24 md:gap-48 lg:gap-56 md:mt-64 lg:mt-80">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 md:col-start-7 lg:col-start-8 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40 md:mt-48 lg:mt-64">
             <PortfolioCard
               project={projects[1]}
               isHovered={hoveredId === 2}
