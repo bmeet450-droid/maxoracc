@@ -286,6 +286,22 @@ const AboutUsSection = () => {
             </div>
           </div>
         </div>
+
+        {/* Progress bar at bottom */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-[60%] md:w-[40%] lg:w-[30%]">
+          <div 
+            className="h-[2px] rounded-full overflow-hidden"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+          >
+            <div 
+              className="h-full rounded-full transition-all duration-300 ease-out"
+              style={{ 
+                width: `${progress * 100}%`,
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              }}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
