@@ -113,15 +113,24 @@ const AboutUsSection = () => {
   const isLeftAligned = currentSlide.position === "left";
 
   return (
-    <section
-      id="about-us"
-      ref={sectionRef}
-      className="relative"
-      style={{ 
-        background: '#000000',
-        height: `${totalSlides * 150}vh`,
-      }}
-    >
+    <>
+      {/* Mobile marquee animation keyframes */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+      
+      <section
+        id="about-us"
+        ref={sectionRef}
+        className="relative"
+        style={{ 
+          background: '#000000',
+          height: `${totalSlides * 150}vh`,
+        }}
+      >
       {/* Top fade gradient */}
       <div 
         className="absolute top-0 left-0 right-0 h-48 pointer-events-none z-20"
@@ -140,6 +149,135 @@ const AboutUsSection = () => {
 
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+        
+        {/* Mobile-only: Ambient gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none md:hidden">
+          <div 
+            className="absolute w-64 h-64 rounded-full blur-[80px] animate-pulse"
+            style={{
+              background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
+              top: '10%',
+              left: '-20%',
+              animationDuration: '4s',
+            }}
+          />
+          <div 
+            className="absolute w-48 h-48 rounded-full blur-[60px] animate-pulse"
+            style={{
+              background: 'radial-gradient(circle, rgba(236, 72, 153, 0.12) 0%, transparent 70%)',
+              bottom: '15%',
+              right: '-15%',
+              animationDuration: '5s',
+              animationDelay: '1s',
+            }}
+          />
+          <div 
+            className="absolute w-32 h-32 rounded-full blur-[50px] animate-pulse"
+            style={{
+              background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+              top: '50%',
+              right: '10%',
+              animationDuration: '6s',
+              animationDelay: '2s',
+            }}
+          />
+        </div>
+
+        {/* Mobile-only: Decorative corner accents */}
+        <div className="absolute top-20 left-4 w-12 h-12 pointer-events-none md:hidden">
+          <div 
+            className="absolute top-0 left-0 w-full h-[1px]"
+            style={{ 
+              background: 'linear-gradient(to right, rgba(255,255,255,0.3), transparent)',
+              opacity: 0.5 + progress * 0.5,
+            }}
+          />
+          <div 
+            className="absolute top-0 left-0 w-[1px] h-full"
+            style={{ 
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)',
+              opacity: 0.5 + progress * 0.5,
+            }}
+          />
+        </div>
+        <div className="absolute top-20 right-4 w-12 h-12 pointer-events-none md:hidden">
+          <div 
+            className="absolute top-0 right-0 w-full h-[1px]"
+            style={{ 
+              background: 'linear-gradient(to left, rgba(255,255,255,0.3), transparent)',
+              opacity: 0.5 + progress * 0.5,
+            }}
+          />
+          <div 
+            className="absolute top-0 right-0 w-[1px] h-full"
+            style={{ 
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0.3), transparent)',
+              opacity: 0.5 + progress * 0.5,
+            }}
+          />
+        </div>
+
+        {/* Mobile-only: Scrolling text marquee at bottom */}
+        <div className="absolute bottom-16 left-0 right-0 overflow-hidden pointer-events-none md:hidden">
+          <div 
+            className="flex whitespace-nowrap"
+            style={{
+              animation: 'marquee 20s linear infinite',
+            }}
+          >
+            {[...Array(4)].map((_, i) => (
+              <span 
+                key={i}
+                className="text-[10px] tracking-[0.5em] uppercase mx-8"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.08)',
+                  fontFamily: 'Helvetica, Arial, sans-serif',
+                }}
+              >
+                CREATIVE VISION • STORYTELLING • MOMENTS • ARTISTRY • PASSION • 
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile-only: Vertical side text */}
+        <div 
+          className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none md:hidden"
+          style={{
+            writingMode: 'vertical-rl',
+            textOrientation: 'mixed',
+            transform: 'translateY(-50%) rotate(180deg)',
+          }}
+        >
+          <span 
+            className="text-[8px] tracking-[0.4em] uppercase"
+            style={{
+              color: `rgba(255, 255, 255, ${0.1 + progress * 0.15})`,
+              fontFamily: 'Helvetica, Arial, sans-serif',
+            }}
+          >
+            {String(currentSlideIndex + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}
+          </span>
+        </div>
+        
+        <div 
+          className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none md:hidden"
+          style={{
+            writingMode: 'vertical-rl',
+            textOrientation: 'mixed',
+          }}
+        >
+          <span 
+            className="text-[8px] tracking-[0.4em] uppercase"
+            style={{
+              color: `rgba(255, 255, 255, ${0.1 + progress * 0.15})`,
+              fontFamily: 'Helvetica, Arial, sans-serif',
+            }}
+          >
+            MAXORA.STUDIO
+          </span>
+        </div>
+
         {/* Desktop: overlay layout, Mobile: stacked layout */}
         <div className="relative flex flex-col md:block items-center justify-center w-full h-full md:h-auto">
           {/* Background images container */}
@@ -333,6 +471,7 @@ const AboutUsSection = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
