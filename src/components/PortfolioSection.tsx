@@ -87,9 +87,18 @@ const PortfolioCard = ({
       if (!cardRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      
+      // Calculate how far the element is from center of viewport (0 = centered)
       const elementCenter = rect.top + rect.height / 2;
-      const viewportCenter = windowHeight / 2;
-      const offset = (elementCenter - viewportCenter) * 0.08;
+      const distanceFromCenter = elementCenter - windowHeight / 2;
+      
+      // Normalize to -1 to 1 range based on viewport
+      const normalizedDistance = distanceFromCenter / (windowHeight / 2);
+      
+      // Apply parallax with clamping to prevent excessive movement
+      const maxOffset = 30; // Maximum pixels of parallax movement
+      const offset = Math.max(-maxOffset, Math.min(maxOffset, normalizedDistance * maxOffset));
+      
       setParallaxOffset(offset);
     };
 
@@ -117,14 +126,16 @@ const PortfolioCard = ({
           transform: isHovered ? 'scale(1.02)' : 'scale(1)',
         }}
       >
-        <img 
-          src={project.image} 
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-700"
-          style={{
-            transform: `translateY(${parallaxOffset}px) scale(${isHovered ? 1.12 : 1.05})`,
-          }}
-        />
+        <div className="absolute inset-[-15%] w-[130%] h-[130%]">
+          <img 
+            src={project.image} 
+            alt={project.title}
+            className="w-full h-full object-cover transition-transform duration-300 ease-out"
+            style={{
+              transform: `translateY(${parallaxOffset}px) scale(${isHovered ? 1.05 : 1})`,
+            }}
+          />
+        </div>
         
         {/* Hover Overlay */}
         <div 
