@@ -142,16 +142,13 @@ const MainSphere = () => {
 
 const Scene = () => {
   const bubbles = useMemo(() => [
-    // Background bubbles
-    { position: [-4, 2, -4] as [number, number, number], scale: 0.2, depth: 'background' as const },
-    { position: [4.5, -1.5, -3.5] as [number, number, number], scale: 0.15, depth: 'background' as const },
-    { position: [-3, -2, -5] as [number, number, number], scale: 0.25, depth: 'background' as const },
-    { position: [5, 2.5, -4] as [number, number, number], scale: 0.12, depth: 'background' as const },
+    // Background bubbles (fewer)
+    { position: [-4, 2, -4] as [number, number, number], scale: 0.15, depth: 'background' as const },
+    { position: [4.5, -1.5, -3.5] as [number, number, number], scale: 0.1, depth: 'background' as const },
     
     // Midground bubbles
-    { position: [3, -1, -1] as [number, number, number], scale: 0.18, depth: 'midground' as const },
-    { position: [-3.5, 1, -1.5] as [number, number, number], scale: 0.14, depth: 'midground' as const },
-    { position: [2, 2, -2] as [number, number, number], scale: 0.1, depth: 'midground' as const },
+    { position: [3, -1, -1] as [number, number, number], scale: 0.14, depth: 'midground' as const },
+    { position: [-3.5, 1, -1.5] as [number, number, number], scale: 0.1, depth: 'midground' as const },
   ], []);
 
   return (
@@ -224,34 +221,61 @@ const GlassDistortionOverlay = () => {
         transition: 'left 0.15s ease-out, top 0.15s ease-out',
       }}
     >
-      {/* SVG filter for glass distortion */}
+      {/* SVG filter for glass distortion with chromatic aberration */}
       <svg className="absolute" width="0" height="0">
         <defs>
           <filter id="glass-distort" x="-50%" y="-50%" width="200%" height="200%">
             <feTurbulence 
               type="fractalNoise" 
-              baseFrequency="0.015" 
-              numOctaves="2" 
+              baseFrequency="0.012" 
+              numOctaves="3" 
               result="noise"
             />
             <feDisplacementMap 
               in="SourceGraphic" 
               in2="noise" 
-              scale="12" 
+              scale="15" 
               xChannelSelector="R" 
               yChannelSelector="G"
             />
-            <feGaussianBlur stdDeviation="0.5" />
+            <feGaussianBlur stdDeviation="0.3" />
+          </filter>
+          
+          {/* Chromatic aberration filter */}
+          <filter id="chromatic-aberration" x="-20%" y="-20%" width="140%" height="140%">
+            <feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red" />
+            <feOffset in="red" dx="2" dy="0" result="red-shifted" />
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="green" />
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="blue" />
+            <feOffset in="blue" dx="-2" dy="0" result="blue-shifted" />
+            <feBlend in="red-shifted" in2="green" mode="screen" result="rg" />
+            <feBlend in="rg" in2="blue-shifted" mode="screen" />
           </filter>
         </defs>
       </svg>
+      
+      {/* Chromatic aberration edge ring */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          inset: '-8px',
+          background: 'transparent',
+          boxShadow: `
+            inset 3px 0 12px rgba(255,100,100,0.15),
+            inset -3px 0 12px rgba(100,100,255,0.15),
+            3px 0 8px rgba(255,100,100,0.1),
+            -3px 0 8px rgba(100,100,255,0.1)
+          `,
+          filter: 'blur(2px)',
+        }}
+      />
       
       {/* Glass sphere distortion effect */}
       <div
         className="absolute inset-0 rounded-full"
         style={{
-          backdropFilter: 'blur(1px)',
-          WebkitBackdropFilter: 'blur(1px)',
+          backdropFilter: 'blur(1.5px)',
+          WebkitBackdropFilter: 'blur(1.5px)',
           filter: 'url(#glass-distort)',
           background: `
             radial-gradient(ellipse 40% 35% at 35% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
@@ -299,11 +323,23 @@ const ForegroundBlurBubbles = () => {
   }, []);
 
   const foregroundBubbles = [
-    { baseX: 25, baseY: 70, size: 120, blur: 8, parallax: 0.4, opacity: 0.3 },
-    { baseX: 80, baseY: 25, size: 90, blur: 6, parallax: 0.35, opacity: 0.25 },
-    { baseX: 45, baseY: 15, size: 60, blur: 10, parallax: 0.5, opacity: 0.2 },
-    { baseX: 10, baseY: 40, size: 70, blur: 12, parallax: 0.45, opacity: 0.15 },
-    { baseX: 90, baseY: 60, size: 50, blur: 14, parallax: 0.55, opacity: 0.2 },
+    // Large prominent bubbles
+    { baseX: 20, baseY: 65, size: 140, blur: 10, parallax: 0.45, opacity: 0.28 },
+    { baseX: 82, baseY: 30, size: 110, blur: 8, parallax: 0.4, opacity: 0.25 },
+    { baseX: 12, baseY: 25, size: 95, blur: 12, parallax: 0.5, opacity: 0.22 },
+    { baseX: 75, baseY: 75, size: 85, blur: 9, parallax: 0.42, opacity: 0.2 },
+    
+    // Medium bubbles
+    { baseX: 40, baseY: 12, size: 70, blur: 14, parallax: 0.55, opacity: 0.18 },
+    { baseX: 8, baseY: 50, size: 80, blur: 11, parallax: 0.48, opacity: 0.2 },
+    { baseX: 92, baseY: 45, size: 65, blur: 13, parallax: 0.52, opacity: 0.15 },
+    { baseX: 55, baseY: 85, size: 75, blur: 10, parallax: 0.44, opacity: 0.18 },
+    
+    // Small accent bubbles
+    { baseX: 30, baseY: 35, size: 45, blur: 16, parallax: 0.6, opacity: 0.12 },
+    { baseX: 65, baseY: 18, size: 40, blur: 18, parallax: 0.65, opacity: 0.1 },
+    { baseX: 88, baseY: 88, size: 55, blur: 15, parallax: 0.58, opacity: 0.14 },
+    { baseX: 5, baseY: 80, size: 50, blur: 17, parallax: 0.62, opacity: 0.12 },
   ];
 
   return (
