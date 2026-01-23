@@ -287,8 +287,29 @@ const AboutUsSection = () => {
           </div>
         </div>
 
-        {/* Progress bar at bottom */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-[60%] md:w-[40%] lg:w-[30%]">
+        {/* "About me." heading with scroll-synced gradient - mobile only */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 md:hidden">
+          <h2
+            className="text-4xl font-black tracking-tight"
+            style={{
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              background: `linear-gradient(to right, 
+                rgba(255, 255, 255, 1) 0%, 
+                rgba(255, 255, 255, 1) ${progress * 100 - 5}%, 
+                rgba(255, 255, 255, 0.8) ${progress * 100}%, 
+                rgba(80, 80, 80, 1) ${progress * 100 + 10}%, 
+                rgba(80, 80, 80, 1) 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            About me.
+          </h2>
+        </div>
+
+        {/* Progress bar at bottom - desktop only */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 w-[40%] lg:w-[30%] hidden md:block">
           <div 
             className="h-[2px] rounded-full overflow-hidden"
             style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
