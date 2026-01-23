@@ -81,6 +81,15 @@ const PortfolioCard = ({
 }: PortfolioCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    // Detect touch device
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  // On touch devices, show overlay content by default
+  const showOverlay = isTouchDevice || isHovered;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -141,7 +150,7 @@ const PortfolioCard = ({
         <div 
           className="absolute inset-0 flex flex-col justify-end p-6 transition-all duration-500"
           style={{
-            background: isHovered 
+            background: showOverlay 
               ? 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)' 
               : 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)',
             opacity: 1,
@@ -150,8 +159,8 @@ const PortfolioCard = ({
           <div 
             className="transition-all duration-500"
             style={{
-              transform: isHovered ? 'translateY(0)' : 'translateY(20px)',
-              opacity: isHovered ? 1 : 0,
+              transform: showOverlay ? 'translateY(0)' : 'translateY(20px)',
+              opacity: showOverlay ? 1 : 0,
             }}
           >
             <span className="text-white/60 text-xs tracking-widest uppercase mb-2 block">
@@ -254,9 +263,9 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-6 md:gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-20 lg:gap-24">
           {/* Left Column */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 flex flex-col gap-4 sm:gap-8 md:gap-32 lg:gap-40">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40">
             <PortfolioCard
               project={projects[0]}
               isHovered={hoveredId === 1}
@@ -290,7 +299,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Right Column (offset down) */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 md:col-start-7 lg:col-start-8 flex flex-col gap-4 sm:gap-8 md:gap-32 lg:gap-40 md:mt-48 lg:mt-64">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 md:col-start-7 lg:col-start-8 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40 md:mt-48 lg:mt-64">
             <PortfolioCard
               project={projects[1]}
               isHovered={hoveredId === 2}
