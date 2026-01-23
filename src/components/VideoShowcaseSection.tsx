@@ -1,10 +1,73 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+
+const wideVideos = [
+  "/videos/wide2.mp4",
+  "/videos/wide3.mp4",
+  "/videos/wide4.mp4",
+  "/videos/wide5.mp4",
+  "/videos/wide6.mp4",
+  "/videos/wide10.mp4",
+  "/videos/wide11.mp4",
+  "/videos/wide12.mp4",
+  "/videos/wide13.mp4",
+];
+
+interface AnimatedTextProps {
+  text: string;
+  progress: number;
+  startAt: number;
+  endAt: number;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = {} }: AnimatedTextProps) => {
+  const letters = text.split("");
+  const range = endAt - startAt;
+  
+  return (
+    <span className={className} style={style}>
+      {letters.map((letter, index) => {
+        const letterStart = startAt + (index / letters.length) * range;
+        const letterEnd = letterStart + (range / letters.length) * 2;
+        const letterProgress = Math.max(0, Math.min(1, (progress - letterStart) / (letterEnd - letterStart)));
+        
+        return (
+          <span
+            key={index}
+            style={{
+              display: "inline-block",
+              opacity: letterProgress,
+              transform: `translateY(${(1 - letterProgress) * 30}px)`,
+              transition: "none",
+              whiteSpace: letter === " " ? "pre" : "normal",
+            }}
+          >
+            {letter === " " ? "\u00A0" : letter}
+          </span>
+        );
+      })}
+    </span>
+  );
+};
 
 const VideoShowcaseSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  const handleVideoEnd = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % wideVideos.length);
+  };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play();
+    }
+  }, [currentVideoIndex]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,6 +101,11 @@ const VideoShowcaseSection = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const textRevealProgress = useMemo(() => {
+    // Start text animation earlier and complete by 60% scroll
+    return Math.max(0, Math.min(1, scrollProgress * 2.5));
+  }, [scrollProgress]);
+
   const parallaxY = scrollProgress * 50 - 25;
   const scale = 1 + scrollProgress * 0.1;
 
@@ -57,12 +125,13 @@ const VideoShowcaseSection = () => {
       >
         <video
           ref={videoRef}
-          src="/videos/wide2.mp4"
+          key={currentVideoIndex}
+          src={wideVideos[currentVideoIndex]}
           className="w-full h-full object-cover"
           autoPlay
-          loop
           muted
           playsInline
+          onEnded={handleVideoEnd}
           style={{
             filter: "brightness(0.7) contrast(1.1)",
           }}
@@ -94,7 +163,7 @@ const VideoShowcaseSection = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
         {/* Top Label */}
         <div
-          className="absolute top-12 md:top-20 left-1/2 -translate-x-1/2"
+          className="absolute top-12 md:top-20 left-1/2 -translate-x-1/2 text-center"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: `translateY(${isVisible ? 0 : 20}px)`,
@@ -109,47 +178,88 @@ const VideoShowcaseSection = () => {
           </span>
         </div>
 
-        {/* Center Content */}
-        <div className="text-center px-6">
-          <h2
-            className="text-4xl md:text-6xl lg:text-8xl font-light tracking-tight mb-6"
-            style={{
-              color: "#fff",
-              opacity: isVisible ? 1 : 0,
-              transform: `translateY(${isVisible ? 0 : 40}px)`,
-              transition: "all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
-            }}
-          >
-            Motion
-            <span
-              className="block italic font-serif"
-              style={{ fontWeight: 300 }}
-            >
-              in Frame
-            </span>
-          </h2>
+        {/* Center Content - Typography inspired by reference */}
+        <div className="text-center px-6 flex flex-col items-center">
+          {/* Line 1: "the World" style */}
+          <div className="mb-2 md:mb-4">
+            <AnimatedText
+              text="the"
+              progress={textRevealProgress}
+              startAt={0}
+              endAt={0.3}
+              className="text-3xl md:text-5xl lg:text-7xl italic font-light mr-3 md:mr-4"
+              style={{ 
+                color: "#fff",
+                fontFamily: "Georgia, 'Times New Roman', serif",
+              }}
+            />
+            <AnimatedText
+              text="World"
+              progress={textRevealProgress}
+              startAt={0.1}
+              endAt={0.4}
+              className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight"
+              style={{ 
+                color: "#fff",
+                fontFamily: "Georgia, 'Times New Roman', serif",
+              }}
+            />
+          </div>
+
+          {/* Line 2: "of the" style - offset to right */}
+          <div className="mb-2 md:mb-4 ml-8 md:ml-16 lg:ml-24">
+            <AnimatedText
+              text="of the"
+              progress={textRevealProgress}
+              startAt={0.2}
+              endAt={0.5}
+              className="text-3xl md:text-5xl lg:text-7xl italic font-light"
+              style={{ 
+                color: "#fff",
+                fontFamily: "Georgia, 'Times New Roman', serif",
+              }}
+            />
+            <AnimatedText
+              text=" Frame"
+              progress={textRevealProgress}
+              startAt={0.3}
+              endAt={0.6}
+              className="text-3xl md:text-5xl lg:text-7xl font-medium tracking-wide uppercase"
+              style={{ 
+                color: "#fff",
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                letterSpacing: "0.1em",
+              }}
+            />
+          </div>
 
           {/* Decorative Line */}
           <div
-            className="w-24 h-px mx-auto mb-6"
+            className="w-24 h-px mx-auto my-6 md:my-8"
             style={{
               background: "rgba(255,255,255,0.3)",
-              transform: `scaleX(${isVisible ? 1 : 0})`,
-              transition: "transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
+              transform: `scaleX(${textRevealProgress > 0.5 ? 1 : 0})`,
+              transition: "transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           />
 
-          <p
-            className="text-sm md:text-base max-w-md mx-auto"
+          {/* Subtitle */}
+          <div
             style={{
-              color: "rgba(255,255,255,0.7)",
-              opacity: isVisible ? 1 : 0,
-              transform: `translateY(${isVisible ? 0 : 20}px)`,
-              transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s",
+              opacity: textRevealProgress > 0.6 ? 1 : 0,
+              transform: `translateY(${textRevealProgress > 0.6 ? 0 : 20}px)`,
+              transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
           >
-            Capturing movement and emotion through cinematic storytelling
-          </p>
+            <p
+              className="text-sm md:text-base max-w-md mx-auto text-center"
+              style={{
+                color: "rgba(255,255,255,0.7)",
+              }}
+            >
+              Capturing movement and emotion through cinematic storytelling
+            </p>
+          </div>
         </div>
 
         {/* Bottom Stats/Details */}
@@ -177,8 +287,8 @@ const VideoShowcaseSection = () => {
               </span>
             </div>
 
-            {/* Play Indicator */}
-            <div className="flex items-center gap-3 mx-auto md:mx-0">
+            {/* Play Indicator - Centered */}
+            <div className="flex flex-col items-center gap-3 mx-auto md:mx-0">
               <div
                 className="w-12 h-12 md:w-16 md:h-16 rounded-full border flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
                 style={{ borderColor: "rgba(255,255,255,0.3)" }}
@@ -193,7 +303,7 @@ const VideoShowcaseSection = () => {
                 />
               </div>
               <span
-                className="text-xs tracking-[0.15em] uppercase hidden md:block"
+                className="text-xs tracking-[0.15em] uppercase"
                 style={{ color: "rgba(255,255,255,0.6)" }}
               >
                 Watch Reel
@@ -205,13 +315,13 @@ const VideoShowcaseSection = () => {
                 className="text-[10px] tracking-[0.2em] uppercase block mb-1"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
-                Duration
+                Clip
               </span>
               <span
                 className="text-sm"
                 style={{ color: "rgba(255,255,255,0.8)" }}
               >
-                02:45
+                {currentVideoIndex + 1} / {wideVideos.length}
               </span>
             </div>
           </div>
