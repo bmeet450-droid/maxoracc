@@ -95,6 +95,14 @@ const AboutUsSection = () => {
                 background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)',
               }}
             />
+            {/* Warm color grade */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255, 183, 77, 0.12) 0%, rgba(255, 138, 101, 0.08) 50%, rgba(181, 101, 167, 0.06) 100%)',
+                mixBlendMode: 'overlay',
+              }}
+            />
             {/* Film grain overlay */}
             <FilmGrain />
           </div>
