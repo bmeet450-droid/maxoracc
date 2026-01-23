@@ -23,20 +23,21 @@ const AboutUsSection = () => {
     >
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        {/* Photo container */}
+        {/* Photo container - maintains 2.33:1 aspect ratio */}
         <div
-          className="absolute inset-0 flex items-center justify-center"
+          className="flex items-center justify-center w-full px-4 md:px-8"
           style={{
-            padding: `${(1 - progress) * 15}%`,
-            transition: 'padding 0.1s ease-out',
+            transform: `scale(${photoScale})`,
+            transition: 'transform 0.1s ease-out',
           }}
         >
           <div
-            className="relative w-full h-full overflow-hidden"
+            className="relative w-full overflow-hidden"
             style={{
+              aspectRatio: '2.33 / 1',
+              maxWidth: '100vw',
               borderRadius: `${borderRadius}px`,
-              transform: `scale(${photoScale})`,
-              transition: 'transform 0.1s ease-out, border-radius 0.1s ease-out',
+              transition: 'border-radius 0.1s ease-out',
             }}
           >
             <img
