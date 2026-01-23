@@ -1,6 +1,7 @@
 import CustomCursor from "@/components/CustomCursor";
 import MaxoraHero from "@/components/MaxoraHero";
 import PortfolioSection from "@/components/PortfolioSection";
+import VideoShowcaseSection from "@/components/VideoShowcaseSection";
 import AboutSection from "@/components/AboutSection";
 import AboutUsSection from "@/components/AboutUsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -13,6 +14,7 @@ const Index = () => {
       <CustomCursor />
       <MaxoraHero />
       <PortfolioSection />
+      <VideoShowcaseSection />
       <AboutSection />
       <AboutUsSection />
       <ServicesSection />
