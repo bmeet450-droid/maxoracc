@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import portfolio1 from "@/assets/portfolio-1.jpg";
 import portfolio2 from "@/assets/portfolio-2.jpg";
 import portfolio3 from "@/assets/portfolio-3.jpg";
 import portfolio4 from "@/assets/portfolio-4.jpg";
+import portfolio5 from "@/assets/portfolio-5.jpg";
+import portfolio6 from "@/assets/portfolio-6.jpg";
 
 const projects = [
   {
@@ -11,26 +13,168 @@ const projects = [
     title: "Sonder Goods",
     number: "01",
     image: portfolio1,
+    category: "Brand Identity",
+    year: "2024",
   },
   {
     id: 2,
     title: "Halo Wear",
     number: "02",
     image: portfolio2,
+    category: "Product Design",
+    year: "2024",
   },
   {
     id: 3,
     title: "Lucent Lab",
     number: "03",
     image: portfolio3,
+    category: "Architecture",
+    year: "2023",
   },
   {
     id: 4,
     title: "Nova Studio",
     number: "04",
     image: portfolio4,
+    category: "Art Direction",
+    year: "2024",
+  },
+  {
+    id: 5,
+    title: "Aether Co",
+    number: "05",
+    image: portfolio5,
+    category: "Interior Design",
+    year: "2023",
+  },
+  {
+    id: 6,
+    title: "Prism Works",
+    number: "06",
+    image: portfolio6,
+    category: "Photography",
+    year: "2024",
   },
 ];
+
+interface PortfolioCardProps {
+  project: typeof projects[0];
+  isHovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+  isVisible: boolean;
+  delay: string;
+  aspectRatio?: string;
+  className?: string;
+}
+
+const PortfolioCard = ({ 
+  project, 
+  isHovered, 
+  onHover, 
+  onLeave, 
+  isVisible, 
+  delay,
+  aspectRatio = "4/5",
+  className = ""
+}: PortfolioCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [parallaxOffset, setParallaxOffset] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!cardRef.current) return;
+      const rect = cardRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementCenter = rect.top + rect.height / 2;
+      const viewportCenter = windowHeight / 2;
+      const offset = (elementCenter - viewportCenter) * 0.08;
+      setParallaxOffset(offset);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div 
+      ref={cardRef}
+      className={`cursor-pointer group ${className}`}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(60px)',
+        transition: `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}`,
+      }}
+    >
+      <div 
+        className="rounded-lg overflow-hidden transition-transform duration-500 relative"
+        style={{
+          aspectRatio,
+          transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+        }}
+      >
+        <img 
+          src={project.image} 
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-700"
+          style={{
+            transform: `translateY(${parallaxOffset}px) scale(${isHovered ? 1.12 : 1.05})`,
+          }}
+        />
+        
+        {/* Hover Overlay */}
+        <div 
+          className="absolute inset-0 flex flex-col justify-end p-6 transition-all duration-500"
+          style={{
+            background: isHovered 
+              ? 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)' 
+              : 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%)',
+            opacity: 1,
+          }}
+        >
+          <div 
+            className="transition-all duration-500"
+            style={{
+              transform: isHovered ? 'translateY(0)' : 'translateY(20px)',
+              opacity: isHovered ? 1 : 0,
+            }}
+          >
+            <span className="text-white/60 text-xs tracking-widest uppercase mb-2 block">
+              {project.category}
+            </span>
+            <h3 className="text-white text-xl md:text-2xl font-light mb-2">
+              {project.title}
+            </h3>
+            <div className="flex items-center gap-4">
+              <span className="text-white/50 text-sm">{project.year}</span>
+              <span className="text-white text-sm flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
+                View Project
+                <svg 
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Title below card */}
+      <div className="flex justify-between items-center mt-4 px-1">
+        <span className="text-white text-sm md:text-base">{project.title}</span>
+        <span className="text-white/40 text-sm">({project.number})</span>
+      </div>
+    </div>
+  );
+};
 
 const PortfolioSection = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
@@ -62,138 +206,73 @@ const PortfolioSection = () => {
 
         {/* Collage Grid - Asymmetric Layout */}
         <div className="grid grid-cols-12 gap-12 md:gap-16 lg:gap-24">
-          {/* Left Column - Projects 1 & 3 */}
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-16 md:gap-24 lg:gap-32">
-            {/* Project 1 - Large */}
-            <div 
-              className="cursor-pointer group"
-              onMouseEnter={() => setHoveredId(1)}
-              onMouseLeave={() => setHoveredId(null)}
-              style={{
-                opacity: sectionVisible ? 1 : 0,
-                transform: sectionVisible ? 'translateY(0)' : 'translateY(60px)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s',
-              }}
-            >
-              <div 
-                className="aspect-[4/5] rounded-lg overflow-hidden transition-transform duration-500"
-                style={{
-                  transform: hoveredId === 1 ? 'scale(1.02)' : 'scale(1)',
-                }}
-              >
-                <img 
-                  src={projects[0].image} 
-                  alt={projects[0].title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  style={{
-                    transform: hoveredId === 1 ? 'scale(1.08)' : 'scale(1)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between items-center mt-4 px-1">
-                <span className="text-white text-sm md:text-base">{projects[0].title}</span>
-                <span className="text-white/40 text-sm">({projects[0].number})</span>
-              </div>
-            </div>
+          {/* Left Column */}
+          <div className="col-span-12 md:col-span-5 flex flex-col gap-20 md:gap-32 lg:gap-40">
+            <PortfolioCard
+              project={projects[0]}
+              isHovered={hoveredId === 1}
+              onHover={() => setHoveredId(1)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.1s"
+              aspectRatio="4/5"
+            />
 
-            {/* Project 3 - Medium */}
-            <div 
-              className="cursor-pointer group md:ml-12 lg:ml-20"
-              onMouseEnter={() => setHoveredId(3)}
-              onMouseLeave={() => setHoveredId(null)}
-              style={{
-                opacity: sectionVisible ? 1 : 0,
-                transform: sectionVisible ? 'translateY(0)' : 'translateY(60px)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s',
-              }}
-            >
-              <div 
-                className="aspect-[4/5] rounded-lg overflow-hidden transition-transform duration-500"
-                style={{
-                  transform: hoveredId === 3 ? 'scale(1.02)' : 'scale(1)',
-                }}
-              >
-                <img 
-                  src={projects[2].image} 
-                  alt={projects[2].title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  style={{
-                    transform: hoveredId === 3 ? 'scale(1.08)' : 'scale(1)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between items-center mt-4 px-1">
-                <span className="text-white text-sm md:text-base">{projects[2].title}</span>
-                <span className="text-white/40 text-sm">({projects[2].number})</span>
-              </div>
-            </div>
+            <PortfolioCard
+              project={projects[2]}
+              isHovered={hoveredId === 3}
+              onHover={() => setHoveredId(3)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.3s"
+              aspectRatio="4/5"
+              className="md:ml-12 lg:ml-20"
+            />
+
+            <PortfolioCard
+              project={projects[4]}
+              isHovered={hoveredId === 5}
+              onHover={() => setHoveredId(5)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.5s"
+              aspectRatio="16/9"
+            />
           </div>
 
-          {/* Right Column - Projects 2 & 4 (offset down) */}
-          <div className="col-span-12 md:col-span-5 md:col-start-8 flex flex-col gap-16 md:gap-24 lg:gap-32 md:mt-48 lg:mt-64">
-            {/* Project 2 */}
-            <div 
-              className="cursor-pointer group"
-              onMouseEnter={() => setHoveredId(2)}
-              onMouseLeave={() => setHoveredId(null)}
-              style={{
-                opacity: sectionVisible ? 1 : 0,
-                transform: sectionVisible ? 'translateY(0)' : 'translateY(60px)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s',
-              }}
-            >
-              <div 
-                className="aspect-[3/4] rounded-lg overflow-hidden transition-transform duration-500"
-                style={{
-                  transform: hoveredId === 2 ? 'scale(1.02)' : 'scale(1)',
-                }}
-              >
-                <img 
-                  src={projects[1].image} 
-                  alt={projects[1].title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  style={{
-                    transform: hoveredId === 2 ? 'scale(1.08)' : 'scale(1)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between items-center mt-4 px-1">
-                <span className="text-white text-sm md:text-base">{projects[1].title}</span>
-                <span className="text-white/40 text-sm">({projects[1].number})</span>
-              </div>
-            </div>
+          {/* Right Column (offset down) */}
+          <div className="col-span-12 md:col-span-5 md:col-start-8 flex flex-col gap-20 md:gap-32 lg:gap-40 md:mt-48 lg:mt-64">
+            <PortfolioCard
+              project={projects[1]}
+              isHovered={hoveredId === 2}
+              onHover={() => setHoveredId(2)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.2s"
+              aspectRatio="3/4"
+            />
 
-            {/* Project 4 - smaller, offset left */}
-            <div 
-              className="cursor-pointer group md:w-3/4 md:-ml-12 lg:-ml-20"
-              onMouseEnter={() => setHoveredId(4)}
-              onMouseLeave={() => setHoveredId(null)}
-              style={{
-                opacity: sectionVisible ? 1 : 0,
-                transform: sectionVisible ? 'translateY(0)' : 'translateY(60px)',
-                transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s',
-              }}
-            >
-              <div 
-                className="aspect-[4/5] rounded-lg overflow-hidden transition-transform duration-500"
-                style={{
-                  transform: hoveredId === 4 ? 'scale(1.02)' : 'scale(1)',
-                }}
-              >
-                <img 
-                  src={projects[3].image} 
-                  alt={projects[3].title}
-                  className="w-full h-full object-cover transition-transform duration-700"
-                  style={{
-                    transform: hoveredId === 4 ? 'scale(1.08)' : 'scale(1)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between items-center mt-4 px-1">
-                <span className="text-white text-sm md:text-base">{projects[3].title}</span>
-                <span className="text-white/40 text-sm">({projects[3].number})</span>
-              </div>
-            </div>
+            <PortfolioCard
+              project={projects[3]}
+              isHovered={hoveredId === 4}
+              onHover={() => setHoveredId(4)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.4s"
+              aspectRatio="4/5"
+              className="md:w-3/4 md:-ml-12 lg:-ml-20"
+            />
+
+            <PortfolioCard
+              project={projects[5]}
+              isHovered={hoveredId === 6}
+              onHover={() => setHoveredId(6)}
+              onLeave={() => setHoveredId(null)}
+              isVisible={sectionVisible}
+              delay="0.6s"
+              aspectRatio="16/9"
+              className="md:ml-8"
+            />
           </div>
         </div>
       </div>
