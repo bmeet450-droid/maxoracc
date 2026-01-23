@@ -33,7 +33,7 @@ const AboutSection = () => {
           {textLines.map((line, index) => (
             <h2
               key={index}
-              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-center leading-[0.85] transition-all duration-700"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-8xl xl:text-9xl font-black tracking-tighter text-center leading-[0.85] transition-all duration-700"
               style={{
                 color: 'rgba(255, 255, 255, 0.85)',
                 textShadow: '0 0 80px rgba(139, 92, 246, 0.3)',
