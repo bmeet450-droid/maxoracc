@@ -4,11 +4,11 @@ import aboutPhoto from "@/assets/about-photo.jpg";
 const AboutUsSection = () => {
   const { ref: sectionRef, progress } = useScrollProgress({ start: 0.1, end: 0.6 });
 
-  // Photo starts at 30% size and scales to 100%
-  const photoScale = 0.3 + progress * 0.7;
+  // Photo starts at 50% size and scales to fill viewport width
+  const photoScale = 0.5 + progress * 0.5;
   
   // Rounded corners go from very rounded to none
-  const borderRadius = (1 - progress) * 48;
+  const borderRadius = (1 - progress) * 32;
   
   // Text fades in during the second half of the animation
   const textOpacity = Math.max(0, (progress - 0.4) / 0.6);
@@ -25,17 +25,17 @@ const AboutUsSection = () => {
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         {/* Photo container - maintains 2.33:1 aspect ratio */}
         <div
-          className="flex items-center justify-center w-full px-4 md:px-8"
+          className="flex items-center justify-center w-full"
           style={{
             transform: `scale(${photoScale})`,
             transition: 'transform 0.1s ease-out',
           }}
         >
           <div
-            className="relative w-full overflow-hidden"
+            className="relative overflow-hidden"
             style={{
+              width: '100vw',
               aspectRatio: '2.33 / 1',
-              maxWidth: '100vw',
               borderRadius: `${borderRadius}px`,
               transition: 'border-radius 0.1s ease-out',
             }}
