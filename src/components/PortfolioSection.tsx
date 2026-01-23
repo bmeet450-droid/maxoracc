@@ -10,7 +10,7 @@ import portfolio6 from "@/assets/portfolio-6.jpg";
 const projects = [
   {
     id: 1,
-    title: "Sonder Goods",
+    title: "Tonal Alchemy",
     number: "01",
     image: portfolio1,
     category: "Brand Identity",
@@ -18,7 +18,7 @@ const projects = [
   },
   {
     id: 2,
-    title: "Halo Wear",
+    title: "Phytography",
     number: "02",
     image: portfolio2,
     category: "Product Design",
@@ -26,7 +26,7 @@ const projects = [
   },
   {
     id: 3,
-    title: "Lucent Lab",
+    title: "Geometric Narratives",
     number: "03",
     image: portfolio3,
     category: "Architecture",
@@ -34,7 +34,7 @@ const projects = [
   },
   {
     id: 4,
-    title: "Nova Studio",
+    title: "The Human Frame",
     number: "04",
     image: portfolio4,
     category: "Art Direction",
@@ -42,7 +42,7 @@ const projects = [
   },
   {
     id: 5,
-    title: "Aether Co",
+    title: "Dimensional Narratives",
     number: "05",
     image: portfolio5,
     category: "Interior Design",
@@ -50,7 +50,7 @@ const projects = [
   },
   {
     id: 6,
-    title: "Prism Works",
+    title: "Prism Composition",
     number: "06",
     image: portfolio6,
     category: "Photography",
