@@ -305,7 +305,7 @@ const AboutUsSection = () => {
               color: 'transparent',
             }}
           >
-            About me.
+            ABOUT ME.
           </h2>
         </div>
 
