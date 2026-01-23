@@ -292,6 +292,9 @@ const GlassDistortionOverlay = () => {
 const ForegroundBlurBubbles = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
+  
+  // Scale factor for mobile/tablet (0.4 = 40% of original size)
+  const sizeScale = isMobile ? 0.4 : 1;
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -310,7 +313,7 @@ const ForegroundBlurBubbles = () => {
     { baseX: 82, baseY: 30, size: 130, blur: 8, parallax: 0.4, opacity: 0.25 },
     { baseX: 12, baseY: 25, size: 115, blur: 12, parallax: 0.5, opacity: 0.22 },
     { baseX: 75, baseY: 75, size: 105, blur: 9, parallax: 0.42, opacity: 0.2 },
-    { baseX: 50, baseY: 50, size: isMobile ? 60 : 140, blur: 7, parallax: 0.38, opacity: 0.18 },
+    { baseX: 50, baseY: 50, size: 140, blur: 7, parallax: 0.38, opacity: 0.18 },
     
     // Medium bubbles
     { baseX: 40, baseY: 12, size: 85, blur: 14, parallax: 0.55, opacity: 0.18 },
@@ -343,6 +346,8 @@ const ForegroundBlurBubbles = () => {
       {foregroundBubbles.map((bubble, index) => {
         const offsetX = mousePos.x * bubble.parallax * 80;
         const offsetY = -mousePos.y * bubble.parallax * 80;
+        const scaledSize = bubble.size * sizeScale;
+        const scaledBlur = bubble.blur * sizeScale;
         
         return (
           <div
@@ -351,13 +356,13 @@ const ForegroundBlurBubbles = () => {
             style={{
               left: `${bubble.baseX}%`,
               top: `${bubble.baseY}%`,
-              width: bubble.size,
-              height: bubble.size,
+              width: scaledSize,
+              height: scaledSize,
               transform: `translate(${offsetX}px, ${offsetY}px) translate(-50%, -50%)`,
-              backdropFilter: `blur(${bubble.blur}px)`,
-              WebkitBackdropFilter: `blur(${bubble.blur}px)`,
+              backdropFilter: `blur(${scaledBlur}px)`,
+              WebkitBackdropFilter: `blur(${scaledBlur}px)`,
               background: `radial-gradient(ellipse at 30% 30%, rgba(255,255,255,${bubble.opacity * 0.5}) 0%, rgba(139,92,246,${bubble.opacity * 0.3}) 30%, transparent 70%)`,
-              boxShadow: `inset 0 0 ${bubble.size * 0.3}px rgba(255,255,255,${bubble.opacity * 0.2}), 0 0 ${bubble.size * 0.2}px rgba(139,92,246,${bubble.opacity * 0.1})`,
+              boxShadow: `inset 0 0 ${scaledSize * 0.3}px rgba(255,255,255,${bubble.opacity * 0.2}), 0 0 ${scaledSize * 0.2}px rgba(139,92,246,${bubble.opacity * 0.1})`,
               border: `1px solid rgba(255,255,255,${bubble.opacity * 0.15})`,
             }}
           />
