@@ -8,8 +8,8 @@ const AboutUsSection = () => {
   // Photo starts at 60% size and scales to fill viewport
   const photoScale = 0.6 + progress * 0.4;
   
-  // Rounded corners go from rounded to none
-  const borderRadius = (1 - progress) * 24;
+  // Keep rounded corners throughout
+  const borderRadius = 16;
   
   // Text fades in during the animation
   const textOpacity = Math.max(0, (progress - 0.3) / 0.7);
@@ -20,7 +20,7 @@ const AboutUsSection = () => {
       id="about-us"
       ref={sectionRef}
       className="relative min-h-[200vh]"
-      style={{ background: '#0a0a0a' }}
+      style={{ background: '#000000' }}
     >
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
