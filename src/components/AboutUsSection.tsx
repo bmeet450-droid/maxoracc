@@ -88,6 +88,13 @@ const AboutUsSection = () => {
                 background: `linear-gradient(to bottom, rgba(0,0,0,${0.6 * progress}) 0%, rgba(0,0,0,${0.2 * progress}) 40%, rgba(0,0,0,${0.1 * progress}) 100%)`,
               }}
             />
+            {/* Vignette overlay */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)',
+              }}
+            />
             {/* Film grain overlay */}
             <FilmGrain />
           </div>
