@@ -20,7 +20,7 @@ const AboutUsSection = () => {
       id="about-us"
       ref={sectionRef}
       className="relative min-h-[200vh]"
-      style={{ background: '#000000' }}
+      style={{ background: '#0a0a0a' }}
     >
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
