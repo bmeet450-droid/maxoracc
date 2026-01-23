@@ -207,14 +207,21 @@ const PortfolioSection = () => {
             transform: sectionVisible ? 'translateY(0)' : 'translateY(30px)',
           }}
         >
-          <h2 className="text-white text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight mb-6">
-            Frame & Vision<sup className="text-2xl md:text-3xl lg:text-4xl font-normal ml-2 align-super">({projects.length})</sup>
+          <h2 className="text-white text-7xl md:text-9xl lg:text-[12rem] font-bold tracking-tight mb-8">
+            Frame & Vision<sup className="text-2xl md:text-4xl lg:text-5xl font-normal ml-2 align-super">({projects.length})</sup>
           </h2>
-          <div className="w-full bg-white py-3 flex justify-between px-8 md:px-16">
-            <span className="text-black text-sm font-bold tracking-wide">Precise</span>
-            <span className="text-black text-sm font-bold tracking-wide">Structured</span>
-            <span className="text-black text-sm font-bold tracking-wide">Focused</span>
-            <span className="text-black text-sm font-bold tracking-wide">Visual Language</span>
+          <div 
+            className="w-full bg-white py-2 flex justify-between px-8 md:px-16 transition-all duration-700"
+            style={{
+              opacity: sectionVisible ? 1 : 0,
+              transform: sectionVisible ? 'translateY(0) scaleY(1)' : 'translateY(10px) scaleY(0.8)',
+              transitionDelay: '0.3s',
+            }}
+          >
+            <span className="text-black text-xs font-bold tracking-wide">Precise</span>
+            <span className="text-black text-xs font-bold tracking-wide">Structured</span>
+            <span className="text-black text-xs font-bold tracking-wide">Focused</span>
+            <span className="text-black text-xs font-bold tracking-wide">Visual Language</span>
           </div>
         </div>
 
