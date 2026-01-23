@@ -254,9 +254,9 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-12 gap-12 md:gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-6 sm:gap-8 md:gap-16 lg:gap-24">
           {/* Left Column */}
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-20 md:gap-32 lg:gap-40">
+          <div className="col-span-1 sm:col-span-1 md:col-span-5 flex flex-col gap-8 sm:gap-12 md:gap-32 lg:gap-40">
             <PortfolioCard
               project={projects[0]}
               isHovered={hoveredId === 1}
@@ -285,12 +285,12 @@ const PortfolioSection = () => {
               onLeave={() => setHoveredId(null)}
               isVisible={sectionVisible}
               delay="0.5s"
-              aspectRatio="16/9"
+              aspectRatio="3/4 sm:16/9"
             />
           </div>
 
           {/* Right Column (offset down) */}
-          <div className="col-span-12 md:col-span-5 md:col-start-8 flex flex-col gap-20 md:gap-32 lg:gap-40 md:mt-48 lg:mt-64">
+          <div className="col-span-1 sm:col-span-1 md:col-span-5 md:col-start-8 flex flex-col gap-8 sm:gap-12 md:gap-32 lg:gap-40 md:mt-48 lg:mt-64">
             <PortfolioCard
               project={projects[1]}
               isHovered={hoveredId === 2}
