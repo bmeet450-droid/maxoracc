@@ -26,7 +26,7 @@ const AboutUsSection = () => {
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* Text content - positioned over left side of photo */}
         <div
-          className="absolute z-10 left-[5%] md:left-[8%] lg:left-[10%] top-1/2 -translate-y-1/2 max-w-[30%] md:max-w-[25%] backdrop-blur-sm rounded-lg p-4 md:p-6"
+          className="absolute z-10 left-[2%] md:left-[4%] lg:left-[6%] top-1/2 -translate-y-1/2 max-w-[30%] md:max-w-[25%] backdrop-blur-sm rounded-lg p-4 md:p-6"
           style={{
             opacity: textOpacity,
             transform: `translateY(calc(-50% + ${textTranslate}px))`,
