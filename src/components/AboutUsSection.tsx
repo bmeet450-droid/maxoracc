@@ -57,11 +57,16 @@ const AboutUsSection = () => {
   const totalSlides = slides.length;
   const slideProgress = progress * totalSlides;
   const currentSlideIndex = Math.min(Math.floor(slideProgress), totalSlides - 1);
-  const withinSlideProgress = slideProgress - currentSlideIndex;
+  // Clamp withinSlideProgress to prevent it from reaching 1 on the last slide
+  const rawWithinSlideProgress = slideProgress - currentSlideIndex;
+  const withinSlideProgress = currentSlideIndex === totalSlides - 1 
+    ? Math.min(rawWithinSlideProgress, 0.99) 
+    : rawWithinSlideProgress;
 
   // Get current and next slide
   const currentSlide = slides[currentSlideIndex];
-  const nextSlide = slides[Math.min(currentSlideIndex + 1, totalSlides - 1)];
+  const hasNextSlide = currentSlideIndex < totalSlides - 1;
+  const nextSlide = hasNextSlide ? slides[currentSlideIndex + 1] : null;
 
   // Calculate text animation phases (0-0.4: fade in, 0.4-0.6: visible, 0.6-1: fade out)
   const getTextOpacity = (slideProgress: number) => {
@@ -95,8 +100,10 @@ const AboutUsSection = () => {
   const words = useMemo(() => currentSlide.text.split(' '), [currentSlide.text]);
   const visibleWordCount = getVisibleWordCount(words, withinSlideProgress);
 
-  // Image crossfade
-  const imageFadeProgress = withinSlideProgress > 0.75 ? (withinSlideProgress - 0.75) / 0.25 : 0;
+  // Image crossfade - only when there's a next slide
+  const imageFadeProgress = hasNextSlide && withinSlideProgress > 0.75 
+    ? (withinSlideProgress - 0.75) / 0.25 
+    : 0;
 
   // Photo scale animation - starts at 1.05, scales down to 1 during slide, then incoming image starts at 1.08
   const currentPhotoScale = 1.05 - withinSlideProgress * 0.05; // 1.05 -> 1.0
@@ -160,7 +167,7 @@ const AboutUsSection = () => {
               </div>
               
               {/* Next slide image (for crossfade) */}
-              {currentSlideIndex < totalSlides - 1 && (
+              {hasNextSlide && nextSlide && (
                 <div
                   className="absolute inset-0 w-full h-full"
                   style={{
