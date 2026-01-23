@@ -285,7 +285,7 @@ const PortfolioSection = () => {
               onLeave={() => setHoveredId(null)}
               isVisible={sectionVisible}
               delay="0.5s"
-              aspectRatio="3/4 sm:16/9"
+              aspectRatio="3/4"
             />
           </div>
 

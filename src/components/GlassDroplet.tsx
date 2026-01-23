@@ -141,16 +141,6 @@ const MainSphere = () => {
 };
 
 const Scene = () => {
-  const bubbles = useMemo(() => [
-    // Background bubbles (fewer)
-    { position: [-4, 2, -4] as [number, number, number], scale: 0.15, depth: 'background' as const },
-    { position: [4.5, -1.5, -3.5] as [number, number, number], scale: 0.1, depth: 'background' as const },
-    
-    // Midground bubbles
-    { position: [3, -1, -1] as [number, number, number], scale: 0.14, depth: 'midground' as const },
-    { position: [-3.5, 1, -1.5] as [number, number, number], scale: 0.1, depth: 'midground' as const },
-  ], []);
-
   return (
     <>
       <ambientLight intensity={0.15} />
@@ -161,20 +151,10 @@ const Scene = () => {
       
       <MainSphere />
       
-      {bubbles.map((bubble, index) => (
-        <GlassSphere
-          key={index}
-          position={bubble.position}
-          scale={bubble.scale}
-          depth={bubble.depth}
-        />
-      ))}
-      
       <Environment preset="night" />
     </>
   );
 };
-
 // Main glass distortion overlay that follows mouse and distorts text
 const GlassDistortionOverlay = () => {
   const [position, setPosition] = useState({ x: 50, y: 50 });
@@ -324,22 +304,36 @@ const ForegroundBlurBubbles = () => {
 
   const foregroundBubbles = [
     // Large prominent bubbles
-    { baseX: 20, baseY: 65, size: 140, blur: 10, parallax: 0.45, opacity: 0.28 },
-    { baseX: 82, baseY: 30, size: 110, blur: 8, parallax: 0.4, opacity: 0.25 },
-    { baseX: 12, baseY: 25, size: 95, blur: 12, parallax: 0.5, opacity: 0.22 },
-    { baseX: 75, baseY: 75, size: 85, blur: 9, parallax: 0.42, opacity: 0.2 },
+    { baseX: 20, baseY: 65, size: 160, blur: 10, parallax: 0.45, opacity: 0.28 },
+    { baseX: 82, baseY: 30, size: 130, blur: 8, parallax: 0.4, opacity: 0.25 },
+    { baseX: 12, baseY: 25, size: 115, blur: 12, parallax: 0.5, opacity: 0.22 },
+    { baseX: 75, baseY: 75, size: 105, blur: 9, parallax: 0.42, opacity: 0.2 },
+    { baseX: 50, baseY: 50, size: 140, blur: 7, parallax: 0.38, opacity: 0.18 },
     
     // Medium bubbles
-    { baseX: 40, baseY: 12, size: 70, blur: 14, parallax: 0.55, opacity: 0.18 },
-    { baseX: 8, baseY: 50, size: 80, blur: 11, parallax: 0.48, opacity: 0.2 },
-    { baseX: 92, baseY: 45, size: 65, blur: 13, parallax: 0.52, opacity: 0.15 },
-    { baseX: 55, baseY: 85, size: 75, blur: 10, parallax: 0.44, opacity: 0.18 },
+    { baseX: 40, baseY: 12, size: 85, blur: 14, parallax: 0.55, opacity: 0.18 },
+    { baseX: 8, baseY: 50, size: 95, blur: 11, parallax: 0.48, opacity: 0.2 },
+    { baseX: 92, baseY: 45, size: 80, blur: 13, parallax: 0.52, opacity: 0.15 },
+    { baseX: 55, baseY: 85, size: 90, blur: 10, parallax: 0.44, opacity: 0.18 },
+    { baseX: 35, baseY: 75, size: 75, blur: 12, parallax: 0.46, opacity: 0.16 },
+    { baseX: 68, baseY: 55, size: 70, blur: 11, parallax: 0.43, opacity: 0.14 },
+    { baseX: 15, baseY: 90, size: 85, blur: 9, parallax: 0.41, opacity: 0.17 },
     
     // Small accent bubbles
-    { baseX: 30, baseY: 35, size: 45, blur: 16, parallax: 0.6, opacity: 0.12 },
-    { baseX: 65, baseY: 18, size: 40, blur: 18, parallax: 0.65, opacity: 0.1 },
-    { baseX: 88, baseY: 88, size: 55, blur: 15, parallax: 0.58, opacity: 0.14 },
-    { baseX: 5, baseY: 80, size: 50, blur: 17, parallax: 0.62, opacity: 0.12 },
+    { baseX: 30, baseY: 35, size: 55, blur: 16, parallax: 0.6, opacity: 0.12 },
+    { baseX: 65, baseY: 18, size: 50, blur: 18, parallax: 0.65, opacity: 0.1 },
+    { baseX: 88, baseY: 88, size: 65, blur: 15, parallax: 0.58, opacity: 0.14 },
+    { baseX: 5, baseY: 80, size: 60, blur: 17, parallax: 0.62, opacity: 0.12 },
+    { baseX: 95, baseY: 15, size: 45, blur: 19, parallax: 0.68, opacity: 0.1 },
+    { baseX: 48, baseY: 28, size: 40, blur: 20, parallax: 0.7, opacity: 0.08 },
+    { baseX: 78, baseY: 62, size: 48, blur: 18, parallax: 0.64, opacity: 0.11 },
+    { baseX: 22, baseY: 48, size: 52, blur: 16, parallax: 0.59, opacity: 0.13 },
+    
+    // Extra tiny bubbles for depth
+    { baseX: 42, baseY: 68, size: 35, blur: 22, parallax: 0.75, opacity: 0.08 },
+    { baseX: 85, baseY: 42, size: 30, blur: 24, parallax: 0.78, opacity: 0.06 },
+    { baseX: 18, baseY: 15, size: 38, blur: 21, parallax: 0.72, opacity: 0.09 },
+    { baseX: 62, baseY: 92, size: 42, blur: 20, parallax: 0.7, opacity: 0.1 },
   ];
 
   return (
