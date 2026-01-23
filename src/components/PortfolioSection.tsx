@@ -236,7 +236,7 @@ const PortfolioSection = () => {
               transition: 'transform 0.1s ease-out',
             }}
           >
-            Frame & Vision<sup className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal ml-1 md:ml-2 align-super">({projects.length})</sup>
+            Frame & Vision
           </h2>
           <div 
             className="w-full bg-white py-2 flex justify-between px-8 md:px-16 transition-all duration-700"
