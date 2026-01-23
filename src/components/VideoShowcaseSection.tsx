@@ -54,12 +54,38 @@ const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = 
 const VideoShowcaseSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const prevVideoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [prevVideoIndex, setPrevVideoIndex] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+
+  const switchVideo = (newIndex: number) => {
+    if (newIndex === currentVideoIndex || isTransitioning) return;
+    
+    setPrevVideoIndex(currentVideoIndex);
+    setIsTransitioning(true);
+    setCurrentVideoIndex(newIndex);
+    setVideoProgress(0);
+    
+    setTimeout(() => {
+      setIsTransitioning(false);
+      setPrevVideoIndex(null);
+    }, 800);
+  };
 
   const handleVideoEnd = () => {
-    setCurrentVideoIndex((prev) => (prev + 1) % wideVideos.length);
+    const nextIndex = (currentVideoIndex + 1) % wideVideos.length;
+    switchVideo(nextIndex);
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      const progress = videoRef.current.currentTime / videoRef.current.duration;
+      setVideoProgress(isNaN(progress) ? 0 : progress);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +128,6 @@ const VideoShowcaseSection = () => {
   }, []);
 
   const textRevealProgress = useMemo(() => {
-    // Start text animation earlier and complete by 60% scroll
     return Math.max(0, Math.min(1, scrollProgress * 2.5));
   }, [scrollProgress]);
 
@@ -115,12 +140,38 @@ const VideoShowcaseSection = () => {
       className="relative w-full h-screen overflow-hidden"
       style={{ background: "#000" }}
     >
-      {/* Video Container */}
+      {/* Previous Video (for crossfade) */}
+      {prevVideoIndex !== null && (
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            transform: `translateY(${parallaxY}px) scale(${scale})`,
+            opacity: isTransitioning ? 0 : 1,
+            transition: "opacity 0.8s ease-in-out",
+            zIndex: 1,
+          }}
+        >
+          <video
+            ref={prevVideoRef}
+            src={wideVideos[prevVideoIndex]}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+            style={{
+              filter: "brightness(0.7) contrast(1.1)",
+            }}
+          />
+        </div>
+      )}
+
+      {/* Current Video Container */}
       <div
         className="absolute inset-0 w-full h-full"
         style={{
           transform: `translateY(${parallaxY}px) scale(${scale})`,
-          transition: "transform 0.1s ease-out",
+          opacity: isTransitioning ? 1 : 1,
+          transition: "opacity 0.8s ease-in-out",
+          zIndex: 2,
         }}
       >
         <video
@@ -132,15 +183,17 @@ const VideoShowcaseSection = () => {
           muted
           playsInline
           onEnded={handleVideoEnd}
+          onTimeUpdate={handleTimeUpdate}
           style={{
             filter: "brightness(0.7) contrast(1.1)",
+            opacity: isTransitioning ? 1 : 1,
           }}
         />
       </div>
 
       {/* Gradient Overlays */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-10"
         style={{
           background: `linear-gradient(to bottom, 
             rgba(0,0,0,0.8) 0%, 
@@ -153,14 +206,14 @@ const VideoShowcaseSection = () => {
 
       {/* Side Vignettes */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-10"
         style={{
           background: `radial-gradient(ellipse 80% 50% at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%)`,
         }}
       />
 
       {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
         {/* Top Label */}
         <div
           className="absolute top-12 md:top-20 left-1/2 -translate-x-1/2 text-center"
@@ -171,26 +224,27 @@ const VideoShowcaseSection = () => {
           }}
         >
           <span
-            className="text-[10px] md:text-xs tracking-[0.3em] uppercase"
+            className="text-[10px] md:text-xs tracking-[0.3em] uppercase font-extralight"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             Featured Reel
           </span>
         </div>
 
-        {/* Center Content - Typography inspired by reference */}
+        {/* Center Content - Thin premium typography */}
         <div className="text-center px-6 flex flex-col items-center">
-          {/* Line 1: "the World" style */}
+          {/* Line 1: "the World" style - extra thin */}
           <div className="mb-2 md:mb-4">
             <AnimatedText
               text="the"
               progress={textRevealProgress}
               startAt={0}
               endAt={0.3}
-              className="text-3xl md:text-5xl lg:text-7xl italic font-light mr-3 md:mr-4"
+              className="text-3xl md:text-5xl lg:text-7xl italic mr-3 md:mr-4"
               style={{ 
                 color: "#fff",
                 fontFamily: "Georgia, 'Times New Roman', serif",
+                fontWeight: 200,
               }}
             />
             <AnimatedText
@@ -198,25 +252,27 @@ const VideoShowcaseSection = () => {
               progress={textRevealProgress}
               startAt={0.1}
               endAt={0.4}
-              className="text-3xl md:text-5xl lg:text-7xl font-normal tracking-tight"
+              className="text-3xl md:text-5xl lg:text-7xl tracking-tight"
               style={{ 
                 color: "#fff",
                 fontFamily: "Georgia, 'Times New Roman', serif",
+                fontWeight: 300,
               }}
             />
           </div>
 
-          {/* Line 2: "of the" style - offset to right */}
+          {/* Line 2: "of the" style - offset to right, thin */}
           <div className="mb-2 md:mb-4 ml-8 md:ml-16 lg:ml-24">
             <AnimatedText
               text="of the"
               progress={textRevealProgress}
               startAt={0.2}
               endAt={0.5}
-              className="text-3xl md:text-5xl lg:text-7xl italic font-light"
+              className="text-3xl md:text-5xl lg:text-7xl italic"
               style={{ 
                 color: "#fff",
                 fontFamily: "Georgia, 'Times New Roman', serif",
+                fontWeight: 200,
               }}
             />
             <AnimatedText
@@ -224,11 +280,12 @@ const VideoShowcaseSection = () => {
               progress={textRevealProgress}
               startAt={0.3}
               endAt={0.6}
-              className="text-3xl md:text-5xl lg:text-7xl font-medium tracking-wide uppercase"
+              className="text-3xl md:text-5xl lg:text-7xl tracking-wide uppercase"
               style={{ 
                 color: "#fff",
                 fontFamily: "Georgia, 'Times New Roman', serif",
-                letterSpacing: "0.1em",
+                fontWeight: 300,
+                letterSpacing: "0.15em",
               }}
             />
           </div>
@@ -237,7 +294,7 @@ const VideoShowcaseSection = () => {
           <div
             className="w-24 h-px mx-auto my-6 md:my-8"
             style={{
-              background: "rgba(255,255,255,0.3)",
+              background: "rgba(255,255,255,0.25)",
               transform: `scaleX(${textRevealProgress > 0.5 ? 1 : 0})`,
               transition: "transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
             }}
@@ -252,9 +309,9 @@ const VideoShowcaseSection = () => {
             }}
           >
             <p
-              className="text-sm md:text-base max-w-md mx-auto text-center"
+              className="text-sm md:text-base max-w-md mx-auto text-center font-extralight tracking-wide"
               style={{
-                color: "rgba(255,255,255,0.7)",
+                color: "rgba(255,255,255,0.6)",
               }}
             >
               Capturing movement and emotion through cinematic storytelling
@@ -262,9 +319,70 @@ const VideoShowcaseSection = () => {
           </div>
         </div>
 
+        {/* Video Progress Bar */}
+        <div
+          className="absolute bottom-32 md:bottom-36 left-1/2 -translate-x-1/2 w-48 md:w-64"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: "opacity 0.5s ease",
+          }}
+        >
+          <div
+            className="h-[1px] w-full rounded-full overflow-hidden"
+            style={{ background: "rgba(255,255,255,0.15)" }}
+          >
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${videoProgress * 100}%`,
+                background: "rgba(255,255,255,0.6)",
+                transition: "width 0.1s linear",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Navigation Dots */}
+        <div
+          className="absolute bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: "opacity 0.5s ease 0.2s",
+          }}
+        >
+          {wideVideos.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => switchVideo(index)}
+              className="group relative p-1"
+              aria-label={`Go to video ${index + 1}`}
+            >
+              <div
+                className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300"
+                style={{
+                  background: currentVideoIndex === index 
+                    ? "rgba(255,255,255,0.9)" 
+                    : "rgba(255,255,255,0.25)",
+                  transform: currentVideoIndex === index ? "scale(1.2)" : "scale(1)",
+                  boxShadow: currentVideoIndex === index 
+                    ? "0 0 10px rgba(255,255,255,0.4)" 
+                    : "none",
+                }}
+              />
+              <div
+                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                style={{
+                  background: "rgba(255,255,255,0.1)",
+                  transform: "scale(2)",
+                }}
+              />
+            </button>
+          ))}
+        </div>
+
         {/* Bottom Stats/Details */}
         <div
-          className="absolute bottom-12 md:bottom-20 left-0 right-0 px-8"
+          className="absolute bottom-8 md:bottom-12 left-0 right-0 px-8"
           style={{
             opacity: isVisible ? 1 : 0,
             transform: `translateY(${isVisible ? 0 : 20}px)`,
@@ -274,14 +392,14 @@ const VideoShowcaseSection = () => {
           <div className="flex justify-between items-end max-w-6xl mx-auto">
             <div className="hidden md:block">
               <span
-                className="text-[10px] tracking-[0.2em] uppercase block mb-1"
+                className="text-[10px] tracking-[0.2em] uppercase block mb-1 font-extralight"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
                 Format
               </span>
               <span
-                className="text-sm"
-                style={{ color: "rgba(255,255,255,0.8)" }}
+                className="text-sm font-light"
+                style={{ color: "rgba(255,255,255,0.7)" }}
               >
                 4K Cinematic
               </span>
@@ -290,21 +408,21 @@ const VideoShowcaseSection = () => {
             {/* Play Indicator - Centered */}
             <div className="flex flex-col items-center gap-3 mx-auto md:mx-0">
               <div
-                className="w-12 h-12 md:w-16 md:h-16 rounded-full border flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
-                style={{ borderColor: "rgba(255,255,255,0.3)" }}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
+                style={{ borderColor: "rgba(255,255,255,0.25)" }}
               >
                 <div
-                  className="w-0 h-0 ml-1"
+                  className="w-0 h-0 ml-0.5"
                   style={{
-                    borderLeft: "10px solid rgba(255,255,255,0.9)",
-                    borderTop: "6px solid transparent",
-                    borderBottom: "6px solid transparent",
+                    borderLeft: "8px solid rgba(255,255,255,0.8)",
+                    borderTop: "5px solid transparent",
+                    borderBottom: "5px solid transparent",
                   }}
                 />
               </div>
               <span
-                className="text-xs tracking-[0.15em] uppercase"
-                style={{ color: "rgba(255,255,255,0.6)" }}
+                className="text-[10px] tracking-[0.2em] uppercase font-extralight"
+                style={{ color: "rgba(255,255,255,0.5)" }}
               >
                 Watch Reel
               </span>
@@ -312,14 +430,14 @@ const VideoShowcaseSection = () => {
 
             <div className="hidden md:block text-right">
               <span
-                className="text-[10px] tracking-[0.2em] uppercase block mb-1"
+                className="text-[10px] tracking-[0.2em] uppercase block mb-1 font-extralight"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
                 Clip
               </span>
               <span
-                className="text-sm"
-                style={{ color: "rgba(255,255,255,0.8)" }}
+                className="text-sm font-light"
+                style={{ color: "rgba(255,255,255,0.7)" }}
               >
                 {currentVideoIndex + 1} / {wideVideos.length}
               </span>
@@ -330,37 +448,37 @@ const VideoShowcaseSection = () => {
 
       {/* Corner Accents */}
       <div
-        className="absolute top-8 left-8 w-16 h-16 pointer-events-none hidden md:block"
+        className="absolute top-8 left-8 w-12 h-12 pointer-events-none hidden md:block z-20"
         style={{
-          borderLeft: "1px solid rgba(255,255,255,0.2)",
-          borderTop: "1px solid rgba(255,255,255,0.2)",
+          borderLeft: "1px solid rgba(255,255,255,0.15)",
+          borderTop: "1px solid rgba(255,255,255,0.15)",
           opacity: isVisible ? 1 : 0,
           transition: "opacity 1s ease 0.3s",
         }}
       />
       <div
-        className="absolute top-8 right-8 w-16 h-16 pointer-events-none hidden md:block"
+        className="absolute top-8 right-8 w-12 h-12 pointer-events-none hidden md:block z-20"
         style={{
-          borderRight: "1px solid rgba(255,255,255,0.2)",
-          borderTop: "1px solid rgba(255,255,255,0.2)",
+          borderRight: "1px solid rgba(255,255,255,0.15)",
+          borderTop: "1px solid rgba(255,255,255,0.15)",
           opacity: isVisible ? 1 : 0,
           transition: "opacity 1s ease 0.3s",
         }}
       />
       <div
-        className="absolute bottom-8 left-8 w-16 h-16 pointer-events-none hidden md:block"
+        className="absolute bottom-8 left-8 w-12 h-12 pointer-events-none hidden md:block z-20"
         style={{
-          borderLeft: "1px solid rgba(255,255,255,0.2)",
-          borderBottom: "1px solid rgba(255,255,255,0.2)",
+          borderLeft: "1px solid rgba(255,255,255,0.15)",
+          borderBottom: "1px solid rgba(255,255,255,0.15)",
           opacity: isVisible ? 1 : 0,
           transition: "opacity 1s ease 0.3s",
         }}
       />
       <div
-        className="absolute bottom-8 right-8 w-16 h-16 pointer-events-none hidden md:block"
+        className="absolute bottom-8 right-8 w-12 h-12 pointer-events-none hidden md:block z-20"
         style={{
-          borderRight: "1px solid rgba(255,255,255,0.2)",
-          borderBottom: "1px solid rgba(255,255,255,0.2)",
+          borderRight: "1px solid rgba(255,255,255,0.15)",
+          borderBottom: "1px solid rgba(255,255,255,0.15)",
           opacity: isVisible ? 1 : 0,
           transition: "opacity 1s ease 0.3s",
         }}
