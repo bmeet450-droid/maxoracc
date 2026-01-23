@@ -287,8 +287,8 @@ const AboutUsSection = () => {
           </div>
         </div>
 
-        {/* "About me." heading with scroll-synced gradient - mobile only */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 md:hidden">
+        {/* "About me." heading with scroll-synced gradient - mobile only, positioned at top */}
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-20 md:hidden">
           <h2
             className="text-4xl font-black tracking-tight"
             style={{
