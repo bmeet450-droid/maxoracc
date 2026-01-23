@@ -26,7 +26,7 @@ const AboutUsSection = () => {
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
         {/* Text content - positioned over left side of photo */}
         <div
-          className="absolute z-10 left-[5%] md:left-[8%] lg:left-[10%] top-1/2 -translate-y-1/2 max-w-[35%] md:max-w-[30%]"
+          className="absolute z-10 left-[5%] md:left-[8%] lg:left-[10%] top-1/2 -translate-y-1/2 max-w-[30%] md:max-w-[25%]"
           style={{
             opacity: textOpacity,
             transform: `translateY(calc(-50% + ${textTranslate}px))`,
@@ -34,14 +34,14 @@ const AboutUsSection = () => {
           }}
         >
           <p
-            className="text-[10px] md:text-xs tracking-[0.4em] uppercase mb-4"
+            className="text-[8px] md:text-[10px] tracking-[0.4em] uppercase mb-3"
             style={{ color: 'rgba(255, 255, 255, 0.6)' }}
           >
             About
           </p>
           
           <h2
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light leading-[1.2] tracking-tight"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-light leading-[1.2] tracking-tight"
             style={{
               color: 'rgba(255, 255, 255, 0.95)',
               fontFamily: 'Helvetica, Arial, sans-serif',
@@ -51,7 +51,7 @@ const AboutUsSection = () => {
           </h2>
           
           <p
-            className="mt-4 md:mt-6 text-xs md:text-sm lg:text-base leading-relaxed"
+            className="mt-3 md:mt-4 text-[10px] md:text-xs lg:text-sm leading-relaxed"
             style={{ color: 'rgba(255, 255, 255, 0.5)' }}
           >
             Our work lives at the intersection of strategy, aesthetics, and technology.
