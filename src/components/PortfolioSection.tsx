@@ -13,7 +13,7 @@ const projects = [
     title: "Tonal Alchemy",
     number: "01",
     image: portfolio1,
-    category: "Brand Identity",
+    category: "Enhanced",
     year: "2024",
   },
   {
