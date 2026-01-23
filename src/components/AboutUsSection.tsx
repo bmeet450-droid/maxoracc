@@ -47,7 +47,7 @@ const teamBarData = [
   { dept: 'Strategy', value: 4 },
 ];
 
-const CHART_COLORS = ['rgba(139, 92, 246, 0.8)', 'rgba(139, 92, 246, 0.2)'];
+const CHART_COLORS = ['rgba(239, 68, 68, 0.8)', 'rgba(239, 68, 68, 0.2)'];
 
 interface StatCardProps {
   stat: typeof stats[0];
@@ -77,7 +77,7 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
             <BarChart data={index === 0 ? barData : teamBarData}>
               <Bar
                 dataKey="value"
-                fill="rgba(139, 92, 246, 0.6)"
+                fill="rgba(239, 68, 68, 0.6)"
                 radius={[2, 2, 0, 0]}
                 isAnimationActive={true}
                 animationBegin={animationDelay}
@@ -94,9 +94,9 @@ const StatCard = ({ stat, index, isVisible }: StatCardProps) => {
               <Line
                 type="monotone"
                 dataKey="value"
-                stroke="rgba(139, 92, 246, 0.8)"
+                stroke="rgba(239, 68, 68, 0.8)"
                 strokeWidth={2}
-                dot={{ fill: 'rgba(139, 92, 246, 1)', strokeWidth: 0, r: 3 }}
+                dot={{ fill: 'rgba(239, 68, 68, 1)', strokeWidth: 0, r: 3 }}
                 isAnimationActive={true}
                 animationBegin={animationDelay}
                 animationDuration={animationDuration}
@@ -186,7 +186,7 @@ const AboutUsSection = () => {
           <p
             className="text-xs md:text-sm tracking-[0.3em] uppercase mb-4 transition-all duration-700"
             style={{
-              color: 'rgba(139, 92, 246, 0.8)',
+              color: 'rgba(239, 68, 68, 0.8)',
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
             }}
@@ -250,7 +250,7 @@ const AboutUsSection = () => {
             <div>
               <h3
                 className="text-sm tracking-[0.2em] uppercase mb-3"
-                style={{ color: 'rgba(139, 92, 246, 0.8)' }}
+                style={{ color: 'rgba(239, 68, 68, 0.8)' }}
               >
                 Our Mission
               </h3>
@@ -265,7 +265,7 @@ const AboutUsSection = () => {
             <div>
               <h3
                 className="text-sm tracking-[0.2em] uppercase mb-3"
-                style={{ color: 'rgba(139, 92, 246, 0.8)' }}
+                style={{ color: 'rgba(239, 68, 68, 0.8)' }}
               >
                 Our Vision
               </h3>
