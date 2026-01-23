@@ -199,21 +199,21 @@ const AboutUsSection = () => {
 
         {/* Text content - alternating left/right */}
         <div
-          className={`absolute z-10 top-1/2 -translate-y-1/2 max-w-[40%] md:max-w-[35%] lg:max-w-[30%] backdrop-blur-sm rounded-lg p-4 md:p-6 lg:p-8 ${
+          className={`absolute z-10 top-1/2 -translate-y-1/2 max-w-[85%] sm:max-w-[60%] md:max-w-[40%] lg:max-w-[30%] backdrop-blur-sm rounded-lg p-3 sm:p-4 md:p-6 lg:p-8 ${
             isLeftAligned 
-              ? 'left-[4%] md:left-[6%] lg:left-[8%]' 
-              : 'right-[4%] md:right-[6%] lg:right-[8%]'
+              ? 'left-[4%] sm:left-[5%] md:left-[6%] lg:left-[8%]' 
+              : 'right-[4%] sm:right-[5%] md:right-[6%] lg:right-[8%]'
           }`}
           style={{
             opacity: textOpacity > 0.05 ? 1 : 0,
             transform: `translateY(calc(-50% + ${(1 - textOpacity) * 20}px))`,
             transition: 'opacity 0.15s ease-out, transform 0.15s ease-out',
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
           }}
         >
           {/* Subtitle */}
           <p
-            className={`text-[8px] md:text-[10px] tracking-[0.4em] uppercase mb-3 ${
+            className={`text-[6px] sm:text-[8px] md:text-[10px] tracking-[0.3em] sm:tracking-[0.4em] uppercase mb-2 sm:mb-3 ${
               isLeftAligned ? 'text-left' : 'text-right'
             }`}
             style={{ 
@@ -227,7 +227,7 @@ const AboutUsSection = () => {
           
           {/* Main text with word-by-word animation */}
           <p
-            className={`text-xs sm:text-sm md:text-base lg:text-lg font-light leading-[1.6] tracking-tight ${
+            className={`text-[10px] sm:text-xs md:text-sm lg:text-base font-light leading-[1.5] sm:leading-[1.6] tracking-tight ${
               isLeftAligned ? 'text-left' : 'text-right'
             }`}
             style={{
@@ -237,7 +237,7 @@ const AboutUsSection = () => {
             {words.map((word, index) => (
               <span
                 key={`${currentSlide.id}-${index}`}
-                className="inline-block mr-[0.3em] transition-all duration-200 ease-out"
+                className="inline-block mr-[0.25em] sm:mr-[0.3em] transition-all duration-200 ease-out"
                 style={{
                   opacity: index < visibleWordCount ? 1 : 0,
                   transform: index < visibleWordCount ? 'translateY(0)' : 'translateY(6px)',
@@ -250,7 +250,7 @@ const AboutUsSection = () => {
           </p>
 
           {/* Slide indicator dots */}
-          <div className={`flex gap-2 mt-4 md:mt-6 ${isLeftAligned ? 'justify-start' : 'justify-end'}`}>
+          <div className={`flex gap-1.5 sm:gap-2 mt-3 sm:mt-4 md:mt-6 ${isLeftAligned ? 'justify-start' : 'justify-end'}`}>
             {slides.map((slide, index) => (
               <div
                 key={slide.id}
