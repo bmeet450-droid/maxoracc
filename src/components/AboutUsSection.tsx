@@ -1,5 +1,6 @@
 import useScrollProgress from "@/hooks/useScrollProgress";
 import aboutPhoto from "@/assets/about-photo.jpg";
+import FilmGrain from "./FilmGrain";
 
 const AboutUsSection = () => {
   const { ref: sectionRef, progress } = useScrollProgress({ start: 0.1, end: 0.6 });
@@ -87,6 +88,8 @@ const AboutUsSection = () => {
                 background: `linear-gradient(to bottom, rgba(0,0,0,${0.6 * progress}) 0%, rgba(0,0,0,${0.2 * progress}) 40%, rgba(0,0,0,${0.1 * progress}) 100%)`,
               }}
             />
+            {/* Film grain overlay */}
+            <FilmGrain />
           </div>
         </div>
       </div>
