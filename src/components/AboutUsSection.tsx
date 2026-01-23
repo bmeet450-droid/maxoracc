@@ -24,24 +24,24 @@ const AboutUsSection = () => {
     >
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
-        {/* Text content - positioned above photo, left aligned */}
+        {/* Text content - positioned over left side of photo */}
         <div
-          className="absolute top-[15%] left-0 z-10 w-full px-6 md:px-12 lg:px-20"
+          className="absolute z-10 left-[5%] md:left-[8%] lg:left-[10%] top-1/2 -translate-y-1/2 max-w-[35%] md:max-w-[30%]"
           style={{
             opacity: textOpacity,
-            transform: `translateY(${textTranslate}px)`,
+            transform: `translateY(calc(-50% + ${textTranslate}px))`,
             transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
           }}
         >
           <p
             className="text-[10px] md:text-xs tracking-[0.4em] uppercase mb-4"
-            style={{ color: 'rgba(255, 255, 255, 0.5)' }}
+            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
           >
             About
           </p>
           
           <h2
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light leading-[1.2] tracking-tight max-w-3xl"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light leading-[1.2] tracking-tight"
             style={{
               color: 'rgba(255, 255, 255, 0.95)',
               fontFamily: 'Helvetica, Arial, sans-serif',
@@ -51,11 +51,10 @@ const AboutUsSection = () => {
           </h2>
           
           <p
-            className="mt-6 md:mt-8 text-sm md:text-base lg:text-lg leading-relaxed max-w-xl"
-            style={{ color: 'rgba(255, 255, 255, 0.6)' }}
+            className="mt-4 md:mt-6 text-xs md:text-sm lg:text-base leading-relaxed"
+            style={{ color: 'rgba(255, 255, 255, 0.5)' }}
           >
-            Our work lives at the intersection of strategy, aesthetics, and technology — 
-            creating experiences that resonate and endure.
+            Our work lives at the intersection of strategy, aesthetics, and technology.
           </p>
         </div>
 
