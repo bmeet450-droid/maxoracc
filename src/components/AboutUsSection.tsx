@@ -1,35 +1,108 @@
 import { useMemo } from "react";
 import useScrollProgress from "@/hooks/useScrollProgress";
-import aboutPhoto from "@/assets/about-photo.jpg";
 import FilmGrain from "./FilmGrain";
 
-const aboutText = "I'm Meet Bhatt, although some may know me as Max. I'm 20, and I spend my days chasing something elusive: the moment when an image, a frame, or a piece of motion becomes more than just content.";
+// Import all slide images
+import aboutSlide1 from "@/assets/about-slide-1.jpg";
+import aboutSlide2 from "@/assets/about-slide-2.jpg";
+import aboutSlide3 from "@/assets/about-slide-3.jpg";
+import aboutPhoto from "@/assets/about-photo.jpg";
+
+// Define slides with text, position, and image
+const slides = [
+  {
+    id: 1,
+    text: "I'm Meet Bhatt, although some may know me as Max. I'm 20, and I spend my days chasing something elusive: the moment when an image, a frame, or a piece of motion becomes more than just content.",
+    position: "left" as const,
+    image: aboutPhoto,
+    subtitle: "About",
+  },
+  {
+    id: 2,
+    text: "Every frame tells a story. Every shadow holds a secret. I find beauty in the spaces between moments, where light meets darkness and stillness meets motion.",
+    position: "right" as const,
+    image: aboutSlide1,
+    subtitle: "Vision",
+  },
+  {
+    id: 3,
+    text: "Architecture speaks in whispers. In the curves of a dome, the fall of light through ancient windows, I discover conversations that have lasted centuries.",
+    position: "left" as const,
+    image: aboutSlide2,
+    subtitle: "Perspective",
+  },
+  {
+    id: 4,
+    text: "The city breathes. Between the chaos and the calm, I capture fleeting moments of humanity—stories written in footsteps, shadows, and golden light.",
+    position: "right" as const,
+    image: aboutSlide3,
+    subtitle: "Journey",
+  },
+];
 
 const AboutUsSection = () => {
-  const { ref: sectionRef, progress } = useScrollProgress({ start: 0.1, end: 0.6 });
+  const { ref: sectionRef, progress } = useScrollProgress({ start: 0.05, end: 0.95 });
 
-  // Photo starts at 60% size and scales to fill viewport
-  const photoScale = 0.6 + progress * 0.4;
-  
-  // Keep rounded corners throughout
-  const borderRadius = 16;
-  
-  // Text fades in during the animation
-  const textOpacity = Math.max(0, (progress - 0.3) / 0.7);
-  const textTranslate = (1 - textOpacity) * 30;
+  // Calculate which slide we're on and the progress within that slide
+  const totalSlides = slides.length;
+  const slideProgress = progress * totalSlides;
+  const currentSlideIndex = Math.min(Math.floor(slideProgress), totalSlides - 1);
+  const withinSlideProgress = slideProgress - currentSlideIndex;
 
-  // Split text into words for typing animation
-  const words = useMemo(() => aboutText.split(' '), []);
+  // Get current and next slide
+  const currentSlide = slides[currentSlideIndex];
+  const nextSlide = slides[Math.min(currentSlideIndex + 1, totalSlides - 1)];
+
+  // Calculate text animation phases (0-0.4: fade in, 0.4-0.6: visible, 0.6-1: fade out)
+  const getTextOpacity = (slideProgress: number) => {
+    if (slideProgress < 0.15) {
+      return slideProgress / 0.15; // Fade in
+    } else if (slideProgress < 0.7) {
+      return 1; // Fully visible
+    } else {
+      return 1 - (slideProgress - 0.7) / 0.3; // Fade out
+    }
+  };
+
+  const textOpacity = getTextOpacity(withinSlideProgress);
   
-  // Calculate how many words should be visible based on text opacity
-  const visibleWordCount = Math.floor(textOpacity * words.length * 1.2);
+  // Calculate visible words for typing effect
+  const getVisibleWordCount = (words: string[], slideProgress: number) => {
+    if (slideProgress < 0.15) {
+      // Typing in
+      return Math.floor((slideProgress / 0.15) * words.length * 1.1);
+    } else if (slideProgress < 0.7) {
+      // All visible
+      return words.length;
+    } else {
+      // Typing out (reverse)
+      const fadeOutProgress = (slideProgress - 0.7) / 0.3;
+      return Math.max(0, Math.floor((1 - fadeOutProgress) * words.length));
+    }
+  };
+
+  // Split current text into words
+  const words = useMemo(() => currentSlide.text.split(' '), [currentSlide.text]);
+  const visibleWordCount = getVisibleWordCount(words, withinSlideProgress);
+
+  // Image crossfade
+  const imageFadeProgress = withinSlideProgress > 0.75 ? (withinSlideProgress - 0.75) / 0.25 : 0;
+
+  // Photo scale (subtle zoom effect)
+  const photoScale = 1 + withinSlideProgress * 0.05;
+
+  // Text position classes
+  const isLeftAligned = currentSlide.position === "left";
 
   return (
     <section
       id="about-us"
       ref={sectionRef}
-      className="relative min-h-[200vh]"
-      style={{ background: '#000000' }}
+      className="relative"
+      style={{ 
+        background: '#000000',
+        height: `${totalSlides * 150}vh`,
+      }}
     >
       {/* Top fade gradient */}
       <div 
@@ -49,40 +122,116 @@ const AboutUsSection = () => {
 
       {/* Sticky container for the reveal effect */}
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
-        {/* Text content - positioned over left side of photo */}
+        {/* Background images container */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Current slide image */}
+          <div
+            className="absolute inset-0 w-full h-full"
+            style={{
+              opacity: 1 - imageFadeProgress,
+              transform: `scale(${photoScale})`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          >
+            <img
+              src={currentSlide.image}
+              alt={currentSlide.subtitle}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          
+          {/* Next slide image (for crossfade) */}
+          {currentSlideIndex < totalSlides - 1 && (
+            <div
+              className="absolute inset-0 w-full h-full"
+              style={{
+                opacity: imageFadeProgress,
+                transform: 'scale(1)',
+              }}
+            >
+              <img
+                src={nextSlide.image}
+                alt={nextSlide.subtitle}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Gradient overlay for text legibility */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: isLeftAligned 
+                ? 'linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)'
+                : 'linear-gradient(to left, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
+            }}
+          />
+          
+          {/* Vignette overlay */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%)',
+            }}
+          />
+          
+          {/* Warm color grade */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255, 183, 77, 0.1) 0%, rgba(255, 138, 101, 0.06) 50%, rgba(181, 101, 167, 0.04) 100%)',
+              mixBlendMode: 'overlay',
+            }}
+          />
+          
+          {/* Film grain overlay */}
+          <FilmGrain />
+        </div>
+
+        {/* Text content - alternating left/right */}
         <div
-          className="absolute z-10 left-[2%] md:left-[4%] lg:left-[6%] top-1/2 -translate-y-1/2 max-w-[30%] md:max-w-[25%] backdrop-blur-sm rounded-lg p-4 md:p-6"
+          className={`absolute z-10 top-1/2 -translate-y-1/2 max-w-[40%] md:max-w-[35%] lg:max-w-[30%] backdrop-blur-sm rounded-lg p-4 md:p-6 lg:p-8 ${
+            isLeftAligned 
+              ? 'left-[4%] md:left-[6%] lg:left-[8%]' 
+              : 'right-[4%] md:right-[6%] lg:right-[8%]'
+          }`}
           style={{
-            opacity: textOpacity > 0 ? 1 : 0,
-            transform: `translateY(calc(-50% + ${textTranslate}px))`,
-            transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-            backgroundColor: 'rgba(0, 0, 0, 0.15)',
+            opacity: textOpacity > 0.05 ? 1 : 0,
+            transform: `translateY(calc(-50% + ${(1 - textOpacity) * 20}px))`,
+            transition: 'opacity 0.15s ease-out, transform 0.15s ease-out',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
           }}
         >
+          {/* Subtitle */}
           <p
-            className="text-[6px] md:text-[8px] tracking-[0.4em] uppercase mb-2"
+            className={`text-[8px] md:text-[10px] tracking-[0.4em] uppercase mb-3 ${
+              isLeftAligned ? 'text-left' : 'text-right'
+            }`}
             style={{ 
               color: 'rgba(255, 255, 255, 0.6)',
               opacity: textOpacity,
-              transition: 'opacity 0.3s ease-out',
+              transition: 'opacity 0.2s ease-out',
             }}
           >
-            About
+            {currentSlide.subtitle}
           </p>
           
+          {/* Main text with word-by-word animation */}
           <p
-            className="text-[10px] sm:text-xs md:text-sm lg:text-base font-light leading-[1.5] tracking-tight"
+            className={`text-xs sm:text-sm md:text-base lg:text-lg font-light leading-[1.6] tracking-tight ${
+              isLeftAligned ? 'text-left' : 'text-right'
+            }`}
             style={{
               fontFamily: 'Helvetica, Arial, sans-serif',
             }}
           >
             {words.map((word, index) => (
               <span
-                key={index}
-                className="inline-block mr-[0.25em] transition-all duration-300 ease-out"
+                key={`${currentSlide.id}-${index}`}
+                className="inline-block mr-[0.3em] transition-all duration-200 ease-out"
                 style={{
                   opacity: index < visibleWordCount ? 1 : 0,
-                  transform: index < visibleWordCount ? 'translateY(0)' : 'translateY(8px)',
+                  transform: index < visibleWordCount ? 'translateY(0)' : 'translateY(6px)',
                   color: 'rgba(255, 255, 255, 0.95)',
                 }}
               >
@@ -90,60 +239,24 @@ const AboutUsSection = () => {
               </span>
             ))}
           </p>
-        </div>
 
-        {/* Photo container - centered, fills screen */}
-        <div
-          className="flex items-center justify-center w-full"
-          style={{
-            transform: `scale(${photoScale})`,
-            transition: 'transform 0.1s ease-out',
-          }}
-        >
-          <div
-            className="relative overflow-hidden"
-            style={{
-              width: '100vw',
-              aspectRatio: '2.33 / 1',
-              borderRadius: `${borderRadius}px`,
-              transition: 'border-radius 0.1s ease-out',
-            }}
-          >
-            <img
-              src={aboutPhoto}
-              alt="About"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* Gradient overlay for text legibility */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `linear-gradient(to bottom, rgba(0,0,0,${0.6 * progress}) 0%, rgba(0,0,0,${0.2 * progress}) 40%, rgba(0,0,0,${0.1 * progress}) 100%)`,
-              }}
-            />
-            {/* Vignette overlay */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%)',
-              }}
-            />
-            {/* Warm color grade */}
-            <div
-              className="absolute inset-0"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 183, 77, 0.12) 0%, rgba(255, 138, 101, 0.08) 50%, rgba(181, 101, 167, 0.06) 100%)',
-                mixBlendMode: 'overlay',
-              }}
-            />
-            {/* Film grain overlay */}
-            <FilmGrain />
+          {/* Slide indicator dots */}
+          <div className={`flex gap-2 mt-4 md:mt-6 ${isLeftAligned ? 'justify-start' : 'justify-end'}`}>
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  backgroundColor: index === currentSlideIndex 
+                    ? 'rgba(255, 255, 255, 0.9)' 
+                    : 'rgba(255, 255, 255, 0.3)',
+                  transform: index === currentSlideIndex ? 'scale(1.2)' : 'scale(1)',
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
-
-      {/* Scroll space below */}
-      <div className="h-[50vh]" />
     </section>
   );
 };
