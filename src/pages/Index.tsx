@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen" style={{ background: '#0a0a0a' }}>
+    <div className="min-h-screen" style={{ background: '#000000' }}>
       <CustomCursor />
       <MaxoraHero />
       <PortfolioSection />

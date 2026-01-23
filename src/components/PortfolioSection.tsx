@@ -217,7 +217,7 @@ const PortfolioSection = () => {
       id="work" 
       ref={sectionRef}
       className="py-32 md:py-48 px-6 md:px-12 lg:px-20" 
-      style={{ background: '#0a0a0a' }}
+      style={{ background: '#000000' }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Section Header */}
