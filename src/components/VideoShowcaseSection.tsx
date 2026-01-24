@@ -51,16 +51,34 @@ const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = 
   );
 };
 
+// Generate dark poster placeholder
+const generatePoster = () => `data:image/svg+xml,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+    <rect width="100" height="100" fill="#0a0a0a"/>
+  </svg>
+`)}`;
+
 const VideoShowcaseSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const prevVideoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [prevVideoIndex, setPrevVideoIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [videoProgress, setVideoProgress] = useState(0);
+
+  const posterUrl = useMemo(() => generatePoster(), []);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const switchVideo = (newIndex: number) => {
     if (newIndex === currentVideoIndex || isTransitioning) return;
@@ -88,22 +106,33 @@ const VideoShowcaseSection = () => {
     }
   };
 
+  // Load and play video when index changes (desktop only)
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && isVisible && !isMobile) {
       videoRef.current.load();
-      videoRef.current.play();
+      videoRef.current.play().catch(() => {
+        // Autoplay blocked - graceful fallback
+      });
     }
-  }, [currentVideoIndex]);
+  }, [currentVideoIndex, isVisible, isMobile]);
 
+  // Intersection Observer for section visibility - 50% threshold
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-        if (entry.isIntersecting && videoRef.current) {
-          videoRef.current.play();
+        const nowVisible = entry.isIntersecting;
+        setIsVisible(nowVisible);
+        
+        // Play/pause based on visibility (desktop only)
+        if (videoRef.current && !isMobile) {
+          if (nowVisible) {
+            videoRef.current.play().catch(() => {});
+          } else {
+            videoRef.current.pause();
+          }
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.5 }
     );
 
     if (sectionRef.current) {
@@ -111,8 +140,9 @@ const VideoShowcaseSection = () => {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
+  // Scroll progress tracking
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
@@ -140,8 +170,8 @@ const VideoShowcaseSection = () => {
       className="relative w-full h-screen overflow-hidden"
       style={{ background: "#000" }}
     >
-      {/* Previous Video (for crossfade) */}
-      {prevVideoIndex !== null && (
+      {/* Previous Video (for crossfade) - Desktop only */}
+      {prevVideoIndex !== null && !isMobile && (
         <div
           className="absolute inset-0 w-full h-full"
           style={{
@@ -157,6 +187,8 @@ const VideoShowcaseSection = () => {
             className="w-full h-full object-cover"
             muted
             playsInline
+            preload="none"
+            poster={posterUrl}
             style={{
               filter: "brightness(0.7) contrast(1.1)",
             }}
@@ -169,26 +201,37 @@ const VideoShowcaseSection = () => {
         className="absolute inset-0 w-full h-full"
         style={{
           transform: `translateY(${parallaxY}px) scale(${scale})`,
-          opacity: isTransitioning ? 1 : 1,
+          opacity: 1,
           transition: "opacity 0.8s ease-in-out",
           zIndex: 2,
         }}
       >
-        <video
-          ref={videoRef}
-          key={currentVideoIndex}
-          src={wideVideos[currentVideoIndex]}
-          className="w-full h-full object-cover"
-          autoPlay
-          muted
-          playsInline
-          onEnded={handleVideoEnd}
-          onTimeUpdate={handleTimeUpdate}
-          style={{
-            filter: "brightness(0.7) contrast(1.1)",
-            opacity: isTransitioning ? 1 : 1,
-          }}
-        />
+        {isMobile ? (
+          // Mobile: Show poster only, no video playback
+          <div 
+            className="w-full h-full"
+            style={{ 
+              background: '#0a0a0a',
+            }}
+          />
+        ) : (
+          <video
+            ref={videoRef}
+            key={currentVideoIndex}
+            src={wideVideos[currentVideoIndex]}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+            loop={false}
+            preload="none"
+            poster={posterUrl}
+            onEnded={handleVideoEnd}
+            onTimeUpdate={handleTimeUpdate}
+            style={{
+              filter: "brightness(0.7) contrast(1.1)",
+            }}
+          />
+        )}
       </div>
 
       {/* Gradient Overlays */}
@@ -319,66 +362,70 @@ const VideoShowcaseSection = () => {
           </div>
         </div>
 
-        {/* Video Progress Bar */}
-        <div
-          className="absolute bottom-32 md:bottom-36 left-1/2 -translate-x-1/2 w-48 md:w-64"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transition: "opacity 0.5s ease",
-          }}
-        >
+        {/* Video Progress Bar - Desktop only */}
+        {!isMobile && (
           <div
-            className="h-[1px] w-full rounded-full overflow-hidden"
-            style={{ background: "rgba(255,255,255,0.15)" }}
+            className="absolute bottom-32 md:bottom-36 left-1/2 -translate-x-1/2 w-48 md:w-64"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transition: "opacity 0.5s ease",
+            }}
           >
             <div
-              className="h-full rounded-full"
-              style={{
-                width: `${videoProgress * 100}%`,
-                background: "rgba(255,255,255,0.6)",
-                transition: "width 0.1s linear",
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Navigation Dots */}
-        <div
-          className="absolute bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3"
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transition: "opacity 0.5s ease 0.2s",
-          }}
-        >
-          {wideVideos.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => switchVideo(index)}
-              className="group relative p-1"
-              aria-label={`Go to video ${index + 1}`}
+              className="h-[1px] w-full rounded-full overflow-hidden"
+              style={{ background: "rgba(255,255,255,0.15)" }}
             >
               <div
-                className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300"
+                className="h-full rounded-full"
                 style={{
-                  background: currentVideoIndex === index 
-                    ? "rgba(255,255,255,0.9)" 
-                    : "rgba(255,255,255,0.25)",
-                  transform: currentVideoIndex === index ? "scale(1.2)" : "scale(1)",
-                  boxShadow: currentVideoIndex === index 
-                    ? "0 0 10px rgba(255,255,255,0.4)" 
-                    : "none",
+                  width: `${videoProgress * 100}%`,
+                  background: "rgba(255,255,255,0.6)",
+                  transition: "width 0.1s linear",
                 }}
               />
-              <div
-                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                style={{
-                  background: "rgba(255,255,255,0.1)",
-                  transform: "scale(2)",
-                }}
-              />
-            </button>
-          ))}
-        </div>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Dots - Desktop only */}
+        {!isMobile && (
+          <div
+            className="absolute bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transition: "opacity 0.5s ease 0.2s",
+            }}
+          >
+            {wideVideos.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => switchVideo(index)}
+                className="group relative p-1"
+                aria-label={`Go to video ${index + 1}`}
+              >
+                <div
+                  className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300"
+                  style={{
+                    background: currentVideoIndex === index 
+                      ? "rgba(255,255,255,0.9)" 
+                      : "rgba(255,255,255,0.25)",
+                    transform: currentVideoIndex === index ? "scale(1.2)" : "scale(1)",
+                    boxShadow: currentVideoIndex === index 
+                      ? "0 0 10px rgba(255,255,255,0.4)" 
+                      : "none",
+                  }}
+                />
+                <div
+                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  style={{
+                    background: "rgba(255,255,255,0.1)",
+                    transform: "scale(2)",
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Bottom Stats/Details */}
         <div
