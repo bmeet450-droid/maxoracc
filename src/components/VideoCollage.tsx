@@ -1,15 +1,82 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, memo, useCallback } from "react";
 
-interface VideoCardProps {
+interface OptimizedVideoCardProps {
   video: string;
   className: string;
+  staggerDelay: number;
+  isHeroSection?: boolean;
 }
 
-const VideoCard = ({ video, className }: VideoCardProps) => {
+const OptimizedVideoCard = memo(({ video, className, staggerDelay, isHeroSection = false }: OptimizedVideoCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Intersection Observer - 50% visibility threshold
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // Play/pause based on visibility - with staggered delay
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || isMobile) return;
+
+    // On mobile: never autoplay, always show poster
+    if (isMobile) {
+      video.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    if (isVisible && !isPlaying) {
+      const timer = setTimeout(() => {
+        video.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
+          // Autoplay blocked - graceful fallback
+          setIsPlaying(false);
+        });
+      }, staggerDelay);
+      return () => clearTimeout(timer);
+    } else if (!isVisible && isPlaying) {
+      video.pause();
+      setIsPlaying(false);
+    }
+  }, [isVisible, isMobile, staggerDelay, isPlaying]);
+
+  // Generate a dark poster placeholder
+  const posterUrl = `data:image/svg+xml,${encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+      <rect width="100" height="100" fill="#0a0a0a"/>
+    </svg>
+  `)}`;
 
   return (
     <div
+      ref={containerRef}
       className={`${className} transition-all duration-300`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -21,17 +88,31 @@ const VideoCard = ({ video, className }: VideoCardProps) => {
         zIndex: isHovered ? 10 : 1,
       }}
     >
-      <video
-        src={video}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="w-full h-full object-cover"
-      />
+      {isMobile ? (
+        // Mobile: Show poster image only, no video
+        <div 
+          className="w-full h-full"
+          style={{ 
+            background: '#0a0a0a',
+          }}
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          src={video}
+          loop
+          muted
+          playsInline
+          preload="none"
+          poster={posterUrl}
+          className="w-full h-full object-cover"
+        />
+      )}
     </div>
   );
-};
+});
+
+OptimizedVideoCard.displayName = "OptimizedVideoCard";
 
 const VideoCollage = () => {
   const portraitVideos = [
@@ -62,6 +143,11 @@ const VideoCollage = () => {
   const allPortrait = [...portraitVideos, ...portraitVideos];
   const allWide = [...wideVideos, ...wideVideos];
 
+  // Calculate stagger delays - 50ms apart per video
+  const getStaggerDelay = (rowIndex: number, videoIndex: number) => {
+    return (rowIndex * 100) + (videoIndex * 50);
+  };
+
   return (
     <div className="absolute inset-0 overflow-hidden z-0 flex flex-col justify-start pt-2 md:pt-4 gap-2 md:gap-3">
       {/* Row 1: 9:16 Portrait - scroll left */}
@@ -70,9 +156,10 @@ const VideoCollage = () => {
         style={{ width: 'max-content' }}
       >
         {allPortrait.map((video, index) => (
-          <VideoCard
-            key={index}
+          <OptimizedVideoCard
+            key={`row1-${index}`}
             video={video}
+            staggerDelay={getStaggerDelay(0, index)}
             className="relative flex-shrink-0 w-[80px] h-[142px] md:w-[160px] md:h-[284px] rounded-xl md:rounded-2xl overflow-hidden"
           />
         ))}
@@ -84,9 +171,10 @@ const VideoCollage = () => {
         style={{ width: 'max-content' }}
       >
         {allWide.map((video, index) => (
-          <VideoCard
-            key={index}
+          <OptimizedVideoCard
+            key={`row2-${index}`}
             video={video}
+            staggerDelay={getStaggerDelay(1, index)}
             className="relative flex-shrink-0 w-[180px] h-[77px] md:w-[350px] md:h-[150px] rounded-xl md:rounded-2xl overflow-hidden"
           />
         ))}
@@ -98,9 +186,10 @@ const VideoCollage = () => {
         style={{ width: 'max-content' }}
       >
         {[...allPortrait].reverse().map((video, index) => (
-          <VideoCard
-            key={index}
+          <OptimizedVideoCard
+            key={`row3-${index}`}
             video={video}
+            staggerDelay={getStaggerDelay(2, index)}
             className="relative flex-shrink-0 w-[70px] h-[124px] md:w-[150px] md:h-[267px] rounded-xl md:rounded-2xl overflow-hidden"
           />
         ))}
@@ -112,9 +201,10 @@ const VideoCollage = () => {
         style={{ width: 'max-content' }}
       >
         {[...allWide].reverse().map((video, index) => (
-          <VideoCard
-            key={index}
+          <OptimizedVideoCard
+            key={`row4-${index}`}
             video={video}
+            staggerDelay={getStaggerDelay(3, index)}
             className="relative flex-shrink-0 w-[160px] h-[69px] md:w-[330px] md:h-[142px] rounded-xl md:rounded-2xl overflow-hidden"
           />
         ))}
@@ -126,9 +216,10 @@ const VideoCollage = () => {
         style={{ width: 'max-content' }}
       >
         {allPortrait.map((video, index) => (
-          <VideoCard
-            key={index}
+          <OptimizedVideoCard
+            key={`row5-${index}`}
             video={video}
+            staggerDelay={getStaggerDelay(4, index)}
             className="relative flex-shrink-0 w-[65px] h-[116px] md:w-[140px] md:h-[249px] rounded-xl md:rounded-2xl overflow-hidden"
           />
         ))}
