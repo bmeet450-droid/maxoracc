@@ -14,22 +14,15 @@ const HeroParticles = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
-    // Generate particles with concentration at top and center
-    const count = 25;
+    // Generate 8-12 particles for subtle effect
+    const count = 10;
     const newParticles: Particle[] = [];
     
     for (let i = 0; i < count; i++) {
-      // Bias towards center horizontally (around MAXORA text)
-      const xBias = 50 + (Math.random() - 0.5) * 70; // 15-85% range, centered
-      // Bias towards upper half (where MAXORA text is)
-      const yBias = Math.random() < 0.7 
-        ? Math.random() * 50 + 10 // 70% in top half (10-60%)
-        : Math.random() * 40 + 50; // 30% in bottom half (50-90%)
-      
       newParticles.push({
         id: i,
-        x: xBias,
-        y: yBias,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
         size: Math.random() * 4 + 2, // 2-6px
         duration: Math.random() * 20 + 15, // 15-35s
         delay: Math.random() * -20, // stagger start
