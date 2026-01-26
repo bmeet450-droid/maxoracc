@@ -5,73 +5,31 @@ import Spline from '@splinetool/react-spline';
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
     const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', checkMobile);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   const navLinks = ['Work', 'About', 'Services', 'Contact'];
 
   return (
     <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{ background: '#000000' }}>
-      {/* Spline 3D Scene - Desktop only */}
-      {!isMobile ? (
-        <div className="absolute inset-0 z-0">
-          {/* Loading state */}
-          {!splineLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-12 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
-            </div>
-          )}
-          <Spline
-            scene="https://prod.spline.design/CO6AbJxqSVzTKFUS/scene.splinecode"
-            style={{ width: '100%', height: '100%' }}
-            onLoad={() => setSplineLoaded(true)}
-          />
-        </div>
-      ) : (
-        /* Mobile/Tablet fallback - lightweight gradient background */
-        <div className="absolute inset-0 z-0">
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'radial-gradient(ellipse at 50% 30%, rgba(40, 40, 50, 0.8) 0%, rgba(0, 0, 0, 1) 70%)',
-            }}
-          />
-          {/* Subtle animated orbs for visual interest */}
-          <div 
-            className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-20 blur-3xl"
-            style={{
-              background: 'radial-gradient(circle, rgba(100, 100, 120, 0.5) 0%, transparent 70%)',
-              animation: 'pulse 4s ease-in-out infinite',
-            }}
-          />
-          <div 
-            className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full opacity-15 blur-3xl"
-            style={{
-              background: 'radial-gradient(circle, rgba(80, 80, 100, 0.5) 0%, transparent 70%)',
-              animation: 'pulse 5s ease-in-out infinite 1s',
-            }}
-          />
-          {/* Noise texture overlay */}
-          <div 
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
-      )}
+      {/* Spline 3D Scene - All devices */}
+      <div className="absolute inset-0 z-0">
+        {/* Loading state */}
+        {!splineLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
+          </div>
+        )}
+        <Spline
+          scene="https://prod.spline.design/CO6AbJxqSVzTKFUS/scene.splinecode"
+          style={{ width: '100%', height: '100%' }}
+          onLoad={() => setSplineLoaded(true)}
+        />
+      </div>
 
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" style={{
