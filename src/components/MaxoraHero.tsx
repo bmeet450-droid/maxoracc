@@ -66,16 +66,17 @@ const MaxoraHero = () => {
 
       {/* Main Content - z-[5] to place behind Spline scene (z-20) */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-[5] -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground">
-        {/* Main MAXORA text - behind the Spline scene */}
+        {/* Main MAXORA text - behind the Spline scene with glow */}
         <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
         fontFamily: 'Helvetica, Arial, sans-serif',
         opacity: isLoaded ? 1 : 0,
         transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
-        transitionDelay: '200ms'
+        transitionDelay: '200ms',
+        textShadow: '0 0 60px rgba(255,255,255,0.8), 0 0 120px rgba(255,255,255,0.5), 0 0 180px rgba(255,255,255,0.3)',
       }}>
-          {/* Main text */}
+          {/* Main text with glow */}
           <span 
-            className="relative px-2 md:px-[21px] text-justify text-white/90"
+            className="relative px-2 md:px-[21px] text-justify text-white"
           >
             MAXORA
           </span>
