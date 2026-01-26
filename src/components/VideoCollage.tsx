@@ -10,14 +10,6 @@ const VideoCollage = () => {
           style={{ width: '100%', height: '100%' }}
         />
       </div>
-      
-      {/* Vignette effect - reduced opacity for brighter background */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 85%, rgba(0,0,0,0.5) 100%)'
-        }}
-      />
     </div>
   );
 };
