@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import PremiumCTA from "./PremiumCTA";
 import VideoCollage from "./VideoCollage";
 
 const MaxoraHero = () => {
@@ -81,30 +80,19 @@ const MaxoraHero = () => {
         </h1>
       </div>
 
-      {/* Main Content - Above Spline */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground pointer-events-none">
-        {/* Tagline */}
-        <p className="mt-32 md:mt-40 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4 pointer-events-auto" style={{
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-          transitionDelay: '400ms'
-        }}>Creative Minds Will Rule the Future</p>
+      {/* Bottom gradient to hide Spline watermark */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-32 z-10 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to top, #000000 0%, #000000 30%, transparent 100%)'
+        }}
+      />
 
-        {/* CTA Button */}
-        <div className="mt-6 md:mt-10 transition-all duration-700 pointer-events-auto" style={{
-          opacity: isLoaded ? 1 : 0,
-          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-          transitionDelay: '600ms'
-        }}>
-          <PremiumCTA text="Get Started" />
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700" style={{
-      opacity: isLoaded ? 0.5 : 0,
-      transitionDelay: '1000ms'
-    }}>
+      {/* Scroll indicator - on top of gradient */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700 z-20" style={{
+        opacity: isLoaded ? 0.5 : 0,
+        transitionDelay: '1000ms'
+      }}>
         <span className="text-white/40 text-xs tracking-widest uppercase">Scroll</span>
         <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
       </div>
