@@ -207,11 +207,13 @@ const VideoShowcaseSection = () => {
         }}
       >
         {isMobile ? (
-          // Mobile: Show first video frame as static background
+          // Mobile: Autoplay video background
           <video
             src={wideVideos[0]}
             className="w-full h-full object-cover"
+            autoPlay
             muted
+            loop
             playsInline
             preload="metadata"
             poster={posterUrl}
