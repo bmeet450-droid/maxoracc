@@ -207,11 +207,16 @@ const VideoShowcaseSection = () => {
         }}
       >
         {isMobile ? (
-          // Mobile: Show poster only, no video playback
-          <div 
-            className="w-full h-full"
-            style={{ 
-              background: '#0a0a0a',
+          // Mobile: Show first video frame as static background
+          <video
+            src={wideVideos[0]}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+            preload="metadata"
+            poster={posterUrl}
+            style={{
+              filter: "brightness(0.7) contrast(1.1)",
             }}
           />
         ) : (
@@ -452,28 +457,6 @@ const VideoShowcaseSection = () => {
               </span>
             </div>
 
-            {/* Play Indicator - Centered */}
-            <div className="flex flex-col items-center gap-3 mx-auto md:mx-0">
-              <div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full border flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300"
-                style={{ borderColor: "rgba(255,255,255,0.25)" }}
-              >
-                <div
-                  className="w-0 h-0 ml-0.5"
-                  style={{
-                    borderLeft: "8px solid rgba(255,255,255,0.8)",
-                    borderTop: "5px solid transparent",
-                    borderBottom: "5px solid transparent",
-                  }}
-                />
-              </div>
-              <span
-                className="text-[10px] tracking-[0.2em] uppercase font-extralight"
-                style={{ color: "rgba(255,255,255,0.5)" }}
-              >
-                Watch Reel
-              </span>
-            </div>
 
             <div className="hidden md:block text-right">
               <span
