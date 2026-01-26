@@ -4,7 +4,8 @@ interface TimelinePoint {
   id: number;
   offset: number; // percentage from top (0-100)
   side: "left" | "right";
-  lineLength: number; // px
+  lineLength: number; // px for desktop
+  lineLengthMobile: number; // px for mobile
   content?: React.ReactNode;
 }
 
@@ -18,17 +19,28 @@ const youtubeVideos = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 8, side: "left", lineLength: 80 },
-  { id: 2, offset: 25, side: "right", lineLength: 120 },
-  { id: 3, offset: 42, side: "left", lineLength: 100 },
-  { id: 4, offset: 58, side: "right", lineLength: 90 },
-  { id: 5, offset: 75, side: "left", lineLength: 110 },
-  { id: 6, offset: 92, side: "right", lineLength: 85 },
+  { id: 1, offset: 8, side: "left", lineLength: 80, lineLengthMobile: 20 },
+  { id: 2, offset: 25, side: "right", lineLength: 120, lineLengthMobile: 20 },
+  { id: 3, offset: 42, side: "left", lineLength: 100, lineLengthMobile: 20 },
+  { id: 4, offset: 58, side: "right", lineLength: 90, lineLengthMobile: 20 },
+  { id: 5, offset: 75, side: "left", lineLength: 110, lineLengthMobile: 20 },
+  { id: 6, offset: 92, side: "right", lineLength: 85, lineLengthMobile: 20 },
 ];
 
 const ScrollTimeline = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,11 +71,11 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[300vh] flex justify-center"
+      className="relative w-full min-h-[300vh] md:min-h-[300vh]"
       style={{ background: '#000000' }}
     >
-      {/* Central vertical line */}
-      <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px]">
+      {/* Central vertical line - positioned left on mobile, center on desktop */}
+      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px]">
         {/* Base gray line */}
         <div className="absolute inset-0 bg-neutral-700" />
         
@@ -82,21 +94,23 @@ const ScrollTimeline = () => {
       {timelinePoints.map((point, index) => {
         const pointProgress = point.offset / 100;
         const isActive = scrollProgress >= pointProgress;
-        
+        const lineLength = isMobile ? point.lineLengthMobile : point.lineLength;
+        // On mobile, all videos go to the right
+        const effectiveSide = isMobile ? 'right' : point.side;
 
         return (
           <div
             key={point.id}
-            className="absolute left-1/2 -translate-x-1/2 flex items-center"
+            className="absolute left-6 md:left-1/2 md:-translate-x-1/2 flex items-center"
             style={{ top: `${point.offset}%` }}
           >
             {/* Perpendicular line and circle - positioned based on side */}
             <div 
-              className={`flex items-center ${point.side === 'left' ? 'flex-row-reverse' : 'flex-row'}`}
+              className={`flex items-center ${effectiveSide === 'left' ? 'flex-row-reverse' : 'flex-row'}`}
             >
               {/* Circle at center */}
               <div 
-                className="w-4 h-4 rounded-full border-2 transition-all duration-300"
+                className="w-3 h-3 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300"
                 style={{
                   borderColor: isActive ? 'rgba(255,255,255,0.9)' : 'rgba(115,115,115,1)',
                   backgroundColor: isActive ? 'rgba(255,255,255,0.3)' : 'transparent',
@@ -108,7 +122,7 @@ const ScrollTimeline = () => {
               <div 
                 className="h-[2px] transition-all duration-300"
                 style={{
-                  width: `${point.lineLength}px`,
+                  width: `${lineLength}px`,
                   background: isActive 
                     ? 'linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.5))' 
                     : 'rgba(115,115,115,1)',
@@ -118,7 +132,7 @@ const ScrollTimeline = () => {
               
               {/* Small circle at end */}
               <div 
-                className="w-2 h-2 rounded-full transition-all duration-300"
+                className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300"
                 style={{
                   backgroundColor: isActive ? 'rgba(255,255,255,0.8)' : 'rgba(115,115,115,1)',
                   boxShadow: isActive ? '0 0 10px rgba(255,255,255,0.5)' : 'none',
@@ -128,17 +142,17 @@ const ScrollTimeline = () => {
 
             {/* Content slot - positioned to align circle with video center */}
             <div 
-              className={`absolute ${point.side === 'left' ? 'right-full' : 'left-full'}`}
+              className={`absolute ${effectiveSide === 'left' ? 'right-full' : 'left-full'}`}
               style={{ 
                 top: '50%',
                 transform: 'translateY(-50%)',
-                [point.side === 'right' ? 'marginLeft' : 'marginRight']: `${point.lineLength + 16}px`,
+                [effectiveSide === 'right' ? 'marginLeft' : 'marginRight']: `${lineLength + (isMobile ? 12 : 16)}px`,
               }}
             >
               {youtubeVideos[index] ? (
                 /* YouTube embed */
                 <div 
-                  className="w-64 md:w-80 aspect-video rounded-2xl overflow-hidden transition-all duration-500"
+                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     opacity: isActive ? 1 : 0.3,
                     boxShadow: isActive 
@@ -157,7 +171,7 @@ const ScrollTimeline = () => {
               ) : (
                 /* Empty placeholder slot */
                 <div 
-                  className="w-64 md:w-80 aspect-video rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
+                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
                     borderColor: isActive ? 'rgba(255,255,255,0.4)' : 'rgba(115,115,115,0.5)',
                     backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
@@ -165,7 +179,7 @@ const ScrollTimeline = () => {
                   }}
                 >
                   <span 
-                    className="text-sm transition-colors duration-300"
+                    className="text-xs md:text-sm transition-colors duration-300"
                     style={{ color: isActive ? 'rgba(255,255,255,0.5)' : 'rgba(115,115,115,0.5)' }}
                   >
                     Video Slot {point.id}
