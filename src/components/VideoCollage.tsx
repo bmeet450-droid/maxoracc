@@ -2,7 +2,7 @@ import Spline from '@splinetool/react-spline';
 
 const VideoCollage = () => {
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-[1]">
       {/* Spline 3D Background */}
       <div className="absolute inset-0">
         <Spline
