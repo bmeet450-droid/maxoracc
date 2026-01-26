@@ -1,6 +1,4 @@
-import React, { Suspense, useState } from 'react';
-
-const Spline = React.lazy(() => import('@splinetool/react-spline'));
+import { useState } from 'react';
 
 const VideoCollage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -17,19 +15,21 @@ const VideoCollage = () => {
         />
       )}
       
-      {/* Spline 3D Scene */}
-      <Suspense fallback={null}>
-        <Spline
-          scene="https://prod.spline.design/JU-Dc-H9DL9ubfgH/scene.splinecode"
-          onLoad={() => setIsLoaded(true)}
-          style={{
-            width: '100%',
-            height: '100%',
-            opacity: isLoaded ? 1 : 0,
-            transition: 'opacity 1s ease-in-out',
-          }}
-        />
-      </Suspense>
+      {/* Spline 3D Scene via iframe */}
+      <iframe
+        src="https://my.spline.design/JU-Dc-H9DL9ubfgH/"
+        frameBorder="0"
+        width="100%"
+        height="100%"
+        onLoad={() => setIsLoaded(true)}
+        className="absolute inset-0"
+        style={{
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 1s ease-in-out',
+        }}
+        title="3D Hero Scene"
+        allow="autoplay"
+      />
       
       {/* Vignette effect overlay */}
       <div 
