@@ -1,57 +1,36 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import Spline from '@splinetool/react-spline';
+import PremiumCTA from "./PremiumCTA";
+import VideoCollage from "./VideoCollage";
 
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [splineLoaded, setSplineLoaded] = useState(false);
   
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
   }, []);
-
   const navLinks = ['Work', 'About', 'Services', 'Contact'];
-
-  return (
-    <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{ background: '#000000' }}>
-      {/* Spline 3D Scene - All devices */}
-      <div className="absolute inset-0 z-0">
-        {/* Loading state */}
-        {!splineLoaded && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
-          </div>
-        )}
-        <Spline
-          scene="https://prod.spline.design/CO6AbJxqSVzTKFUS/scene.splinecode"
-          style={{ width: '100%', height: '100%' }}
-          onLoad={() => setSplineLoaded(true)}
-        />
-      </div>
-
+  return <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{
+    background: '#000000'
+  }}>
+      {/* Video Collage Background */}
+      <VideoCollage />
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" style={{
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'translateY(0)' : 'translateY(-20px)'
-      }}>
+      opacity: isLoaded ? 1 : 0,
+      transform: isLoaded ? 'translateY(0)' : 'translateY(-20px)'
+    }}>
         <div className="text-lg md:text-xl font-bold tracking-wider text-white/90 mx-0 md:mx-[29px] my-0 md:my-[9px]">
           MAXORA
         </div>
         
         {/* Desktop nav */}
         <div className="hidden md:flex gap-8">
-          {navLinks.map(link => (
-            <a 
-              key={link} 
-              href={`#${link.toLowerCase()}`} 
-              className="text-sm text-white/60 hover:text-white/90 transition-colors duration-300 tracking-wide" 
-              data-cursor-hover
-            >
+          {navLinks.map(link => <a key={link} href={`#${link.toLowerCase()}`} className="text-sm text-white/60 hover:text-white/90 transition-colors duration-300 tracking-wide" data-cursor-hover>
               {link}
-            </a>
-          ))}
+            </a>)}
         </div>
         
         {/* Mobile hamburger */}
@@ -85,16 +64,49 @@ const MaxoraHero = () => {
         </div>
       )}
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700 z-10" style={{
-        opacity: isLoaded ? 0.5 : 0,
-        transitionDelay: '1000ms'
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground" style={{ filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.4)) drop-shadow(0 0 80px rgba(0,0,0,0.3))' }}>
+        {/* Main MAXORA text */}
+        <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
+        fontFamily: 'Helvetica, Arial, sans-serif',
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
+        transitionDelay: '200ms'
       }}>
-        <span className="text-white/40 text-[10px] md:text-xs tracking-widest uppercase">Scroll</span>
-        <div className="w-px h-6 md:h-8 bg-gradient-to-b from-white/40 to-transparent" />
-      </div>
-    </section>
-  );
-};
+          {/* Main text with blend mode */}
+          <span 
+            className="relative px-2 md:px-[21px] text-justify text-white"
+            style={{ mixBlendMode: 'exclusion' }}
+          >
+            MAXORA
+          </span>
+        </h1>
 
+        {/* Tagline */}
+        <p className="mt-0 md:mt-1 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4" style={{
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+        transitionDelay: '400ms'
+      }}>Creative Minds Will Rule the Future</p>
+
+        {/* CTA Button */}
+        <div className="mt-6 md:mt-10 transition-all duration-700" style={{
+        opacity: isLoaded ? 1 : 0,
+        transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+        transitionDelay: '600ms'
+      }}>
+          <PremiumCTA text="Get Started" />
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700" style={{
+      opacity: isLoaded ? 0.5 : 0,
+      transitionDelay: '1000ms'
+    }}>
+        <span className="text-white/40 text-xs tracking-widest uppercase">Scroll</span>
+        <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
+      </div>
+    </section>;
+};
 export default MaxoraHero;
