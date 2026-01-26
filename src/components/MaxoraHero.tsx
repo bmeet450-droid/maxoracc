@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import PremiumCTA from "./PremiumCTA";
 import VideoCollage from "./VideoCollage";
+import HeroDistortion from "./HeroDistortion";
 
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,8 +16,11 @@ const MaxoraHero = () => {
   return <section id="hero-section" className="relative min-h-screen w-full overflow-hidden flex flex-col" style={{
     background: '#000000'
   }}>
-      {/* Video Collage Background */}
+      {/* Background */}
       <VideoCollage />
+      
+      {/* Distortion Effect Wrapper */}
+      <HeroDistortion>
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" style={{
       opacity: isLoaded ? 1 : 0,
@@ -107,6 +111,8 @@ const MaxoraHero = () => {
         <span className="text-white/40 text-xs tracking-widest uppercase">Scroll</span>
         <div className="w-px h-8 bg-gradient-to-b from-white/40 to-transparent" />
       </div>
+      
+      </HeroDistortion>
     </section>;
 };
 export default MaxoraHero;
