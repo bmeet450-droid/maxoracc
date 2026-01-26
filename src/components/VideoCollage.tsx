@@ -46,7 +46,6 @@ const VideoCollage = () => {
       >
         {/* Elegant loading animation */}
         <div className="flex flex-col items-center gap-6">
-          {/* Pulsing ring */}
           <div className="relative w-16 h-16">
             <div 
               className="absolute inset-0 rounded-full border border-white/20"
@@ -67,8 +66,6 @@ const VideoCollage = () => {
               }}
             />
           </div>
-          
-          {/* Loading text */}
           <span 
             className="text-white/40 text-xs tracking-[0.3em] uppercase"
             style={{
@@ -96,6 +93,22 @@ const VideoCollage = () => {
           }}
         />
       </div>
+      
+      {/* Top overlay to hide Spline navigation text */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0) 100%)'
+        }}
+      />
+      
+      {/* Bottom overlay to hide Spline elements */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0) 100%)'
+        }}
+      />
       
       {/* Vignette overlay */}
       <div 
