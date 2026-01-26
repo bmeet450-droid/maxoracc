@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import VideoCollage from "./VideoCollage";
+import HeroParticles from "./HeroParticles";
 
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,6 +17,9 @@ const MaxoraHero = () => {
   }}>
       {/* Video Collage Background */}
       <VideoCollage />
+      
+      {/* Dynamic Particles */}
+      <HeroParticles />
       {/* Navigation */}
       <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" style={{
       opacity: isLoaded ? 1 : 0,
