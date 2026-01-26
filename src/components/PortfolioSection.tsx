@@ -263,9 +263,9 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-20 lg:gap-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-12 lg:gap-24 overflow-hidden">
           {/* Left Column */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 flex flex-col gap-4 sm:gap-12 md:gap-24 lg:gap-40">
             <PortfolioCard
               project={projects[0]}
               isHovered={hoveredId === 1}
@@ -284,7 +284,7 @@ const PortfolioSection = () => {
               isVisible={sectionVisible}
               delay="0.3s"
               aspectRatio="4/5"
-              className="md:ml-12 lg:ml-20"
+              className="lg:ml-20"
             />
 
             <PortfolioCard
@@ -299,7 +299,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Right Column (offset down) */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 md:col-start-7 lg:col-start-8 flex flex-col gap-4 sm:gap-12 md:gap-36 lg:gap-40 md:mt-48 lg:mt-64">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 flex flex-col gap-4 sm:gap-12 md:gap-24 lg:gap-40 md:mt-32 lg:mt-64">
             <PortfolioCard
               project={projects[1]}
               isHovered={hoveredId === 2}
@@ -318,7 +318,7 @@ const PortfolioSection = () => {
               isVisible={sectionVisible}
               delay="0.4s"
               aspectRatio="4/5"
-              className="md:w-3/4 md:-ml-12 lg:-ml-20"
+              className="md:w-[85%] lg:w-3/4 lg:-ml-20"
             />
 
             <PortfolioCard
@@ -329,7 +329,7 @@ const PortfolioSection = () => {
               isVisible={sectionVisible}
               delay="0.6s"
               aspectRatio="16/9"
-              className="md:ml-8"
+              className="lg:ml-8"
             />
           </div>
         </div>
