@@ -8,6 +8,15 @@ interface TimelinePoint {
   content?: React.ReactNode;
 }
 
+const youtubeVideos = [
+  "mv-g2qryw5U",
+  "WaVWVXwI5ZE",
+  "u74W5pBo8z4",
+  "27f6MRjFOzg",
+  "1lJVOyULdrM",
+  null, // placeholder for slot 6
+];
+
 const timelinePoints: TimelinePoint[] = [
   { id: 1, offset: 8, side: "left", lineLength: 80 },
   { id: 2, offset: 25, side: "right", lineLength: 120 },
@@ -63,8 +72,8 @@ const ScrollTimeline = () => {
           className="absolute top-0 left-0 right-0 transition-none"
           style={{ 
             height: `${glowHeight}%`,
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.7))',
-            boxShadow: '0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.3)',
+            background: 'linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0.95))',
+            boxShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 100px rgba(255,255,255,0.5), 0 0 150px rgba(255,255,255,0.3)',
           }}
         />
       </div>
@@ -73,7 +82,7 @@ const ScrollTimeline = () => {
       {timelinePoints.map((point, index) => {
         const pointProgress = point.offset / 100;
         const isActive = scrollProgress >= pointProgress;
-        const isFirstPoint = index === 0;
+        
 
         return (
           <div
@@ -117,17 +126,17 @@ const ScrollTimeline = () => {
               />
             </div>
 
-            {/* Content slot */}
+            {/* Content slot - positioned to align circle with video center */}
             <div 
-              className={`absolute ${point.side === 'left' ? 'right-full mr-8' : 'left-full ml-8'}`}
+              className={`absolute ${point.side === 'left' ? 'right-full' : 'left-full'}`}
               style={{ 
+                top: '50%',
                 transform: 'translateY(-50%)',
-                marginLeft: point.side === 'right' ? `${point.lineLength + 24}px` : undefined,
-                marginRight: point.side === 'left' ? `${point.lineLength + 24}px` : undefined,
+                [point.side === 'right' ? 'marginLeft' : 'marginRight']: `${point.lineLength + 16}px`,
               }}
             >
-              {isFirstPoint ? (
-                /* YouTube embed for first point */
+              {youtubeVideos[index] ? (
+                /* YouTube embed */
                 <div 
                   className="w-64 md:w-80 aspect-video rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
@@ -138,15 +147,15 @@ const ScrollTimeline = () => {
                   }}
                 >
                   <iframe
-                    src="https://www.youtube.com/embed/mv-g2qryw5U"
-                    title="YouTube video"
+                    src={`https://www.youtube.com/embed/${youtubeVideos[index]}`}
+                    title={`YouTube video ${point.id}`}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className="w-full h-full"
                   />
                 </div>
               ) : (
-                /* Empty placeholder slots */
+                /* Empty placeholder slot */
                 <div 
                   className="w-64 md:w-80 aspect-video rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
