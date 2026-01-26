@@ -262,19 +262,6 @@ const PortfolioSection = () => {
           </div>
         </div>
 
-        {/* Mobile Featured Video */}
-        <div className="md:hidden mb-8 rounded-lg overflow-hidden">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full aspect-video object-cover rounded-lg"
-          >
-            <source src="/videos/wide2.mp4" type="video/mp4" />
-          </video>
-        </div>
-
         {/* Collage Grid - Asymmetric Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-12 lg:gap-20 xl:gap-24 overflow-hidden">
           {/* Left Column */}
