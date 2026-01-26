@@ -64,37 +64,37 @@ const MaxoraHero = () => {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground" style={{ filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.4)) drop-shadow(0 0 80px rgba(0,0,0,0.3))' }}>
-        {/* Main MAXORA text */}
-        <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold my-0 relative max-w-full" style={{
-        fontFamily: 'Helvetica, Arial, sans-serif',
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
-        transitionDelay: '200ms'
-      }}>
-          {/* Main text with blend mode */}
+      {/* Main MAXORA text - Behind Spline (z-0) */}
+      <div className="absolute inset-0 flex items-center justify-center z-0 -mt-20 md:-mt-32">
+        <h1 className="text-[16vw] md:text-[18vw] tracking-tighter leading-none transition-all duration-1000 ease-out font-extrabold relative max-w-full" style={{
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
+          transitionDelay: '200ms'
+        }}>
           <span 
-            className="relative px-2 md:px-[21px] text-justify text-white"
-            style={{ mixBlendMode: 'exclusion' }}
+            className="relative px-2 md:px-[21px] text-justify text-white/80"
           >
             MAXORA
           </span>
         </h1>
+      </div>
 
+      {/* Main Content - Above Spline */}
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 -mt-40 md:-mt-56 px-4 md:px-[95px] mx-0 text-primary-foreground pointer-events-none">
         {/* Tagline */}
-        <p className="mt-0 md:mt-1 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4" style={{
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-        transitionDelay: '400ms'
-      }}>Creative Minds Will Rule the Future</p>
+        <p className="mt-32 md:mt-40 text-white/50 text-xs md:text-sm tracking-wide transition-all duration-700 text-center px-4 pointer-events-auto" style={{
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+          transitionDelay: '400ms'
+        }}>Creative Minds Will Rule the Future</p>
 
         {/* CTA Button */}
-        <div className="mt-6 md:mt-10 transition-all duration-700" style={{
-        opacity: isLoaded ? 1 : 0,
-        transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-        transitionDelay: '600ms'
-      }}>
+        <div className="mt-6 md:mt-10 transition-all duration-700 pointer-events-auto" style={{
+          opacity: isLoaded ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+          transitionDelay: '600ms'
+        }}>
           <PremiumCTA text="Get Started" />
         </div>
       </div>
