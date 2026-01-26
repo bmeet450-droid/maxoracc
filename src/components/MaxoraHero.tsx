@@ -70,10 +70,11 @@ const MaxoraHero = () => {
           fontFamily: 'Helvetica, Arial, sans-serif',
           opacity: isLoaded ? 1 : 0,
           transform: isLoaded ? 'scale(1)' : 'scale(0.9)',
-          transitionDelay: '200ms'
+          transitionDelay: '200ms',
+          filter: 'brightness(1.2)'
         }}>
           <span 
-            className="relative px-2 md:px-[21px] text-justify text-white/80"
+            className="relative px-2 md:px-[21px] text-justify text-white"
           >
             MAXORA
           </span>
