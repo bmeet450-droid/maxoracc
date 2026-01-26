@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, memo, useCallback } from "react";
+import { useEffect, useRef, useState, memo } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface OptimizedVideoCardProps {
   video: string;
@@ -115,6 +116,20 @@ const OptimizedVideoCard = memo(({ video, className, staggerDelay, isHeroSection
 OptimizedVideoCard.displayName = "OptimizedVideoCard";
 
 const VideoCollage = () => {
+  const isMobile = useIsMobile();
+
+  // On mobile: show a lightweight static gradient background instead of videos
+  if (isMobile) {
+    return (
+      <div 
+        className="absolute inset-0 z-0"
+        style={{
+          background: 'radial-gradient(ellipse at center top, rgba(30,30,35,1) 0%, rgba(15,15,18,1) 40%, rgba(10,10,10,1) 100%)',
+        }}
+      />
+    );
+  }
+
   const portraitVideos = [
     '/videos/video1.mp4',
     '/videos/video2.mp4',
@@ -139,11 +154,14 @@ const VideoCollage = () => {
     '/videos/wide13.mp4',
   ];
 
-  // Duplicate for seamless infinite scroll
-  const allPortrait = [...portraitVideos, ...portraitVideos];
-  const allWide = [...wideVideos, ...wideVideos];
+  // Reduce video count for better performance
+  // Only show first 3 portrait and 5 wide videos, duplicated once
+  const limitedPortrait = portraitVideos.slice(0, 3);
+  const limitedWide = wideVideos.slice(0, 5);
+  const allPortrait = [...limitedPortrait, ...limitedPortrait];
+  const allWide = [...limitedWide, ...limitedWide];
 
-  // Calculate stagger delays - 50ms apart per video
+  // Calculate stagger delays
   const getStaggerDelay = (rowIndex: number, videoIndex: number) => {
     return (rowIndex * 100) + (videoIndex * 50);
   };
