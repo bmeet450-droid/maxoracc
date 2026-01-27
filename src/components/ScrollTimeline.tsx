@@ -19,12 +19,12 @@ const youtubeVideos = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 10, side: "left", lineLength: 80, lineLengthMobile: 20 },
-  { id: 2, offset: 24, side: "right", lineLength: 120, lineLengthMobile: 20 },
-  { id: 3, offset: 38, side: "left", lineLength: 100, lineLengthMobile: 20 },
-  { id: 4, offset: 52, side: "right", lineLength: 90, lineLengthMobile: 20 },
-  { id: 5, offset: 66, side: "left", lineLength: 110, lineLengthMobile: 20 },
-  { id: 6, offset: 80, side: "right", lineLength: 85, lineLengthMobile: 20 },
+  { id: 1, offset: 10, side: "left", lineLength: 60, lineLengthMobile: 12 },
+  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12 },
+  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12 },
+  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
+  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
+  { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
 ];
 
 const ScrollTimeline = () => {
@@ -71,7 +71,7 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[300vh] md:min-h-[300vh]"
+      className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
       style={{ background: '#000000' }}
     >
       {/* Central vertical line - positioned left on mobile, center on desktop */}
@@ -146,7 +146,7 @@ const ScrollTimeline = () => {
               style={{ 
                 top: '50%',
                 transform: 'translateY(-50%)',
-                [effectiveSide === 'right' ? 'marginLeft' : 'marginRight']: `${lineLength + (isMobile ? 12 : 16)}px`,
+                [effectiveSide === 'right' ? 'marginLeft' : 'marginRight']: `${lineLength + (isMobile ? 8 : 12)}px`,
               }}
             >
               {youtubeVideos[index] ? (
