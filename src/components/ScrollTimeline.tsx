@@ -73,48 +73,75 @@ const ScrollTimeline = () => {
       className="relative w-full min-h-[220vh] md:min-h-[260vh] lg:min-h-[320vh]"
       style={{ background: '#000000' }}
     >
-      {/* Branching header section - 5 evenly spaced slots at top */}
-      <div className="relative w-full pt-8 md:pt-12 pb-16 md:pb-24">
-        {/* Video slots row */}
-        <div className="flex justify-center gap-2 md:gap-4 lg:gap-6 px-2 md:px-8">
+      {/* Branching header section with curved lines */}
+      <div className="relative w-full pt-12 md:pt-16 lg:pt-20 pb-32 md:pb-48 lg:pb-56">
+        {/* SVG for curved connecting lines */}
+        <svg 
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          preserveAspectRatio="none"
+        >
+          {[0, 1, 2, 3, 4].map((i) => {
+            // Calculate positions for 5 evenly spaced slots
+            const slotCount = 5;
+            const slotSpacing = isMobile ? 18 : 16; // percentage width per slot
+            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
+            const endX = 50; // center convergence
+            const startY = isMobile ? 28 : 22; // top (percentage)
+            const endY = isMobile ? 85 : 80; // bottom convergence (percentage)
+            
+            // Control points for smooth curve
+            const cp1Y = startY + (endY - startY) * 0.4;
+            const cp2Y = startY + (endY - startY) * 0.7;
+            
+            return (
+              <path
+                key={i}
+                d={`M ${startX}% ${startY}% 
+                    C ${startX}% ${cp1Y}%, 
+                      ${endX}% ${cp2Y}%, 
+                      ${endX}% ${endY}%`}
+                fill="none"
+                stroke="rgba(255,255,255,0.5)"
+                strokeWidth="2"
+                style={{
+                  filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.3))',
+                }}
+              />
+            );
+          })}
+        </svg>
+
+        {/* Video slots row - more spacing */}
+        <div className="relative flex justify-center gap-4 md:gap-8 lg:gap-12 px-4 md:px-12 lg:px-16">
           {[1, 2, 3, 4, 5].map((slotId) => (
             <div key={slotId} className="flex flex-col items-center">
               {/* Video placeholder rectangle */}
               <div 
-                className="w-16 h-10 md:w-28 md:h-16 lg:w-36 lg:h-20 rounded-md md:rounded-lg border-2 border-dashed flex items-center justify-center"
+                className="w-14 h-9 md:w-32 md:h-20 lg:w-40 lg:h-24 rounded-md md:rounded-lg border-2 border-dashed flex items-center justify-center"
                 style={{
                   borderColor: 'rgba(255,255,255,0.4)',
                   backgroundColor: 'rgba(255,255,255,0.05)',
                 }}
               >
-                <span className="text-[8px] md:text-[10px] lg:text-xs text-neutral-500">
+                <span className="text-[7px] md:text-[10px] lg:text-xs text-neutral-500">
                   Slot {slotId}
                 </span>
               </div>
               
-              {/* End circle */}
+              {/* End circle below slot */}
               <div 
-                className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-2 md:mt-3"
+                className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-3 md:mt-4"
                 style={{
                   backgroundColor: 'rgba(255,255,255,0.8)',
                   boxShadow: '0 0 10px rgba(255,255,255,0.5)',
-                }}
-              />
-              
-              {/* Vertical line down to origin */}
-              <div 
-                className="w-[2px] h-12 md:h-20 lg:h-24"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.3))',
-                  boxShadow: '0 0 8px rgba(255,255,255,0.3)',
                 }}
               />
             </div>
           ))}
         </div>
         
-        {/* Central convergence point */}
-        <div className="flex justify-center">
+        {/* Central convergence point - positioned at bottom of branch section */}
+        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2">
           <div 
             className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2"
             style={{
@@ -125,8 +152,9 @@ const ScrollTimeline = () => {
           />
         </div>
       </div>
-      {/* Central vertical line - positioned left on mobile, center on desktop */}
-      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px]">
+
+      {/* Central vertical line - starts after branch section */}
+      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 w-[2px]" style={{ top: '25%', bottom: 0 }}>
         {/* Base gray line */}
         <div className="absolute inset-0 bg-neutral-700" />
         
@@ -134,7 +162,7 @@ const ScrollTimeline = () => {
         <div 
           className="absolute top-0 left-0 right-0 transition-none"
           style={{ 
-            height: `${glowHeight}%`,
+            height: `${Math.max(0, (glowHeight - 25) / 0.75)}%`,
             background: 'linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0.95))',
             boxShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 100px rgba(255,255,255,0.5), 0 0 150px rgba(255,255,255,0.3)',
           }}
