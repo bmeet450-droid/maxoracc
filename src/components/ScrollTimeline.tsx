@@ -15,7 +15,7 @@ const youtubeVideos = [
   "u74W5pBo8z4",
   "27f6MRjFOzg",
   "1lJVOyULdrM",
-  null, // placeholder for slot 6
+  "EuN9eaezi5E",
 ];
 
 const timelinePoints: TimelinePoint[] = [
