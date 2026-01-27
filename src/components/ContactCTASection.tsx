@@ -6,6 +6,7 @@ import useScrollAnimation from "@/hooks/useScrollAnimation";
 const ContactCTASection = () => {
   const navigate = useNavigate();
   const [isExpanding, setIsExpanding] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [headingParallax, setHeadingParallax] = useState(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -29,6 +30,28 @@ const ContactCTASection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isExpanding) {
+      // Animate loading progress
+      const duration = 800;
+      const startTime = Date.now();
+      
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Easing function for smooth animation
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+        setLoadingProgress(easedProgress * 100);
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    }
+  }, [isExpanding]);
+
   const handleClick = () => {
     setIsExpanding(true);
     
@@ -40,21 +63,59 @@ const ContactCTASection = () => {
 
   return (
     <>
-      {/* Expanding overlay */}
+      {/* Expanding overlay with loading indicator */}
       <div
-        className="fixed inset-0 z-[100] pointer-events-none"
+        className="fixed inset-0 z-[100] flex items-center justify-center"
         style={{
           background: '#000000',
           opacity: isExpanding ? 1 : 0,
-          transform: isExpanding ? 'scale(1)' : 'scale(0)',
-          transition: 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-          transformOrigin: 'center center',
+          pointerEvents: isExpanding ? 'auto' : 'none',
+          transition: 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
-      />
+      >
+        {/* Loading Progress Indicator */}
+        {isExpanding && (
+          <div className="flex flex-col items-center gap-6">
+            {/* Circular progress */}
+            <div className="relative w-16 h-16">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                {/* Background circle */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="4"
+                />
+                {/* Progress circle */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.8)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray={`${2 * Math.PI * 40}`}
+                  strokeDashoffset={`${2 * Math.PI * 40 * (1 - loadingProgress / 100)}`}
+                  style={{ transition: 'stroke-dashoffset 0.1s ease-out' }}
+                />
+              </svg>
+              {/* Percentage text */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-white/70 text-xs font-medium">
+                  {Math.round(loadingProgress)}%
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       <section id="contact" className="py-32 md:py-48 px-6 md:px-12 lg:px-20" style={{ background: '#000000' }}>
         <div className="max-w-[1600px] mx-auto">
-          {/* Section Header - matching "Our Services" style */}
+          {/* Section Header - right aligned */}
           <div 
             ref={headerRef}
             className="mb-16 transition-all duration-700"
@@ -65,7 +126,7 @@ const ContactCTASection = () => {
           >
             <h2 
               ref={headingRef}
-              className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
+              className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap text-right"
               style={{
                 transform: `translateY(${headingParallax}px)`,
                 transition: 'transform 0.1s ease-out',
@@ -97,7 +158,7 @@ const ContactCTASection = () => {
               transitionDelay: '0.4s',
             }}
           >
-            <p className="text-white/50 text-sm md:text-base lg:text-lg leading-relaxed mb-12 max-w-2xl">
+            <p className="text-white/50 text-xs md:text-sm leading-relaxed mb-12 max-w-xl">
               Ready to bring your vision to life? We'd love to hear about your project and explore how we can create something extraordinary together.
             </p>
 
@@ -106,13 +167,14 @@ const ContactCTASection = () => {
               ref={buttonRef}
               onClick={handleClick}
               disabled={isExpanding}
-              className="group relative flex items-center gap-3 px-10 py-5 md:px-14 md:py-6 rounded-full text-base md:text-lg font-medium transition-all duration-500 hover:scale-105 disabled:cursor-default"
+              className="group relative flex items-center gap-3 px-10 py-5 md:px-14 md:py-6 rounded-full text-base md:text-lg font-medium transition-all duration-300 hover:scale-105 disabled:cursor-default"
               style={{
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)',
                 border: '1px solid rgba(255,255,255,0.15)',
                 boxShadow: '0 0 30px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.03)',
-                transform: isExpanding ? 'scale(50)' : 'scale(1)',
                 opacity: isExpanding ? 0 : 1,
+                transform: isExpanding ? 'scale(0.9)' : 'scale(1)',
+                transition: 'opacity 0.15s ease-out, transform 0.3s ease-out',
               }}
             >
               {/* Glow effect */}
