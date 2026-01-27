@@ -19,11 +19,11 @@ const youtubeVideos = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 30, side: "left", lineLength: 60, lineLengthMobile: 12 },
-  { id: 2, offset: 40, side: "right", lineLength: 80, lineLengthMobile: 12 },
-  { id: 3, offset: 50, side: "left", lineLength: 70, lineLengthMobile: 12 },
-  { id: 4, offset: 60, side: "right", lineLength: 65, lineLengthMobile: 12 },
-  { id: 5, offset: 70, side: "left", lineLength: 75, lineLengthMobile: 12 },
+  { id: 1, offset: 10, side: "left", lineLength: 60, lineLengthMobile: 12 },
+  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12 },
+  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12 },
+  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
+  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
   { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
 ];
 
@@ -51,6 +51,7 @@ const ScrollTimeline = () => {
       const windowHeight = window.innerHeight;
       const containerHeight = container.offsetHeight;
 
+      // Calculate progress: 0 when container top hits viewport bottom, 1 when container bottom leaves viewport top
       const scrollStart = windowHeight;
       const scrollEnd = -containerHeight;
       const totalDistance = scrollStart - scrollEnd;
@@ -70,89 +71,11 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[220vh] md:min-h-[260vh] lg:min-h-[320vh]"
+      className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
       style={{ background: '#000000' }}
     >
-      {/* Branching header section with curved lines */}
-      <div className="relative w-full pt-12 md:pt-16 lg:pt-20 pb-32 md:pb-48 lg:pb-56">
-        {/* Video slots row */}
-        <div className="relative flex justify-center gap-4 md:gap-8 lg:gap-12 px-4 md:px-12 lg:px-16">
-          {[1, 2, 3, 4, 5].map((slotId) => (
-            <div key={slotId} className="flex flex-col items-center">
-              {/* Video placeholder rectangle */}
-              <div 
-                className="w-14 h-9 md:w-32 md:h-20 lg:w-40 lg:h-24 rounded-md md:rounded-lg border-2 border-dashed flex items-center justify-center"
-                style={{
-                  borderColor: 'rgba(255,255,255,0.4)',
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                }}
-              >
-                <span className="text-[7px] md:text-[10px] lg:text-xs text-neutral-500">
-                  Slot {slotId}
-                </span>
-              </div>
-              
-              {/* Circle below slot */}
-              <div 
-                className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-3 md:mt-4 relative z-10"
-                style={{
-                  backgroundColor: 'rgba(255,255,255,0.8)',
-                  boxShadow: '0 0 10px rgba(255,255,255,0.5)',
-                }}
-              />
-            </div>
-          ))}
-        </div>
-        
-        {/* SVG for curved connecting lines from circles to center */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          preserveAspectRatio="none"
-        >
-          {[0, 1, 2, 3, 4].map((i) => {
-            const slotCount = 5;
-            const slotSpacing = isMobile ? 18 : 16;
-            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
-            const endX = 50;
-            const startY = isMobile ? 32 : 28;
-            const endY = isMobile ? 88 : 85;
-            
-            const cp1Y = startY + (endY - startY) * 0.4;
-            const cp2Y = startY + (endY - startY) * 0.75;
-            
-            return (
-              <path
-                key={`curve-${i}`}
-                d={`M ${startX}% ${startY}% 
-                    C ${startX}% ${cp1Y}%, 
-                      ${endX}% ${cp2Y}%, 
-                      ${endX}% ${endY}%`}
-                fill="none"
-                stroke="rgba(255,255,255,0.6)"
-                strokeWidth="2"
-                style={{
-                  filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
-                }}
-              />
-            );
-          })}
-        </svg>
-        
-        {/* Central convergence point - hollow dot */}
-        <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-10">
-          <div 
-            className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2"
-            style={{
-              borderColor: 'rgba(255,255,255,0.9)',
-              backgroundColor: 'transparent',
-              boxShadow: '0 0 20px rgba(255,255,255,0.6)',
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Central vertical line - starts after branch section */}
-      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 w-[2px]" style={{ top: '25%', bottom: 0 }}>
+      {/* Central vertical line - positioned left on mobile, center on desktop */}
+      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px]">
         {/* Base gray line */}
         <div className="absolute inset-0 bg-neutral-700" />
         
@@ -160,7 +83,7 @@ const ScrollTimeline = () => {
         <div 
           className="absolute top-0 left-0 right-0 transition-none"
           style={{ 
-            height: `${Math.max(0, (glowHeight - 25) / 0.75)}%`,
+            height: `${glowHeight}%`,
             background: 'linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0.95))',
             boxShadow: '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 100px rgba(255,255,255,0.5), 0 0 150px rgba(255,255,255,0.3)',
           }}
