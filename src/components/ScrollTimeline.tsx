@@ -19,12 +19,12 @@ const youtubeVideos = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 5, side: "left", lineLength: 80, lineLengthMobile: 15 },
-  { id: 2, offset: 20, side: "right", lineLength: 120, lineLengthMobile: 15 },
-  { id: 3, offset: 35, side: "left", lineLength: 100, lineLengthMobile: 15 },
-  { id: 4, offset: 50, side: "right", lineLength: 90, lineLengthMobile: 15 },
-  { id: 5, offset: 65, side: "left", lineLength: 110, lineLengthMobile: 15 },
-  { id: 6, offset: 80, side: "right", lineLength: 85, lineLengthMobile: 15 },
+  { id: 1, offset: 8, side: "left", lineLength: 80, lineLengthMobile: 20 },
+  { id: 2, offset: 25, side: "right", lineLength: 120, lineLengthMobile: 20 },
+  { id: 3, offset: 42, side: "left", lineLength: 100, lineLengthMobile: 20 },
+  { id: 4, offset: 58, side: "right", lineLength: 90, lineLengthMobile: 20 },
+  { id: 5, offset: 75, side: "left", lineLength: 110, lineLengthMobile: 20 },
+  { id: 6, offset: 92, side: "right", lineLength: 85, lineLengthMobile: 20 },
 ];
 
 const ScrollTimeline = () => {
@@ -71,7 +71,7 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[180vh] sm:min-h-[200vh] md:min-h-[300vh]"
+      className="relative w-full min-h-[300vh] md:min-h-[300vh]"
       style={{ background: '#000000' }}
     >
       {/* Central vertical line - positioned left on mobile, center on desktop */}
@@ -152,7 +152,7 @@ const ScrollTimeline = () => {
               {youtubeVideos[index] ? (
                 /* YouTube embed */
                 <div 
-                  className="w-[calc(100vw-70px)] sm:w-56 md:w-80 aspect-video rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
+                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     opacity: isActive ? 1 : 0.3,
                     boxShadow: isActive 
@@ -171,7 +171,7 @@ const ScrollTimeline = () => {
               ) : (
                 /* Empty placeholder slot */
                 <div 
-                  className="w-[calc(100vw-70px)] sm:w-56 md:w-80 aspect-video rounded-lg sm:rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
+                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
                     borderColor: isActive ? 'rgba(255,255,255,0.4)' : 'rgba(115,115,115,0.5)',
                     backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
