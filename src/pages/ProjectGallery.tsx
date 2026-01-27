@@ -76,6 +76,8 @@ const ProjectGallery = () => {
   const project = projects.find((p) => p.slug === slug);
 
   useEffect(() => {
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
     // Trigger entrance animation
     setTimeout(() => setIsVisible(true), 100);
   }, []);
