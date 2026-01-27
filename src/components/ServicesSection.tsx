@@ -113,13 +113,11 @@ const ServicesSection = () => {
             return (
               <div
                 key={service.id}
-                className="group relative p-6 md:p-8 rounded-2xl cursor-pointer"
+                className="group relative p-6 md:p-8 rounded-2xl cursor-pointer overflow-hidden"
                 onMouseEnter={() => setHoveredId(service.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 style={{
-                  background: hoveredId === service.id 
-                    ? 'linear-gradient(135deg, rgba(40,40,40,0.6) 0%, rgba(25,25,25,0.8) 100%)'
-                    : 'linear-gradient(135deg, rgba(25,25,25,0.4) 0%, rgba(15,15,15,0.6) 100%)',
+                  background: 'linear-gradient(135deg, rgba(25,25,25,0.4) 0%, rgba(15,15,15,0.6) 100%)',
                   border: '1px solid rgba(255,255,255,0.05)',
                   opacity: gridVisible ? 1 : 0,
                   transform: gridVisible 
@@ -128,35 +126,58 @@ const ServicesSection = () => {
                   transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`,
                 }}
               >
-                {/* Icon */}
-                <div 
-                  className="mb-4 md:mb-6 transition-all duration-500"
-                  style={{
-                    transform: hoveredId === service.id ? 'scale(1.1)' : 'scale(1)',
-                  }}
-                >
-                  <Icon 
-                    size={32} 
-                    className="text-white/60 transition-colors duration-300 group-hover:text-white/90" 
-                  />
-                </div>
-
-                {/* Title */}
-                <h3 className="text-white/90 text-lg md:text-xl font-semibold mb-2 md:mb-3">
-                  {service.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-white/50 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-
-                {/* Hover glow */}
+                {/* Hover gradient overlay */}
                 <div 
                   className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
                   style={{
                     opacity: hoveredId === service.id ? 1 : 0,
-                    boxShadow: '0 20px 40px -20px rgba(255,255,255,0.05)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(120,120,255,0.05) 50%, rgba(255,100,150,0.03) 100%)',
+                  }}
+                />
+
+                {/* Icon */}
+                <div 
+                  className="relative mb-4 md:mb-6 transition-all duration-500"
+                  style={{
+                    transform: hoveredId === service.id ? 'scale(1.15) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                  }}
+                >
+                  <Icon 
+                    size={32} 
+                    className="transition-all duration-500"
+                    style={{
+                      color: hoveredId === service.id ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.6)',
+                      filter: hoveredId === service.id ? 'drop-shadow(0 0 8px rgba(255,255,255,0.3))' : 'none',
+                    }}
+                  />
+                </div>
+
+                {/* Title */}
+                <h3 className="relative text-white/90 text-lg md:text-xl font-semibold mb-2 md:mb-3 transition-colors duration-300 group-hover:text-white">
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p className="relative text-white/50 text-sm leading-relaxed transition-colors duration-300 group-hover:text-white/70">
+                  {service.description}
+                </p>
+
+                {/* Bottom gradient line */}
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-[2px] transition-all duration-500"
+                  style={{
+                    opacity: hoveredId === service.id ? 1 : 0,
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
+                    transform: hoveredId === service.id ? 'scaleX(1)' : 'scaleX(0)',
+                  }}
+                />
+
+                {/* Corner glow */}
+                <div 
+                  className="absolute -top-20 -right-20 w-40 h-40 rounded-full pointer-events-none transition-opacity duration-500"
+                  style={{
+                    opacity: hoveredId === service.id ? 0.6 : 0,
+                    background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
                   }}
                 />
               </div>
