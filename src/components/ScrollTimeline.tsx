@@ -27,6 +27,15 @@ const timelinePoints: TimelinePoint[] = [
   { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
 ];
 
+// Branch configuration for the top section
+const branchSlots = [
+  { id: 1, angle: -60, length: 120, lengthMobile: 60 },
+  { id: 2, angle: -30, length: 100, lengthMobile: 50 },
+  { id: 3, angle: 0, length: 90, lengthMobile: 45 },
+  { id: 4, angle: 30, length: 100, lengthMobile: 50 },
+  { id: 5, angle: 60, length: 120, lengthMobile: 60 },
+];
+
 const ScrollTimeline = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -51,7 +60,6 @@ const ScrollTimeline = () => {
       const windowHeight = window.innerHeight;
       const containerHeight = container.offsetHeight;
 
-      // Calculate progress: 0 when container top hits viewport bottom, 1 when container bottom leaves viewport top
       const scrollStart = windowHeight;
       const scrollEnd = -containerHeight;
       const totalDistance = scrollStart - scrollEnd;
@@ -71,9 +79,85 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
+      className="relative w-full min-h-[220vh] md:min-h-[260vh] lg:min-h-[320vh]"
       style={{ background: '#000000' }}
     >
+      {/* Branching header section */}
+      <div className="relative w-full h-[40vh] md:h-[50vh] flex items-end justify-center pb-8">
+        {/* Central origin point */}
+        <div className="relative">
+          {/* Origin circle */}
+          <div 
+            className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2 z-10 relative"
+            style={{
+              borderColor: 'rgba(255,255,255,0.9)',
+              backgroundColor: 'rgba(255,255,255,0.3)',
+              boxShadow: '0 0 20px rgba(255,255,255,0.6)',
+            }}
+          />
+          
+          {/* Branch lines with video slots */}
+          {branchSlots.map((branch) => {
+            const length = isMobile ? branch.lengthMobile : branch.length;
+            const angleRad = (branch.angle * Math.PI) / 180;
+            const endX = Math.sin(angleRad) * length;
+            const endY = -Math.cos(angleRad) * length;
+            
+            return (
+              <div key={branch.id} className="absolute top-1/2 left-1/2">
+                {/* SVG curved line */}
+                <svg
+                  className="absolute overflow-visible"
+                  style={{
+                    left: 0,
+                    top: 0,
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                  width={Math.abs(endX) * 2 + 20}
+                  height={Math.abs(endY) + 20}
+                >
+                  <path
+                    d={`M 0,0 Q ${endX * 0.5},${endY * 0.3} ${endX},${endY}`}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.7)"
+                    strokeWidth="2"
+                    style={{
+                      filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
+                    }}
+                  />
+                </svg>
+                
+                {/* End circle */}
+                <div 
+                  className="absolute w-2 h-2 md:w-3 md:h-3 rounded-full"
+                  style={{
+                    left: endX,
+                    top: endY,
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: 'rgba(255,255,255,0.8)',
+                    boxShadow: '0 0 10px rgba(255,255,255,0.5)',
+                  }}
+                />
+                
+                {/* Video placeholder rectangle */}
+                <div 
+                  className="absolute w-24 h-14 md:w-32 md:h-20 lg:w-40 lg:h-24 rounded-lg md:rounded-xl border-2 border-dashed flex items-center justify-center"
+                  style={{
+                    left: endX + (branch.angle < 0 ? -60 : branch.angle > 0 ? 10 : -48) + (isMobile ? (branch.angle < 0 ? 20 : branch.angle > 0 ? -10 : 0) : 0),
+                    top: endY - (isMobile ? 50 : 70),
+                    borderColor: 'rgba(255,255,255,0.4)',
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                  }}
+                >
+                  <span className="text-[10px] md:text-xs text-neutral-500">
+                    Slot {branch.id}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
       {/* Central vertical line - positioned left on mobile, center on desktop */}
       <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px]">
         {/* Base gray line */}
