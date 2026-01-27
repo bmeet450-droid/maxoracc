@@ -75,43 +75,7 @@ const ScrollTimeline = () => {
     >
       {/* Branching header section with curved lines */}
       <div className="relative w-full pt-12 md:pt-16 lg:pt-20 pb-32 md:pb-48 lg:pb-56">
-        {/* SVG for curved connecting lines */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          preserveAspectRatio="none"
-        >
-          {[0, 1, 2, 3, 4].map((i) => {
-            // Calculate positions for 5 evenly spaced slots
-            const slotCount = 5;
-            const slotSpacing = isMobile ? 18 : 16; // percentage width per slot
-            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
-            const endX = 50; // center convergence
-            const startY = isMobile ? 28 : 22; // top (percentage)
-            const endY = isMobile ? 85 : 80; // bottom convergence (percentage)
-            
-            // Control points for smooth curve
-            const cp1Y = startY + (endY - startY) * 0.4;
-            const cp2Y = startY + (endY - startY) * 0.7;
-            
-            return (
-              <path
-                key={i}
-                d={`M ${startX}% ${startY}% 
-                    C ${startX}% ${cp1Y}%, 
-                      ${endX}% ${cp2Y}%, 
-                      ${endX}% ${endY}%`}
-                fill="none"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2"
-                style={{
-                  filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.3))',
-                }}
-              />
-            );
-          })}
-        </svg>
-
-        {/* Video slots row - more spacing */}
+        {/* Video slots row */}
         <div className="relative flex justify-center gap-4 md:gap-8 lg:gap-12 px-4 md:px-12 lg:px-16">
           {[1, 2, 3, 4, 5].map((slotId) => (
             <div key={slotId} className="flex flex-col items-center">
@@ -128,30 +92,54 @@ const ScrollTimeline = () => {
                 </span>
               </div>
               
-              {/* Circle below slot - this connects to the line */}
+              {/* Circle below slot */}
               <div 
-                className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-3 md:mt-4"
+                className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-3 md:mt-4 relative z-10"
                 style={{
                   backgroundColor: 'rgba(255,255,255,0.8)',
                   boxShadow: '0 0 10px rgba(255,255,255,0.5)',
-                }}
-              />
-              
-              {/* Vertical line from circle to convergence point */}
-              <div 
-                className="w-[2px] flex-1 mt-0"
-                style={{
-                  background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.4))',
-                  boxShadow: '0 0 8px rgba(255,255,255,0.3)',
-                  minHeight: isMobile ? '80px' : '120px',
                 }}
               />
             </div>
           ))}
         </div>
         
-        {/* Central convergence point - positioned at bottom of branch section */}
-        <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2">
+        {/* SVG for curved connecting lines from circles to center */}
+        <svg 
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          preserveAspectRatio="none"
+        >
+          {[0, 1, 2, 3, 4].map((i) => {
+            const slotCount = 5;
+            const slotSpacing = isMobile ? 18 : 16;
+            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
+            const endX = 50;
+            const startY = isMobile ? 32 : 28;
+            const endY = isMobile ? 88 : 85;
+            
+            const cp1Y = startY + (endY - startY) * 0.4;
+            const cp2Y = startY + (endY - startY) * 0.75;
+            
+            return (
+              <path
+                key={`curve-${i}`}
+                d={`M ${startX}% ${startY}% 
+                    C ${startX}% ${cp1Y}%, 
+                      ${endX}% ${cp2Y}%, 
+                      ${endX}% ${endY}%`}
+                fill="none"
+                stroke="rgba(255,255,255,0.6)"
+                strokeWidth="2"
+                style={{
+                  filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
+                }}
+              />
+            );
+          })}
+        </svg>
+        
+        {/* Central convergence point - hollow dot */}
+        <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-10">
           <div 
             className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2"
             style={{
@@ -161,41 +149,6 @@ const ScrollTimeline = () => {
             }}
           />
         </div>
-        
-        {/* Curved lines from each slot's line end to center convergence */}
-        <svg 
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          style={{ top: '50%' }}
-          preserveAspectRatio="none"
-        >
-          {[0, 1, 2, 3, 4].map((i) => {
-            const slotCount = 5;
-            const slotSpacing = isMobile ? 18 : 16;
-            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
-            const endX = 50;
-            const startY = 0;
-            const endY = isMobile ? 60 : 50;
-            
-            const cp1Y = startY + (endY - startY) * 0.5;
-            const cp2Y = startY + (endY - startY) * 0.8;
-            
-            return (
-              <path
-                key={`bottom-curve-${i}`}
-                d={`M ${startX}% ${startY}% 
-                    C ${startX}% ${cp1Y}%, 
-                      ${endX}% ${cp2Y}%, 
-                      ${endX}% ${endY}%`}
-                fill="none"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2"
-                style={{
-                  filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.3))',
-                }}
-              />
-            );
-          })}
-        </svg>
       </div>
 
       {/* Central vertical line - starts after branch section */}
