@@ -49,11 +49,11 @@ const Contact = () => {
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [inputsVisible, setInputsVisible] = useState(false);
   const [blobsVisible, setBlobsVisible] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const headingRef = useRef<HTMLHeadingElement>(null);
   const { ref: headerRef } = useScrollAnimation({ threshold: 0.2 });
   const { ref: contentRef } = useScrollAnimation({ threshold: 0.2 });
 
-  // Get the section to scroll back to from location state
   const scrollToSection = (location.state as { from?: string })?.from;
 
   useEffect(() => {
@@ -65,6 +65,18 @@ const Contact = () => {
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
+  }, []);
+
+  // Mouse parallax effect
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   useEffect(() => {
@@ -134,47 +146,55 @@ const Contact = () => {
     focus:outline-none
   `;
 
+  // Calculate mouse-based parallax offsets for blobs
+  const topRightParallax = {
+    x: (mousePosition.x - 0.5) * -30,
+    y: (mousePosition.y - 0.5) * -30,
+  };
+  const bottomLeftParallax = {
+    x: (mousePosition.x - 0.5) * 30,
+    y: (mousePosition.y - 0.5) * 30,
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
-      {/* Particles Background */}
       <ContactParticles />
 
-      {/* Corner Blob Images with slower animations and 15deg rotation */}
       <style>{`
         @keyframes blobShiftTopRight {
           0%, 100% {
-            transform: translate(25%, -25%) rotate(195deg) scale(1);
+            transform: translate(calc(25% + var(--mouse-x, 0px)), calc(-25% + var(--mouse-y, 0px))) rotate(195deg) scale(1);
             opacity: 0.6;
           }
           25% {
-            transform: translate(20%, -30%) rotate(200deg) scale(1.03);
+            transform: translate(calc(20% + var(--mouse-x, 0px)), calc(-30% + var(--mouse-y, 0px))) rotate(200deg) scale(1.03);
             opacity: 0.55;
           }
           50% {
-            transform: translate(30%, -20%) rotate(190deg) scale(0.97);
+            transform: translate(calc(30% + var(--mouse-x, 0px)), calc(-20% + var(--mouse-y, 0px))) rotate(190deg) scale(0.97);
             opacity: 0.65;
           }
           75% {
-            transform: translate(22%, -28%) rotate(197deg) scale(1.01);
+            transform: translate(calc(22% + var(--mouse-x, 0px)), calc(-28% + var(--mouse-y, 0px))) rotate(197deg) scale(1.01);
             opacity: 0.58;
           }
         }
         
         @keyframes blobShiftBottomLeft {
           0%, 100% {
-            transform: translate(-25%, 25%) rotate(15deg) scale(1);
+            transform: translate(calc(-25% + var(--mouse-x, 0px)), calc(25% + var(--mouse-y, 0px))) rotate(15deg) scale(1);
             opacity: 0.6;
           }
           25% {
-            transform: translate(-30%, 20%) rotate(10deg) scale(1.02);
+            transform: translate(calc(-30% + var(--mouse-x, 0px)), calc(20% + var(--mouse-y, 0px))) rotate(10deg) scale(1.02);
             opacity: 0.55;
           }
           50% {
-            transform: translate(-20%, 30%) rotate(20deg) scale(0.98);
+            transform: translate(calc(-20% + var(--mouse-x, 0px)), calc(30% + var(--mouse-y, 0px))) rotate(20deg) scale(0.98);
             opacity: 0.65;
           }
           75% {
-            transform: translate(-28%, 22%) rotate(12deg) scale(1.01);
+            transform: translate(calc(-28% + var(--mouse-x, 0px)), calc(22% + var(--mouse-y, 0px))) rotate(12deg) scale(1.01);
             opacity: 0.58;
           }
         }
@@ -202,27 +222,31 @@ const Contact = () => {
         }
       `}</style>
 
-      {/* Top Right Corner Blob */}
+      {/* Top Right Corner Blob with mouse parallax */}
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
+        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none transition-transform duration-300 ease-out"
         style={{
-          transform: blobsVisible ? 'translate(25%, -25%) rotate(195deg)' : 'translate(100%, -100%) rotate(195deg) scale(0.5)',
+          transform: blobsVisible 
+            ? `translate(calc(25% + ${topRightParallax.x}px), calc(-25% + ${topRightParallax.y}px)) rotate(195deg)` 
+            : 'translate(100%, -100%) rotate(195deg) scale(0.5)',
           opacity: blobsVisible ? 0.6 : 0,
-          animation: blobsVisible ? 'blobEnterTopRight 1.2s ease-out forwards, blobShiftTopRight 25s ease-in-out 1.2s infinite' : 'none',
+          animation: blobsVisible ? 'blobEnterTopRight 1.2s ease-out forwards' : 'none',
         }}
       />
       
-      {/* Bottom Left Corner Blob */}
+      {/* Bottom Left Corner Blob with mouse parallax */}
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
+        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none transition-transform duration-300 ease-out"
         style={{
-          transform: blobsVisible ? 'translate(-25%, 25%) rotate(15deg)' : 'translate(-100%, 100%) rotate(15deg) scale(0.5)',
+          transform: blobsVisible 
+            ? `translate(calc(-25% + ${bottomLeftParallax.x}px), calc(25% + ${bottomLeftParallax.y}px)) rotate(15deg)` 
+            : 'translate(-100%, 100%) rotate(15deg) scale(0.5)',
           opacity: blobsVisible ? 0.6 : 0,
-          animation: blobsVisible ? 'blobEnterBottomLeft 1.2s ease-out forwards, blobShiftBottomLeft 30s ease-in-out 1.2s infinite' : 'none',
+          animation: blobsVisible ? 'blobEnterBottomLeft 1.2s ease-out forwards' : 'none',
         }}
       />
 
@@ -243,7 +267,7 @@ const Contact = () => {
 
       <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 lg:px-20">
         <div className="max-w-[1600px] mx-auto">
-          {/* Section Header - Liquid Glass Container */}
+          {/* Section Header - Liquid Glass Container with enhanced glow */}
           <div 
             ref={headerRef}
             className="mb-16 transition-all duration-1000 flex justify-center"
@@ -253,26 +277,28 @@ const Contact = () => {
               transform: isPageVisible ? 'translateY(0)' : 'translateY(30px)',
             }}
           >
-            {/* Liquid Glass Container */}
+            {/* Liquid Glass Container with stronger border glow */}
             <div 
               className="relative px-8 sm:px-12 md:px-20 py-8 md:py-12 rounded-[40px] md:rounded-[60px] max-w-4xl w-full"
               style={{
                 background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 100%)',
                 backdropFilter: 'blur(40px)',
                 WebkitBackdropFilter: 'blur(40px)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.15)',
                 boxShadow: `
+                  0 0 60px rgba(255,255,255,0.08),
+                  0 0 100px rgba(255,255,255,0.05),
                   0 8px 32px rgba(0,0,0,0.4),
-                  inset 0 1px 0 rgba(255,255,255,0.1),
+                  inset 0 1px 0 rgba(255,255,255,0.15),
                   inset 0 -1px 0 rgba(0,0,0,0.3)
                 `,
               }}
             >
-              {/* Glass highlight */}
+              {/* Enhanced glass highlight */}
               <div 
-                className="absolute top-0 left-[10%] right-[10%] h-[1px] rounded-full"
+                className="absolute top-0 left-[5%] right-[5%] h-[2px] rounded-full"
                 style={{
-                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)',
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)',
                 }}
               />
               
@@ -282,6 +308,7 @@ const Contact = () => {
                 style={{
                   transform: `translateY(${headingParallax}px)`,
                   transition: 'transform 0.1s ease-out',
+                  textShadow: '0 0 40px rgba(255,255,255,0.15), 0 0 80px rgba(255,255,255,0.1)',
                 }}
               >
                 Let's Create
@@ -304,7 +331,8 @@ const Contact = () => {
             </div>
           </div>
 
-          <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
+          {/* Reduced gap between columns */}
+          <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 max-w-5xl mx-auto">
             {/* Left Column - Info */}
             <div
               className="transition-all duration-1000"
