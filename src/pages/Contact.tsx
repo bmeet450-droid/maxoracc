@@ -127,18 +127,51 @@ const Contact = () => {
   });
 
   const inputClassName = `
-    w-full px-4 py-3 rounded-xl text-white/90 text-sm
+    w-full px-3 py-2 rounded-lg text-white/90 text-xs
     transition-all duration-500
     placeholder:text-white/30
     focus:outline-none
   `;
 
   return (
-    <div className="min-h-screen" style={{ background: '#000000' }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
+      {/* Corner Gradients */}
+      {/* Top Right Corner Gradient */}
+      <div 
+        className="fixed top-0 right-0 w-[800px] h-[800px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 30%, transparent 70%)',
+          transform: 'translate(30%, -30%)',
+        }}
+      />
+      <div 
+        className="fixed top-0 right-0 w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.05) 0%, transparent 60%)',
+          transform: 'translate(20%, -20%)',
+        }}
+      />
+      
+      {/* Bottom Left Corner Gradient */}
+      <div 
+        className="fixed bottom-0 left-0 w-[800px] h-[800px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at bottom left, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 30%, transparent 70%)',
+          transform: 'translate(-30%, 30%)',
+        }}
+      />
+      <div 
+        className="fixed bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at bottom left, rgba(255,255,255,0.04) 0%, transparent 60%)',
+          transform: 'translate(-20%, 20%)',
+        }}
+      />
+
       {/* Back Button */}
       <button
         onClick={() => navigate('/')}
-        className="fixed top-6 left-6 z-50 group flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+        className="fixed top-6 left-6 z-50 group flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300"
         style={{
           background: 'rgba(255,255,255,0.05)',
           border: '1px solid rgba(255,255,255,0.1)',
@@ -146,16 +179,16 @@ const Contact = () => {
           transform: isPageVisible ? 'translateX(0)' : 'translateX(-20px)',
         }}
       >
-        <ArrowLeft size={16} className="text-white/60 transition-transform duration-300 group-hover:-translate-x-1" />
+        <ArrowLeft size={14} className="text-white/60 transition-transform duration-300 group-hover:-translate-x-1" />
         <span className="text-white/70">Back</span>
       </button>
 
-      <section className="py-32 md:py-48 px-6 md:px-12 lg:px-20">
-        <div className="max-w-[1600px] mx-auto">
+      <section className="relative z-10 py-24 md:py-32 px-6 md:px-12 lg:px-20">
+        <div className="max-w-[1200px] mx-auto">
           {/* Section Header */}
           <div 
             ref={headerRef}
-            className="mb-16 transition-all duration-1000"
+            className="mb-12 transition-all duration-1000"
             style={{
               opacity: isPageVisible ? 1 : 0,
               filter: isPageVisible ? 'blur(0px)' : 'blur(20px)',
@@ -164,7 +197,7 @@ const Contact = () => {
           >
             <h2 
               ref={headingRef}
-              className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
+              className="text-white text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 whitespace-nowrap"
               style={{
                 transform: `translateY(${headingParallax}px)`,
                 transition: 'transform 0.1s ease-out',
@@ -173,7 +206,7 @@ const Contact = () => {
               Let's Create
             </h2>
             <div 
-              className="w-full bg-white py-1 sm:py-2 flex justify-between px-4 sm:px-8 md:px-16 transition-all duration-1000"
+              className="w-full bg-white py-1 flex justify-between px-4 sm:px-6 md:px-12 transition-all duration-1000"
               style={{
                 opacity: isPageVisible ? 1 : 0,
                 filter: isPageVisible ? 'blur(0px)' : 'blur(10px)',
@@ -181,16 +214,16 @@ const Contact = () => {
                 transitionDelay: '0.3s',
               }}
             >
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Vision</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Collaboration</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Excellence</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Together</span>
+              <span className="text-black text-[8px] sm:text-[10px] font-bold tracking-wide">Vision</span>
+              <span className="text-black text-[8px] sm:text-[10px] font-bold tracking-wide">Collaboration</span>
+              <span className="text-black text-[8px] sm:text-[10px] font-bold tracking-wide">Excellence</span>
+              <span className="text-black text-[8px] sm:text-[10px] font-bold tracking-wide">Together</span>
             </div>
           </div>
 
           <div 
             ref={contentRef}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16"
           >
             {/* Left Column - Info */}
             <div
@@ -202,28 +235,28 @@ const Contact = () => {
                 transitionDelay: '0.2s',
               }}
             >
-              <p className="text-white/50 text-sm md:text-base leading-relaxed mb-10 max-w-md">
+              <p className="text-white/50 text-xs leading-relaxed mb-8 max-w-sm">
                 Ready to bring your vision to life? We'd love to hear about your project and explore how we can help.
               </p>
 
               {/* Contact Info */}
-              <div className="space-y-4 mb-10">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <Mail size={18} className="text-white/60" />
+              <div className="space-y-3 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <Mail size={14} className="text-white/60" />
                   </div>
-                  <span className="text-white/70 text-sm">bmeet450@gmail.com</span>
+                  <span className="text-white/70 text-xs">bmeet450@gmail.com</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <MapPin size={18} className="text-white/60" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <MapPin size={14} className="text-white/60" />
                   </div>
-                  <span className="text-white/70 text-sm">New York</span>
+                  <span className="text-white/70 text-xs">New York</span>
                 </div>
               </div>
 
               {/* Social Media Links */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 {socialLinks.map((social, index) => {
                   const Icon = social.icon;
                   return (
@@ -233,7 +266,7 @@ const Contact = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="group relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-110"
+                      className="group relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-110"
                       style={{
                         background: 'rgba(255,255,255,0.05)',
                         border: '1px solid rgba(255,255,255,0.08)',
@@ -249,12 +282,12 @@ const Contact = () => {
                       />
                       {social.isCustom ? (
                         <social.icon 
-                          size={20} 
+                          size={16} 
                           className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
                         />
                       ) : (
                         <Icon 
-                          size={20} 
+                          size={16} 
                           className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
                         />
                       )}
@@ -274,7 +307,7 @@ const Contact = () => {
                 transitionDelay: '0.4s',
               }}
             >
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 {/* Name Input */}
                 <div 
                   className="relative transition-all duration-700"
@@ -294,7 +327,7 @@ const Contact = () => {
                     className={inputClassName}
                     style={getInputStyle('name', !!errors.name)}
                   />
-                  {errors.name && <p className="text-red-400/80 text-xs mt-1">{errors.name}</p>}
+                  {errors.name && <p className="text-red-400/80 text-[10px] mt-1">{errors.name}</p>}
                 </div>
 
                 {/* Email Input */}
@@ -316,7 +349,7 @@ const Contact = () => {
                     className={inputClassName}
                     style={getInputStyle('email', !!errors.email)}
                   />
-                  {errors.email && <p className="text-red-400/80 text-xs mt-1">{errors.email}</p>}
+                  {errors.email && <p className="text-red-400/80 text-[10px] mt-1">{errors.email}</p>}
                 </div>
 
                 {/* Message Input */}
@@ -330,7 +363,7 @@ const Contact = () => {
                 >
                   <textarea
                     placeholder="Tell us about your project..."
-                    rows={5}
+                    rows={4}
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                     onFocus={() => setFocusedField('message')}
@@ -338,7 +371,7 @@ const Contact = () => {
                     className={`${inputClassName} resize-none`}
                     style={getInputStyle('message', !!errors.message)}
                   />
-                  {errors.message && <p className="text-red-400/80 text-xs mt-1">{errors.message}</p>}
+                  {errors.message && <p className="text-red-400/80 text-[10px] mt-1">{errors.message}</p>}
                 </div>
 
                 {/* Submit Button */}
@@ -353,7 +386,7 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 disabled:opacity-50"
+                    className="group flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 disabled:opacity-50"
                     style={{
                       background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                       border: '1px solid rgba(255,255,255,0.1)',
@@ -363,7 +396,7 @@ const Contact = () => {
                       {isSubmitting ? 'Sending...' : isSuccess ? 'Message Sent!' : 'Send Message'}
                     </span>
                     <ArrowRight 
-                      size={16} 
+                      size={14} 
                       className="text-white/60 transition-transform duration-300 group-hover:translate-x-1" 
                     />
                   </button>
