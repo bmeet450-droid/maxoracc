@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { Mail, MapPin, ArrowRight } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -16,8 +16,28 @@ const ContactSection = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const { ref: leftRef, isVisible: leftVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { ref: rightRef, isVisible: rightVisible } = useScrollAnimation({ threshold: 0.2 });
+  const [headingParallax, setHeadingParallax] = useState(0);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.2 });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!headingRef.current) return;
+      const rect = headingRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+      const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+      const offset = (clampedProgress - 0.5) * 80;
+      
+      setHeadingParallax(offset);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,22 +73,54 @@ const ContactSection = () => {
   `;
 
   return (
-    <section id="contact" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#000000' }}>
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
-          {/* Left Column - Info */}
-          <div
-            ref={leftRef}
-            className="transition-all duration-700"
+    <section id="contact" className="py-32 md:py-48 px-6 md:px-12 lg:px-20" style={{ background: '#000000' }}>
+      <div className="max-w-[1600px] mx-auto">
+        {/* Section Header - matching "Our Services" style */}
+        <div 
+          ref={headerRef}
+          className="mb-16 transition-all duration-700"
+          style={{
+            opacity: headerVisible ? 1 : 0,
+            transform: headerVisible ? 'translateY(0)' : 'translateY(30px)',
+          }}
+        >
+          <h2 
+            ref={headingRef}
+            className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
             style={{
-              opacity: leftVisible ? 1 : 0,
-              transform: leftVisible ? 'translateX(0)' : 'translateX(-40px)',
+              transform: `translateY(${headingParallax}px)`,
+              transition: 'transform 0.1s ease-out',
             }}
           >
-            <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-2">Get in Touch</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight mb-6">
-              Let's Create<br />Something Great
-            </h2>
+            Let's Create
+          </h2>
+          <div 
+            className="w-full bg-white py-1 sm:py-2 flex justify-between px-4 sm:px-8 md:px-16 transition-all duration-700"
+            style={{
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? 'translateY(0) scaleY(1)' : 'translateY(10px) scaleY(0.8)',
+              transitionDelay: '0.3s',
+            }}
+          >
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Vision</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Collaboration</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Excellence</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Together</span>
+          </div>
+        </div>
+
+        <div 
+          ref={contentRef}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20"
+        >
+          {/* Left Column - Info */}
+          <div
+            className="transition-all duration-700"
+            style={{
+              opacity: contentVisible ? 1 : 0,
+              transform: contentVisible ? 'translateX(0)' : 'translateX(-40px)',
+            }}
+          >
             <p className="text-white/50 text-sm md:text-base leading-relaxed mb-10 max-w-md">
               Ready to bring your vision to life? We'd love to hear about your project and explore how we can help.
             </p>
@@ -92,11 +144,10 @@ const ContactSection = () => {
 
           {/* Right Column - Form */}
           <div
-            ref={rightRef}
             className="transition-all duration-700 delay-150"
             style={{
-              opacity: rightVisible ? 1 : 0,
-              transform: rightVisible ? 'translateX(0)' : 'translateX(40px)',
+              opacity: contentVisible ? 1 : 0,
+              transform: contentVisible ? 'translateX(0)' : 'translateX(40px)',
             }}
           >
             <form onSubmit={handleSubmit} className="space-y-4">
