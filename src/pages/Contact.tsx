@@ -1,32 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import cornerBlob from "@/assets/corner-blob.png";
+import ContactParticles from "@/components/ContactParticles";
 
-// Custom TikTok icon (not available in lucide-react)
+// Custom TikTok icon
 const TikTokIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    className={className}
-  >
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
   </svg>
 );
 
-// Custom Substack icon (not available in lucide-react)
+// Custom Substack icon
 const SubstackIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    className={className}
-  >
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
   </svg>
 );
@@ -50,6 +39,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 
 const Contact = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [form, setForm] = useState<ContactForm>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -58,17 +48,22 @@ const Contact = () => {
   const [headingParallax, setHeadingParallax] = useState(0);
   const [isPageVisible, setIsPageVisible] = useState(false);
   const [inputsVisible, setInputsVisible] = useState(false);
+  const [blobsVisible, setBlobsVisible] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
-  const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: headerRef } = useScrollAnimation({ threshold: 0.2 });
+  const { ref: contentRef } = useScrollAnimation({ threshold: 0.2 });
+
+  // Get the section to scroll back to from location state
+  const scrollToSection = (location.state as { from?: string })?.from;
 
   useEffect(() => {
-    // Trigger page entrance animation
     const timer1 = setTimeout(() => setIsPageVisible(true), 100);
     const timer2 = setTimeout(() => setInputsVisible(true), 600);
+    const timer3 = setTimeout(() => setBlobsVisible(true), 300);
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, []);
 
@@ -77,11 +72,9 @@ const Contact = () => {
       if (!headingRef.current) return;
       const rect = headingRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
       const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
       const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
       const offset = (clampedProgress - 0.5) * 80;
-      
       setHeadingParallax(offset);
     };
 
@@ -89,6 +82,14 @@ const Contact = () => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleBack = () => {
+    if (scrollToSection) {
+      navigate('/', { state: { scrollTo: scrollToSection } });
+    } else {
+      navigate(-1);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,7 +112,6 @@ const Contact = () => {
     setIsSubmitting(false);
     setIsSuccess(true);
     setForm({ name: "", email: "", message: "" });
-    
     setTimeout(() => setIsSuccess(false), 3000);
   };
 
@@ -136,15 +136,81 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
-      {/* Corner Blob Images with animations */}
+      {/* Particles Background */}
+      <ContactParticles />
+
+      {/* Corner Blob Images with slower animations and 15deg rotation */}
+      <style>{`
+        @keyframes blobShiftTopRight {
+          0%, 100% {
+            transform: translate(25%, -25%) rotate(195deg) scale(1);
+            opacity: 0.6;
+          }
+          25% {
+            transform: translate(20%, -30%) rotate(200deg) scale(1.03);
+            opacity: 0.55;
+          }
+          50% {
+            transform: translate(30%, -20%) rotate(190deg) scale(0.97);
+            opacity: 0.65;
+          }
+          75% {
+            transform: translate(22%, -28%) rotate(197deg) scale(1.01);
+            opacity: 0.58;
+          }
+        }
+        
+        @keyframes blobShiftBottomLeft {
+          0%, 100% {
+            transform: translate(-25%, 25%) rotate(15deg) scale(1);
+            opacity: 0.6;
+          }
+          25% {
+            transform: translate(-30%, 20%) rotate(10deg) scale(1.02);
+            opacity: 0.55;
+          }
+          50% {
+            transform: translate(-20%, 30%) rotate(20deg) scale(0.98);
+            opacity: 0.65;
+          }
+          75% {
+            transform: translate(-28%, 22%) rotate(12deg) scale(1.01);
+            opacity: 0.58;
+          }
+        }
+        
+        @keyframes blobEnterTopRight {
+          0% {
+            transform: translate(100%, -100%) rotate(195deg) scale(0.5);
+            opacity: 0;
+          }
+          100% {
+            transform: translate(25%, -25%) rotate(195deg) scale(1);
+            opacity: 0.6;
+          }
+        }
+        
+        @keyframes blobEnterBottomLeft {
+          0% {
+            transform: translate(-100%, 100%) rotate(15deg) scale(0.5);
+            opacity: 0;
+          }
+          100% {
+            transform: translate(-25%, 25%) rotate(15deg) scale(1);
+            opacity: 0.6;
+          }
+        }
+      `}</style>
+
       {/* Top Right Corner Blob */}
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none opacity-60"
+        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
         style={{
-          transform: 'translate(25%, -25%) rotate(180deg)',
-          animation: 'blobShiftTopRight 15s ease-in-out infinite',
+          transform: blobsVisible ? 'translate(25%, -25%) rotate(195deg)' : 'translate(100%, -100%) rotate(195deg) scale(0.5)',
+          opacity: blobsVisible ? 0.6 : 0,
+          animation: blobsVisible ? 'blobEnterTopRight 1.2s ease-out forwards, blobShiftTopRight 25s ease-in-out 1.2s infinite' : 'none',
         }}
       />
       
@@ -152,49 +218,17 @@ const Contact = () => {
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none opacity-60"
+        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
         style={{
-          transform: 'translate(-25%, 25%)',
-          animation: 'blobShiftBottomLeft 18s ease-in-out infinite',
+          transform: blobsVisible ? 'translate(-25%, 25%) rotate(15deg)' : 'translate(-100%, 100%) rotate(15deg) scale(0.5)',
+          opacity: blobsVisible ? 0.6 : 0,
+          animation: blobsVisible ? 'blobEnterBottomLeft 1.2s ease-out forwards, blobShiftBottomLeft 30s ease-in-out 1.2s infinite' : 'none',
         }}
       />
 
-      {/* Keyframes for blob animations */}
-      <style>{`
-        @keyframes blobShiftTopRight {
-          0%, 100% {
-            transform: translate(25%, -25%) rotate(180deg) scale(1);
-          }
-          25% {
-            transform: translate(20%, -30%) rotate(185deg) scale(1.05);
-          }
-          50% {
-            transform: translate(30%, -20%) rotate(175deg) scale(0.95);
-          }
-          75% {
-            transform: translate(22%, -28%) rotate(182deg) scale(1.02);
-          }
-        }
-        
-        @keyframes blobShiftBottomLeft {
-          0%, 100% {
-            transform: translate(-25%, 25%) rotate(0deg) scale(1);
-          }
-          25% {
-            transform: translate(-30%, 20%) rotate(-5deg) scale(1.03);
-          }
-          50% {
-            transform: translate(-20%, 30%) rotate(5deg) scale(0.97);
-          }
-          75% {
-            transform: translate(-28%, 22%) rotate(-3deg) scale(1.01);
-          }
-        }
-      `}</style>
-
       {/* Back Button */}
       <button
-        onClick={() => navigate('/')}
+        onClick={handleBack}
         className="fixed top-6 left-6 z-50 group flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
         style={{
           background: 'rgba(255,255,255,0.05)',
@@ -209,46 +243,68 @@ const Contact = () => {
 
       <section className="relative z-10 py-32 md:py-48 px-6 md:px-12 lg:px-20">
         <div className="max-w-[1600px] mx-auto">
-          {/* Section Header - Centered */}
+          {/* Section Header - Liquid Glass Container */}
           <div 
             ref={headerRef}
-            className="mb-16 transition-all duration-1000 text-center"
+            className="mb-16 transition-all duration-1000 flex justify-center"
             style={{
               opacity: isPageVisible ? 1 : 0,
               filter: isPageVisible ? 'blur(0px)' : 'blur(20px)',
               transform: isPageVisible ? 'translateY(0)' : 'translateY(30px)',
             }}
           >
-            <h2 
-              ref={headingRef}
-              className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8"
-              style={{
-                transform: `translateY(${headingParallax}px)`,
-                transition: 'transform 0.1s ease-out',
-              }}
-            >
-              Let's Create
-            </h2>
+            {/* Liquid Glass Container */}
             <div 
-              className="w-full bg-white py-1 sm:py-2 flex justify-between px-4 sm:px-8 md:px-16 transition-all duration-1000"
+              className="relative px-8 sm:px-12 md:px-20 py-8 md:py-12 rounded-[40px] md:rounded-[60px] max-w-4xl w-full"
               style={{
-                opacity: isPageVisible ? 1 : 0,
-                filter: isPageVisible ? 'blur(0px)' : 'blur(10px)',
-                transform: isPageVisible ? 'translateY(0) scaleY(1)' : 'translateY(10px) scaleY(0.8)',
-                transitionDelay: '0.3s',
+                background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 100%)',
+                backdropFilter: 'blur(40px)',
+                WebkitBackdropFilter: 'blur(40px)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: `
+                  0 8px 32px rgba(0,0,0,0.4),
+                  inset 0 1px 0 rgba(255,255,255,0.1),
+                  inset 0 -1px 0 rgba(0,0,0,0.3)
+                `,
               }}
             >
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Vision</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Collaboration</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Excellence</span>
-              <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Together</span>
+              {/* Glass highlight */}
+              <div 
+                className="absolute top-0 left-[10%] right-[10%] h-[1px] rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)',
+                }}
+              />
+              
+              <h2 
+                ref={headingRef}
+                className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-center"
+                style={{
+                  transform: `translateY(${headingParallax}px)`,
+                  transition: 'transform 0.1s ease-out',
+                }}
+              >
+                Let's Create
+              </h2>
+              
+              <div 
+                className="mt-6 md:mt-8 w-full bg-white/90 py-1 sm:py-2 flex justify-between px-4 sm:px-8 md:px-12 rounded-full transition-all duration-1000"
+                style={{
+                  opacity: isPageVisible ? 1 : 0,
+                  filter: isPageVisible ? 'blur(0px)' : 'blur(10px)',
+                  transform: isPageVisible ? 'translateY(0) scaleY(1)' : 'translateY(10px) scaleY(0.8)',
+                  transitionDelay: '0.3s',
+                }}
+              >
+                <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Vision</span>
+                <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Collaboration</span>
+                <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Excellence</span>
+                <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Together</span>
+              </div>
             </div>
           </div>
 
-          <div 
-            ref={contentRef}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20"
-          >
+          <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
             {/* Left Column - Info */}
             <div
               className="transition-all duration-1000"
@@ -263,7 +319,6 @@ const Contact = () => {
                 Ready to bring your vision to life? We'd love to hear about your project and explore how we can help.
               </p>
 
-              {/* Contact Info */}
               <div className="space-y-4 mb-10">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
@@ -279,7 +334,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Social Media Links */}
               <div className="flex items-center gap-4">
                 {socialLinks.map((social, index) => {
                   const Icon = social.icon;
@@ -332,7 +386,6 @@ const Contact = () => {
               }}
             >
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name Input */}
                 <div 
                   className="relative transition-all duration-700"
                   style={{
@@ -354,7 +407,6 @@ const Contact = () => {
                   {errors.name && <p className="text-red-400/80 text-xs mt-1">{errors.name}</p>}
                 </div>
 
-                {/* Email Input */}
                 <div 
                   className="relative transition-all duration-700"
                   style={{
@@ -376,7 +428,6 @@ const Contact = () => {
                   {errors.email && <p className="text-red-400/80 text-xs mt-1">{errors.email}</p>}
                 </div>
 
-                {/* Message Input */}
                 <div 
                   className="relative transition-all duration-700"
                   style={{
@@ -398,7 +449,6 @@ const Contact = () => {
                   {errors.message && <p className="text-red-400/80 text-xs mt-1">{errors.message}</p>}
                 </div>
 
-                {/* Submit Button */}
                 <div
                   className="transition-all duration-700"
                   style={{

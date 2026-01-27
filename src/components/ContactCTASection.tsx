@@ -55,9 +55,9 @@ const ContactCTASection = () => {
   const handleClick = () => {
     setIsExpanding(true);
     
-    // Navigate after the expansion animation completes
+    // Navigate after the expansion animation completes, passing the section to return to
     setTimeout(() => {
-      navigate('/contact');
+      navigate('/contact', { state: { from: 'contact' } });
     }, 800);
   };
 
