@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Palette, Layout, Video, Megaphone, Smartphone, Sparkles } from "lucide-react";
+import { Palette, Layout, Video, Megaphone, Clapperboard, Camera } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const services = [
@@ -29,15 +29,15 @@ const services = [
   },
   {
     id: 5,
-    icon: Smartphone,
-    title: "App Design",
-    description: "Intuitive mobile experiences designed for seamless user interaction.",
+    icon: Clapperboard,
+    title: "Videography",
+    description: "Capturing cinematic moments with professional video production and storytelling.",
   },
   {
     id: 6,
-    icon: Sparkles,
-    title: "Creative Direction",
-    description: "Guiding creative vision from concept to execution with precision and artistry.",
+    icon: Camera,
+    title: "Photography",
+    description: "Creating stunning visual narratives through expert photography and artistic composition.",
   },
 ];
 
@@ -139,15 +139,15 @@ const ServicesSection = () => {
                 <div 
                   className="relative mb-4 md:mb-6 transition-all duration-500"
                   style={{
-                    transform: hoveredId === service.id ? 'scale(1.15) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                    transform: hoveredId === service.id ? 'scale(1.08) rotate(3deg)' : 'scale(1) rotate(0deg)',
                   }}
                 >
                   <Icon 
                     size={32} 
                     className="transition-all duration-500"
                     style={{
-                      color: hoveredId === service.id ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.6)',
-                      filter: hoveredId === service.id ? 'drop-shadow(0 0 8px rgba(255,255,255,0.3))' : 'none',
+                      color: hoveredId === service.id ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.6)',
+                      filter: hoveredId === service.id ? 'drop-shadow(0 0 12px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.3))' : 'none',
                     }}
                   />
                 </div>
