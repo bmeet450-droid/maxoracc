@@ -8,7 +8,7 @@ const services = [
     icon: Palette,
     title: "Brand Identity",
     description: "Crafting unique visual identities that resonate with your audience and stand the test of time.",
-    video: null,
+    video: "/videos/brand-identity.mov",
   },
   {
     id: 2,
@@ -36,14 +36,14 @@ const services = [
     icon: Clapperboard,
     title: "Videography",
     description: "Capturing cinematic moments with professional video production and storytelling.",
-    video: null,
+    video: "/videos/videography.mp4",
   },
   {
     id: 6,
     icon: Camera,
     title: "Photography",
     description: "Creating stunning visual narratives through expert photography and artistic composition.",
-    video: null,
+    video: "/videos/photography.mp4",
   },
 ];
 
