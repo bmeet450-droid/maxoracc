@@ -15,7 +15,7 @@ const services = [
     icon: Layout,
     title: "Web Design",
     description: "Creating immersive digital experiences that captivate users and drive engagement.",
-    video: null,
+    video: "/videos/web-design.mp4",
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const services = [
     icon: Megaphone,
     title: "Marketing",
     description: "Strategic campaigns that amplify your message and connect with your target market.",
-    video: null,
+    video: "/videos/marketing.mp4",
   },
   {
     id: 5,
