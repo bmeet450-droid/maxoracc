@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import portfolio1 from "@/assets/portfolio-1.jpg";
 import portfolio2 from "@/assets/portfolio-2.jpg";
@@ -15,6 +16,7 @@ const projects = [
     image: portfolio1,
     category: "Enhanced",
     year: "2024",
+    slug: "tonal-alchemy",
   },
   {
     id: 2,
@@ -23,6 +25,7 @@ const projects = [
     image: portfolio2,
     category: "Wildlife",
     year: "2024",
+    slug: "phytography",
   },
   {
     id: 3,
@@ -31,6 +34,7 @@ const projects = [
     image: portfolio3,
     category: "Architecture",
     year: "2023",
+    slug: "geometric-narratives",
   },
   {
     id: 4,
@@ -39,6 +43,7 @@ const projects = [
     image: portfolio4,
     category: "Art Direction",
     year: "2024",
+    slug: "the-human-frame",
   },
   {
     id: 5,
@@ -47,6 +52,7 @@ const projects = [
     image: portfolio5,
     category: "Interior Design",
     year: "2023",
+    slug: "dimensional-narratives",
   },
   {
     id: 6,
@@ -55,6 +61,7 @@ const projects = [
     image: portfolio6,
     category: "Perspective Design",
     year: "2024",
+    slug: "prism-composition",
   },
 ];
 
@@ -63,6 +70,7 @@ interface PortfolioCardProps {
   isHovered: boolean;
   onHover: () => void;
   onLeave: () => void;
+  onClick: () => void;
   isVisible: boolean;
   delay: string;
   aspectRatio?: string;
@@ -73,7 +81,8 @@ const PortfolioCard = ({
   project, 
   isHovered, 
   onHover, 
-  onLeave, 
+  onLeave,
+  onClick,
   isVisible, 
   delay,
   aspectRatio = "4/5",
@@ -122,6 +131,7 @@ const PortfolioCard = ({
       className={`cursor-pointer group ${className}`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
+      onClick={onClick}
       style={{
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(60px)',
@@ -201,6 +211,7 @@ const PortfolioSection = () => {
   const [headingParallax, setHeadingParallax] = useState(0);
   const { ref: sectionRef, isVisible: sectionVisible } = useScrollAnimation({ threshold: 0.1 });
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -271,6 +282,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 1}
               onHover={() => setHoveredId(1)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[0].slug}`)}
               isVisible={sectionVisible}
               delay="0.1s"
               aspectRatio="4/5"
@@ -281,6 +293,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 3}
               onHover={() => setHoveredId(3)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[2].slug}`)}
               isVisible={sectionVisible}
               delay="0.3s"
               aspectRatio="4/5"
@@ -292,6 +305,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 5}
               onHover={() => setHoveredId(5)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[4].slug}`)}
               isVisible={sectionVisible}
               delay="0.5s"
               aspectRatio="16/9"
@@ -305,6 +319,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 2}
               onHover={() => setHoveredId(2)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[1].slug}`)}
               isVisible={sectionVisible}
               delay="0.2s"
               aspectRatio="3/4"
@@ -315,6 +330,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 4}
               onHover={() => setHoveredId(4)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[3].slug}`)}
               isVisible={sectionVisible}
               delay="0.4s"
               aspectRatio="4/5"
@@ -326,6 +342,7 @@ const PortfolioSection = () => {
               isHovered={hoveredId === 6}
               onHover={() => setHoveredId(6)}
               onLeave={() => setHoveredId(null)}
+              onClick={() => navigate(`/project/${projects[5].slug}`)}
               isVisible={sectionVisible}
               delay="0.6s"
               aspectRatio="16/9"
