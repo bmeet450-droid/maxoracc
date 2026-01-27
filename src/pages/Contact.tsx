@@ -135,38 +135,94 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: '#000000' }}>
-      {/* Corner Gradients */}
-      {/* Top Right Corner Gradient */}
+      {/* Corner Gradients with animations */}
+      {/* Top Right Corner Gradient - Primary */}
       <div 
-        className="fixed top-0 right-0 w-[800px] h-[800px] pointer-events-none"
+        className="fixed top-0 right-0 w-[800px] h-[800px] pointer-events-none animate-pulse-slow"
         style={{
           background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 30%, transparent 70%)',
           transform: 'translate(30%, -30%)',
+          animation: 'gradientPulse 8s ease-in-out infinite, gradientShift 12s ease-in-out infinite',
         }}
       />
+      {/* Top Right Corner Gradient - Secondary */}
       <div 
         className="fixed top-0 right-0 w-[600px] h-[600px] pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse at top right, rgba(255,255,255,0.05) 0%, transparent 60%)',
           transform: 'translate(20%, -20%)',
+          animation: 'gradientPulse 6s ease-in-out infinite reverse, gradientShiftAlt 10s ease-in-out infinite',
         }}
       />
       
-      {/* Bottom Left Corner Gradient */}
+      {/* Bottom Left Corner Gradient - Primary */}
       <div 
         className="fixed bottom-0 left-0 w-[800px] h-[800px] pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse at bottom left, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 30%, transparent 70%)',
           transform: 'translate(-30%, 30%)',
+          animation: 'gradientPulse 9s ease-in-out infinite 2s, gradientShiftBottom 14s ease-in-out infinite',
         }}
       />
+      {/* Bottom Left Corner Gradient - Secondary */}
       <div 
         className="fixed bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse at bottom left, rgba(255,255,255,0.04) 0%, transparent 60%)',
           transform: 'translate(-20%, 20%)',
+          animation: 'gradientPulse 7s ease-in-out infinite 1s reverse, gradientShiftBottomAlt 11s ease-in-out infinite',
         }}
       />
+
+      {/* Keyframes for animations */}
+      <style>{`
+        @keyframes gradientPulse {
+          0%, 100% {
+            opacity: 1;
+            transform: translate(30%, -30%) scale(1);
+          }
+          50% {
+            opacity: 0.6;
+            transform: translate(30%, -30%) scale(1.1);
+          }
+        }
+        
+        @keyframes gradientShift {
+          0%, 100% {
+            transform: translate(30%, -30%) rotate(0deg);
+          }
+          50% {
+            transform: translate(25%, -35%) rotate(5deg);
+          }
+        }
+        
+        @keyframes gradientShiftAlt {
+          0%, 100% {
+            transform: translate(20%, -20%) rotate(0deg);
+          }
+          50% {
+            transform: translate(15%, -25%) rotate(-3deg);
+          }
+        }
+        
+        @keyframes gradientShiftBottom {
+          0%, 100% {
+            transform: translate(-30%, 30%) rotate(0deg);
+          }
+          50% {
+            transform: translate(-35%, 25%) rotate(-5deg);
+          }
+        }
+        
+        @keyframes gradientShiftBottomAlt {
+          0%, 100% {
+            transform: translate(-20%, 20%) rotate(0deg);
+          }
+          50% {
+            transform: translate(-25%, 15%) rotate(3deg);
+          }
+        }
+      `}</style>
 
       {/* Back Button */}
       <button
