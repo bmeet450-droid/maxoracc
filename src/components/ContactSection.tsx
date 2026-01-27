@@ -1,12 +1,41 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
+// Custom TikTok icon (not available in lucide-react)
+const TikTokIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+  </svg>
+);
+
+// Custom Substack icon (not available in lucide-react)
+const SubstackIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+  >
+    <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+  </svg>
+);
+
 const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Instagram, href: "https://instagram.com/yourprofile", label: "Instagram" },
+  { icon: Linkedin, href: "https://linkedin.com/in/yourprofile", label: "LinkedIn" },
+  { icon: Twitter, href: "https://twitter.com/yourprofile", label: "Twitter" },
+  { icon: TikTokIcon, href: "https://tiktok.com/@yourprofile", label: "TikTok", isCustom: true },
+  { icon: Youtube, href: "https://youtube.com/@yourprofile", label: "YouTube" },
+  { icon: SubstackIcon, href: "https://yourprofile.substack.com", label: "Substack", isCustom: true },
 ];
 
 const contactSchema = z.object({
@@ -186,10 +215,17 @@ const ContactSection = () => {
                         filter: 'blur(8px)',
                       }}
                     />
-                    <Icon 
-                      size={20} 
-                      className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
-                    />
+                    {social.isCustom ? (
+                      <social.icon 
+                        size={20} 
+                        className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
+                      />
+                    ) : (
+                      <Icon 
+                        size={20} 
+                        className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
+                      />
+                    )}
                   </a>
                 );
               })}
