@@ -150,12 +150,9 @@ const ScrollTimeline = () => {
               }}
             >
               {youtubeVideos[index] ? (
-                /* YouTube thumbnail with play button */
-                <a
-                  href={`https://www.youtube.com/watch?v=${youtubeVideos[index]}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500 relative group"
+                /* YouTube embed */
+                <div 
+                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     opacity: isActive ? 1 : 0.3,
                     boxShadow: isActive 
@@ -163,18 +160,14 @@ const ScrollTimeline = () => {
                       : '0 5px 20px rgba(0,0,0,0.3)',
                   }}
                 >
-                  <img
-                    src={`https://img.youtube.com/vi/${youtubeVideos[index]}/hqdefault.jpg`}
-                    alt={`Video ${point.id} thumbnail`}
-                    className="w-full h-full object-cover"
+                  <iframe
+                    src={`https://www.youtube.com/embed/${youtubeVideos[index]}`}
+                    title={`YouTube video ${point.id}`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
                   />
-                  {/* Play button overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors duration-300">
-                    <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <div className="w-0 h-0 border-t-[6px] md:border-t-[8px] border-t-transparent border-l-[10px] md:border-l-[14px] border-l-black border-b-[6px] md:border-b-[8px] border-b-transparent ml-1" />
-                    </div>
-                  </div>
-                </a>
+                </div>
               ) : (
                 /* Empty placeholder slot */
                 <div 
