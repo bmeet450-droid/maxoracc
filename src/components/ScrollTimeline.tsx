@@ -152,7 +152,7 @@ const ScrollTimeline = () => {
               {youtubeVideos[index] ? (
                 /* YouTube embed */
                 <div 
-                  className="w-[calc(100vw-80px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
+                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     opacity: isActive ? 1 : 0.3,
                     boxShadow: isActive 
@@ -171,7 +171,7 @@ const ScrollTimeline = () => {
               ) : (
                 /* Empty placeholder slot */
                 <div 
-                  className="w-[calc(100vw-80px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
+                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
                     borderColor: isActive ? 'rgba(255,255,255,0.4)' : 'rgba(115,115,115,0.5)',
                     backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
