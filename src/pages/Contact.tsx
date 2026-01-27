@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube, ArrowLeft } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import cornerBlob from "@/assets/corner-blob.png";
 import ContactParticles from "@/components/ContactParticles";
@@ -38,6 +40,7 @@ const contactSchema = z.object({
 type ContactForm = z.infer<typeof contactSchema>;
 
 const Contact = () => {
+  const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm] = useState<ContactForm>({ name: "", email: "", message: "" });
@@ -120,11 +123,37 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setForm({ name: "", email: "", message: "" });
-    setTimeout(() => setIsSuccess(false), 3000);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      setIsSuccess(true);
+      setForm({ name: "", email: "", message: "" });
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. We'll get back to you soon.",
+      });
+      setTimeout(() => setIsSuccess(false), 3000);
+    } catch (error: any) {
+      console.error("Failed to send message:", error);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later or email us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getInputStyle = (fieldName: string, hasError: boolean) => ({
