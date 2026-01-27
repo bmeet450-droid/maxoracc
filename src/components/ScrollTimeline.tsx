@@ -128,12 +128,22 @@ const ScrollTimeline = () => {
                 </span>
               </div>
               
-              {/* End circle below slot */}
+              {/* Circle below slot - this connects to the line */}
               <div 
                 className="w-2 h-2 md:w-3 md:h-3 rounded-full mt-3 md:mt-4"
                 style={{
                   backgroundColor: 'rgba(255,255,255,0.8)',
                   boxShadow: '0 0 10px rgba(255,255,255,0.5)',
+                }}
+              />
+              
+              {/* Vertical line from circle to convergence point */}
+              <div 
+                className="w-[2px] flex-1 mt-0"
+                style={{
+                  background: 'linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.4))',
+                  boxShadow: '0 0 8px rgba(255,255,255,0.3)',
+                  minHeight: isMobile ? '80px' : '120px',
                 }}
               />
             </div>
@@ -146,11 +156,46 @@ const ScrollTimeline = () => {
             className="w-4 h-4 md:w-5 md:h-5 rounded-full border-2"
             style={{
               borderColor: 'rgba(255,255,255,0.9)',
-              backgroundColor: 'rgba(255,255,255,0.3)',
+              backgroundColor: 'transparent',
               boxShadow: '0 0 20px rgba(255,255,255,0.6)',
             }}
           />
         </div>
+        
+        {/* Curved lines from each slot's line end to center convergence */}
+        <svg 
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          style={{ top: '50%' }}
+          preserveAspectRatio="none"
+        >
+          {[0, 1, 2, 3, 4].map((i) => {
+            const slotCount = 5;
+            const slotSpacing = isMobile ? 18 : 16;
+            const startX = 50 - ((slotCount - 1) / 2) * slotSpacing + i * slotSpacing;
+            const endX = 50;
+            const startY = 0;
+            const endY = isMobile ? 60 : 50;
+            
+            const cp1Y = startY + (endY - startY) * 0.5;
+            const cp2Y = startY + (endY - startY) * 0.8;
+            
+            return (
+              <path
+                key={`bottom-curve-${i}`}
+                d={`M ${startX}% ${startY}% 
+                    C ${startX}% ${cp1Y}%, 
+                      ${endX}% ${cp2Y}%, 
+                      ${endX}% ${endY}%`}
+                fill="none"
+                stroke="rgba(255,255,255,0.5)"
+                strokeWidth="2"
+                style={{
+                  filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.3))',
+                }}
+              />
+            );
+          })}
+        </svg>
       </div>
 
       {/* Central vertical line - starts after branch section */}
