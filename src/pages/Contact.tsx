@@ -161,41 +161,27 @@ const Contact = () => {
       <ContactParticles />
 
       <style>{`
-        @keyframes blobShiftTopRight {
+        @keyframes blobFloatTopRight {
           0%, 100% {
-            transform: translate(calc(25% + var(--mouse-x, 0px)), calc(-25% + var(--mouse-y, 0px))) rotate(195deg) scale(1);
-            opacity: 0.6;
+            transform: translate(calc(25% + var(--mx, 0px)), calc(-25% + var(--my, 0px))) rotate(195deg) scale(1);
           }
-          25% {
-            transform: translate(calc(20% + var(--mouse-x, 0px)), calc(-30% + var(--mouse-y, 0px))) rotate(200deg) scale(1.03);
-            opacity: 0.55;
+          33% {
+            transform: translate(calc(23% + var(--mx, 0px)), calc(-27% + var(--my, 0px))) rotate(193deg) scale(1.01);
           }
-          50% {
-            transform: translate(calc(30% + var(--mouse-x, 0px)), calc(-20% + var(--mouse-y, 0px))) rotate(190deg) scale(0.97);
-            opacity: 0.65;
-          }
-          75% {
-            transform: translate(calc(22% + var(--mouse-x, 0px)), calc(-28% + var(--mouse-y, 0px))) rotate(197deg) scale(1.01);
-            opacity: 0.58;
+          66% {
+            transform: translate(calc(27% + var(--mx, 0px)), calc(-23% + var(--my, 0px))) rotate(197deg) scale(0.99);
           }
         }
         
-        @keyframes blobShiftBottomLeft {
+        @keyframes blobFloatBottomLeft {
           0%, 100% {
-            transform: translate(calc(-25% + var(--mouse-x, 0px)), calc(25% + var(--mouse-y, 0px))) rotate(15deg) scale(1);
-            opacity: 0.6;
+            transform: translate(calc(-25% + var(--mx, 0px)), calc(25% + var(--my, 0px))) rotate(15deg) scale(1);
           }
-          25% {
-            transform: translate(calc(-30% + var(--mouse-x, 0px)), calc(20% + var(--mouse-y, 0px))) rotate(10deg) scale(1.02);
-            opacity: 0.55;
+          33% {
+            transform: translate(calc(-27% + var(--mx, 0px)), calc(23% + var(--my, 0px))) rotate(17deg) scale(1.01);
           }
-          50% {
-            transform: translate(calc(-20% + var(--mouse-x, 0px)), calc(30% + var(--mouse-y, 0px))) rotate(20deg) scale(0.98);
-            opacity: 0.65;
-          }
-          75% {
-            transform: translate(calc(-28% + var(--mouse-x, 0px)), calc(22% + var(--mouse-y, 0px))) rotate(12deg) scale(1.01);
-            opacity: 0.58;
+          66% {
+            transform: translate(calc(-23% + var(--mx, 0px)), calc(27% + var(--my, 0px))) rotate(13deg) scale(0.99);
           }
         }
         
@@ -222,32 +208,36 @@ const Contact = () => {
         }
       `}</style>
 
-      {/* Top Right Corner Blob with mouse parallax */}
+      {/* Top Right Corner Blob with mouse parallax and floating */}
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none transition-transform duration-300 ease-out"
+        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
         style={{
-          transform: blobsVisible 
-            ? `translate(calc(25% + ${topRightParallax.x}px), calc(-25% + ${topRightParallax.y}px)) rotate(195deg)` 
-            : 'translate(100%, -100%) rotate(195deg) scale(0.5)',
+          '--mx': `${topRightParallax.x}px`,
+          '--my': `${topRightParallax.y}px`,
           opacity: blobsVisible ? 0.6 : 0,
-          animation: blobsVisible ? 'blobEnterTopRight 1.2s ease-out forwards' : 'none',
-        }}
+          animation: blobsVisible 
+            ? 'blobEnterTopRight 1.2s ease-out forwards, blobFloatTopRight 12s ease-in-out 1.2s infinite' 
+            : 'none',
+          transition: 'opacity 0.5s ease-out',
+        } as React.CSSProperties}
       />
       
-      {/* Bottom Left Corner Blob with mouse parallax */}
+      {/* Bottom Left Corner Blob with mouse parallax and floating */}
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none transition-transform duration-300 ease-out"
+        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
         style={{
-          transform: blobsVisible 
-            ? `translate(calc(-25% + ${bottomLeftParallax.x}px), calc(25% + ${bottomLeftParallax.y}px)) rotate(15deg)` 
-            : 'translate(-100%, 100%) rotate(15deg) scale(0.5)',
+          '--mx': `${bottomLeftParallax.x}px`,
+          '--my': `${bottomLeftParallax.y}px`,
           opacity: blobsVisible ? 0.6 : 0,
-          animation: blobsVisible ? 'blobEnterBottomLeft 1.2s ease-out forwards' : 'none',
-        }}
+          animation: blobsVisible 
+            ? 'blobEnterBottomLeft 1.2s ease-out forwards, blobFloatBottomLeft 15s ease-in-out 1.2s infinite' 
+            : 'none',
+          transition: 'opacity 0.5s ease-out',
+        } as React.CSSProperties}
       />
 
       {/* Back Button */}
