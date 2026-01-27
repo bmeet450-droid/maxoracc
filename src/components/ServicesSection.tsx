@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Palette, Layout, Video, Megaphone, Smartphone, Sparkles } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
@@ -43,25 +43,64 @@ const services = [
 
 const ServicesSection = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [headingParallax, setHeadingParallax] = useState(0);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
   const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!headingRef.current) return;
+      const rect = headingRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height);
+      const clampedProgress = Math.max(0, Math.min(1, scrollProgress));
+      const offset = (clampedProgress - 0.5) * 80;
+      
+      setHeadingParallax(offset);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <section id="services" className="py-20 md:py-32 px-4 md:px-8" style={{ background: '#0d0d0d' }}>
-      <div className="max-w-7xl mx-auto">
+    <section id="services" className="py-32 md:py-48 px-6 md:px-12 lg:px-20" style={{ background: '#000000' }}>
+      <div className="max-w-[1600px] mx-auto">
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className="mb-12 md:mb-20 text-center transition-all duration-700"
+          className="mb-16 transition-all duration-700"
           style={{
             opacity: headerVisible ? 1 : 0,
             transform: headerVisible ? 'translateY(0)' : 'translateY(30px)',
           }}
         >
-          <p className="text-white/40 text-xs md:text-sm tracking-widest uppercase mb-2">What We Do</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white/90 tracking-tight">
+          <h2 
+            ref={headingRef}
+            className="text-white text-3xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
+            style={{
+              transform: `translateY(${headingParallax}px)`,
+              transition: 'transform 0.1s ease-out',
+            }}
+          >
             Our Services
           </h2>
+          <div 
+            className="w-full bg-white py-1 sm:py-2 flex justify-between px-4 sm:px-8 md:px-16 transition-all duration-700"
+            style={{
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? 'translateY(0) scaleY(1)' : 'translateY(10px) scaleY(0.8)',
+              transitionDelay: '0.3s',
+            }}
+          >
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Creative</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Strategic</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Innovative</span>
+            <span className="text-black text-[10px] sm:text-xs font-bold tracking-wide">Impactful</span>
+          </div>
         </div>
 
         {/* Services Grid */}
