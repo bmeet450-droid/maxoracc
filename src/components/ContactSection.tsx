@@ -1,7 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { Mail, MapPin, ArrowRight } from "lucide-react";
+import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+
+const socialLinks = [
+  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+];
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -14,6 +20,7 @@ type ContactForm = z.infer<typeof contactSchema>;
 const ContactSection = () => {
   const [form, setForm] = useState<ContactForm>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactForm, string>>>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [headingParallax, setHeadingParallax] = useState(0);
@@ -65,11 +72,23 @@ const ContactSection = () => {
     setTimeout(() => setIsSuccess(false), 3000);
   };
 
-  const inputStyles = `
+  const getInputStyle = (fieldName: string, hasError: boolean) => ({
+    background: 'rgba(255,255,255,0.03)',
+    border: hasError 
+      ? '1px solid rgba(239,68,68,0.5)' 
+      : focusedField === fieldName 
+        ? '1px solid rgba(255,255,255,0.3)' 
+        : '1px solid rgba(255,255,255,0.05)',
+    boxShadow: focusedField === fieldName 
+      ? '0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02)' 
+      : 'none',
+  });
+
+  const inputClassName = `
     w-full px-4 py-3 rounded-xl text-white/90 text-sm
-    transition-all duration-300
+    transition-all duration-500
     placeholder:text-white/30
-    focus:outline-none focus:ring-1 focus:ring-white/20
+    focus:outline-none
   `;
 
   return (
@@ -126,7 +145,7 @@ const ContactSection = () => {
             </p>
 
             {/* Contact Info */}
-            <div className="space-y-4">
+            <div className="space-y-4 mb-10">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <Mail size={18} className="text-white/60" />
@@ -140,6 +159,41 @@ const ContactSection = () => {
                 <span className="text-white/70 text-sm">New York</span>
               </div>
             </div>
+
+            {/* Social Media Links */}
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="group relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 hover:scale-110"
+                    style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      transitionDelay: `${index * 50}ms`,
+                    }}
+                  >
+                    {/* Glow effect on hover */}
+                    <div 
+                      className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
+                        filter: 'blur(8px)',
+                      }}
+                    />
+                    <Icon 
+                      size={20} 
+                      className="relative z-10 text-white/50 transition-all duration-300 group-hover:text-white group-hover:scale-110"
+                    />
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right Column - Form */}
@@ -151,47 +205,44 @@ const ContactSection = () => {
             }}
           >
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
+              <div className="relative">
                 <input
                   type="text"
                   placeholder="Your Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className={inputStyles}
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: errors.name ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.05)',
-                  }}
+                  onFocus={() => setFocusedField('name')}
+                  onBlur={() => setFocusedField(null)}
+                  className={inputClassName}
+                  style={getInputStyle('name', !!errors.name)}
                 />
                 {errors.name && <p className="text-red-400/80 text-xs mt-1">{errors.name}</p>}
               </div>
 
-              <div>
+              <div className="relative">
                 <input
                   type="email"
                   placeholder="Your Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className={inputStyles}
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: errors.email ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.05)',
-                  }}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  className={inputClassName}
+                  style={getInputStyle('email', !!errors.email)}
                 />
                 {errors.email && <p className="text-red-400/80 text-xs mt-1">{errors.email}</p>}
               </div>
 
-              <div>
+              <div className="relative">
                 <textarea
                   placeholder="Tell us about your project..."
                   rows={5}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className={`${inputStyles} resize-none`}
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: errors.message ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.05)',
-                  }}
+                  onFocus={() => setFocusedField('message')}
+                  onBlur={() => setFocusedField(null)}
+                  className={`${inputClassName} resize-none`}
+                  style={getInputStyle('message', !!errors.message)}
                 />
                 {errors.message && <p className="text-red-400/80 text-xs mt-1">{errors.message}</p>}
               </div>
