@@ -8,36 +8,42 @@ const services = [
     icon: Palette,
     title: "Brand Identity",
     description: "Crafting unique visual identities that resonate with your audience and stand the test of time.",
+    video: null,
   },
   {
     id: 2,
     icon: Layout,
     title: "Web Design",
     description: "Creating immersive digital experiences that captivate users and drive engagement.",
+    video: null,
   },
   {
     id: 3,
     icon: Video,
     title: "Motion Design",
     description: "Bringing brands to life through compelling animations and video content.",
+    video: "/videos/motion-design.mov",
   },
   {
     id: 4,
     icon: Megaphone,
     title: "Marketing",
     description: "Strategic campaigns that amplify your message and connect with your target market.",
+    video: null,
   },
   {
     id: 5,
     icon: Clapperboard,
     title: "Videography",
     description: "Capturing cinematic moments with professional video production and storytelling.",
+    video: null,
   },
   {
     id: 6,
     icon: Camera,
     title: "Photography",
     description: "Creating stunning visual narratives through expert photography and artistic composition.",
+    video: null,
   },
 ];
 
@@ -47,6 +53,7 @@ const ServicesSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ threshold: 0.2 });
   const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,6 +72,23 @@ const ServicesSection = () => {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleCardHover = (serviceId: number, video: string | null) => {
+    setHoveredId(serviceId);
+    if (video && videoRefs.current[serviceId]) {
+      videoRefs.current[serviceId]?.play();
+    }
+  };
+
+  const handleCardLeave = (serviceId: number, video: string | null) => {
+    setHoveredId(null);
+    if (video && videoRefs.current[serviceId]) {
+      videoRefs.current[serviceId]?.pause();
+      if (videoRefs.current[serviceId]) {
+        videoRefs.current[serviceId]!.currentTime = 0;
+      }
+    }
+  };
 
   return (
     <section id="services" className="py-32 md:py-48 px-6 md:px-12 lg:px-20" style={{ background: '#000000' }}>
@@ -110,27 +134,56 @@ const ServicesSection = () => {
         >
           {services.map((service, index) => {
             const Icon = service.icon;
+            const isHovered = hoveredId === service.id;
+            const hasVideo = service.video !== null;
+            
             return (
               <div
                 key={service.id}
                 className="group relative p-6 md:p-8 rounded-2xl cursor-pointer overflow-hidden"
-                onMouseEnter={() => setHoveredId(service.id)}
-                onMouseLeave={() => setHoveredId(null)}
+                onMouseEnter={() => handleCardHover(service.id, service.video)}
+                onMouseLeave={() => handleCardLeave(service.id, service.video)}
                 style={{
-                  background: 'linear-gradient(135deg, rgba(25,25,25,0.4) 0%, rgba(15,15,15,0.6) 100%)',
+                  background: hasVideo && isHovered ? 'transparent' : 'linear-gradient(135deg, rgba(25,25,25,0.4) 0%, rgba(15,15,15,0.6) 100%)',
                   border: '1px solid rgba(255,255,255,0.05)',
                   opacity: gridVisible ? 1 : 0,
                   transform: gridVisible 
-                    ? (hoveredId === service.id ? 'translateY(-4px)' : 'translateY(0)')
+                    ? (isHovered ? (hasVideo ? 'scale(1.05)' : 'translateY(-4px)') : 'translateY(0) scale(1)')
                     : 'translateY(40px)',
                   transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`,
+                  zIndex: isHovered ? 10 : 1,
                 }}
               >
+                {/* Video Background for Motion Design */}
+                {hasVideo && (
+                  <>
+                    <video
+                      ref={(el) => { videoRefs.current[service.id] = el; }}
+                      src={service.video}
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover rounded-2xl transition-opacity duration-700"
+                      style={{
+                        opacity: isHovered ? 1 : 0,
+                      }}
+                    />
+                    {/* Dark overlay for text readability */}
+                    <div 
+                      className="absolute inset-0 rounded-2xl transition-opacity duration-700"
+                      style={{
+                        opacity: isHovered ? 1 : 0,
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.2) 100%)',
+                      }}
+                    />
+                  </>
+                )}
+
                 {/* Hover gradient overlay */}
                 <div 
                   className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
                   style={{
-                    opacity: hoveredId === service.id ? 1 : 0,
+                    opacity: isHovered && !hasVideo ? 1 : 0,
                     background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(120,120,255,0.05) 50%, rgba(255,100,150,0.03) 100%)',
                   }}
                 />
@@ -139,15 +192,15 @@ const ServicesSection = () => {
                 <div 
                   className="relative mb-4 md:mb-6 transition-all duration-500"
                   style={{
-                    transform: hoveredId === service.id ? 'scale(1.08) rotate(3deg)' : 'scale(1) rotate(0deg)',
+                    transform: isHovered ? 'scale(1.08) rotate(3deg)' : 'scale(1) rotate(0deg)',
                   }}
                 >
                   <Icon 
                     size={32} 
                     className="transition-all duration-500"
                     style={{
-                      color: hoveredId === service.id ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.6)',
-                      filter: hoveredId === service.id ? 'drop-shadow(0 0 12px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.3))' : 'none',
+                      color: isHovered ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.6)',
+                      filter: isHovered ? 'drop-shadow(0 0 12px rgba(255,255,255,0.5)) drop-shadow(0 0 20px rgba(255,255,255,0.3))' : 'none',
                     }}
                   />
                 </div>
@@ -166,9 +219,9 @@ const ServicesSection = () => {
                 <div 
                   className="absolute bottom-0 left-0 right-0 h-[2px] transition-all duration-500"
                   style={{
-                    opacity: hoveredId === service.id ? 1 : 0,
+                    opacity: isHovered ? 1 : 0,
                     background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
-                    transform: hoveredId === service.id ? 'scaleX(1)' : 'scaleX(0)',
+                    transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
                   }}
                 />
 
@@ -176,7 +229,7 @@ const ServicesSection = () => {
                 <div 
                   className="absolute -top-20 -right-20 w-40 h-40 rounded-full pointer-events-none transition-opacity duration-500"
                   style={{
-                    opacity: hoveredId === service.id ? 0.6 : 0,
+                    opacity: isHovered ? 0.6 : 0,
                     background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
                   }}
                 />
