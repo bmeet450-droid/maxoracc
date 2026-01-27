@@ -19,12 +19,12 @@ const youtubeVideos = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 8, side: "left", lineLength: 80, lineLengthMobile: 20 },
-  { id: 2, offset: 25, side: "right", lineLength: 120, lineLengthMobile: 20 },
-  { id: 3, offset: 42, side: "left", lineLength: 100, lineLengthMobile: 20 },
-  { id: 4, offset: 58, side: "right", lineLength: 90, lineLengthMobile: 20 },
-  { id: 5, offset: 75, side: "left", lineLength: 110, lineLengthMobile: 20 },
-  { id: 6, offset: 92, side: "right", lineLength: 85, lineLengthMobile: 20 },
+  { id: 1, offset: 10, side: "left", lineLength: 80, lineLengthMobile: 20 },
+  { id: 2, offset: 24, side: "right", lineLength: 120, lineLengthMobile: 20 },
+  { id: 3, offset: 38, side: "left", lineLength: 100, lineLengthMobile: 20 },
+  { id: 4, offset: 52, side: "right", lineLength: 90, lineLengthMobile: 20 },
+  { id: 5, offset: 66, side: "left", lineLength: 110, lineLengthMobile: 20 },
+  { id: 6, offset: 80, side: "right", lineLength: 85, lineLengthMobile: 20 },
 ];
 
 const ScrollTimeline = () => {
@@ -152,7 +152,7 @@ const ScrollTimeline = () => {
               {youtubeVideos[index] ? (
                 /* YouTube embed */
                 <div 
-                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
+                  className="w-[calc(100vw-80px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
                   style={{
                     opacity: isActive ? 1 : 0.3,
                     boxShadow: isActive 
@@ -171,7 +171,7 @@ const ScrollTimeline = () => {
               ) : (
                 /* Empty placeholder slot */
                 <div 
-                  className="w-[calc(100vw-80px)] sm:w-64 md:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
+                  className="w-[calc(100vw-80px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
                     borderColor: isActive ? 'rgba(255,255,255,0.4)' : 'rgba(115,115,115,0.5)',
                     backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
