@@ -52,7 +52,17 @@ const UserProfile = () => {
         variant: "destructive",
       });
     } else if (data) {
-      setProfile(data);
+      // If avatar_url is a file path (not a full URL), generate a signed URL
+      let profileWithSignedUrl = { ...data };
+      if (data.avatar_url && !data.avatar_url.startsWith('http')) {
+        const { data: signedUrlData } = await supabase.storage
+          .from("avatars")
+          .createSignedUrl(data.avatar_url, 3600);
+        if (signedUrlData) {
+          profileWithSignedUrl.avatar_url = signedUrlData.signedUrl;
+        }
+      }
+      setProfile(profileWithSignedUrl);
       setDisplayName(data.display_name || "");
       setBio(data.bio || "");
     } else {
@@ -129,15 +139,27 @@ const UserProfile = () => {
       return;
     }
 
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
+    // Get signed URL for private bucket (1 hour expiry)
+    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
       .from("avatars")
-      .getPublicUrl(fileName);
+      .createSignedUrl(fileName, 3600);
 
-    // Update profile with new avatar URL
+    if (signedUrlError || !signedUrlData) {
+      console.error("Signed URL error:", signedUrlError);
+      toast({
+        title: "Error",
+        description: "Unable to process avatar. Please try again.",
+        variant: "destructive",
+      });
+      setIsUploadingAvatar(false);
+      return;
+    }
+
+    // Store the file path in profile (not the signed URL, which expires)
+    // We'll generate fresh signed URLs when displaying
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ avatar_url: publicUrl })
+      .update({ avatar_url: fileName })
       .eq("user_id", user.id);
 
     if (updateError) {
@@ -148,7 +170,7 @@ const UserProfile = () => {
         variant: "destructive",
       });
     } else {
-      setProfile(prev => prev ? { ...prev, avatar_url: publicUrl } : null);
+      setProfile(prev => prev ? { ...prev, avatar_url: signedUrlData.signedUrl } : null);
       toast({
         title: "Avatar updated",
         description: "Your profile picture has been updated.",
