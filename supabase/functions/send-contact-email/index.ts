@@ -17,31 +17,115 @@ interface ContactRequest {
   message: string;
 }
 
+// HTML escape function to prevent XSS in email templates
+const escapeHtml = (text: string): string => {
+  const htmlEntities: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+  return text.replace(/[&<>"']/g, (char) => htmlEntities[char] || char);
+};
+
+// Rate limiting configuration
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const RATE_LIMIT_MAX_REQUESTS = 5; // Max 5 submissions per IP per hour
+
+// Simple in-memory rate limiting (resets on function cold start, but provides basic protection)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+const checkRateLimit = (ip: string): { allowed: boolean; remaining: number } => {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - 1 };
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return { allowed: false, remaining: 0 };
+  }
+  
+  record.count++;
+  return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS - record.count };
+};
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    if (!RESEND_API_KEY) {
-      throw new Error("RESEND_API_KEY is not configured");
+    // Check rate limit based on client IP
+    const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || 
+                     req.headers.get("x-real-ip") || 
+                     "unknown";
+    
+    const rateLimit = checkRateLimit(clientIp);
+    if (!rateLimit.allowed) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please try again later." }),
+        { 
+          status: 429, 
+          headers: { 
+            "Content-Type": "application/json", 
+            "Retry-After": "3600",
+            ...corsHeaders 
+          } 
+        }
+      );
     }
 
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error("Supabase credentials are not configured");
+    if (!RESEND_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("Missing required environment configuration");
+      return new Response(
+        JSON.stringify({ error: "Service temporarily unavailable. Please try again later." }),
+        { status: 503, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     const { name, email, message }: ContactRequest = await req.json();
 
     // Validate required fields
     if (!name || !email || !message) {
-      throw new Error("Missing required fields: name, email, and message are required");
+      return new Response(
+        JSON.stringify({ error: "Please fill in all required fields." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Input length validation
+    if (name.length > 100) {
+      return new Response(
+        JSON.stringify({ error: "Name must be less than 100 characters." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    if (email.length > 255) {
+      return new Response(
+        JSON.stringify({ error: "Email must be less than 255 characters." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    if (message.length > 5000) {
+      return new Response(
+        JSON.stringify({ error: "Message must be less than 5000 characters." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      throw new Error("Invalid email address");
+      return new Response(
+        JSON.stringify({ error: "Please provide a valid email address." }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     // Create Supabase client with service role
@@ -51,19 +135,25 @@ const handler = async (req: Request): Promise<Response> => {
     const { data: submission, error: dbError } = await supabase
       .from("contact_submissions")
       .insert({
-        name,
-        email,
-        message,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        message: message.trim(),
       })
       .select()
       .single();
 
     if (dbError) {
       console.error("Database error:", dbError);
-      throw new Error("Failed to save submission");
+      return new Response(
+        JSON.stringify({ error: "Unable to process your request. Please try again later." }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
-    console.log("Submission saved:", submission.id);
+    // Escape user input for safe HTML embedding
+    const safeName = escapeHtml(name.trim());
+    const safeEmail = escapeHtml(email.trim());
+    const safeMessage = escapeHtml(message.trim());
 
     // Send notification email to the business
     const notificationRes = await fetch("https://api.resend.com/emails", {
@@ -75,7 +165,7 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "Maxora Contact <onboarding@resend.dev>",
         to: ["bmeet450@gmail.com"],
-        subject: `New Contact Form Submission from ${name}`,
+        subject: `New Contact Form Submission from ${safeName}`,
         html: `
           <!DOCTYPE html>
           <html>
@@ -100,31 +190,30 @@ const handler = async (req: Request): Promise<Response> => {
               <div class="content">
                 <div class="field">
                   <div class="label">Name</div>
-                  <div class="value">${name}</div>
+                  <div class="value">${safeName}</div>
                 </div>
                 <div class="field">
                   <div class="label">Email</div>
-                  <div class="value"><a href="mailto:${email}">${email}</a></div>
+                  <div class="value"><a href="mailto:${safeEmail}">${safeEmail}</a></div>
                 </div>
                 <div class="field">
                   <div class="label">Message</div>
-                  <div class="value message-value">${message}</div>
+                  <div class="value message-value">${safeMessage}</div>
                 </div>
               </div>
             </div>
           </body>
           </html>
         `,
-        reply_to: email,
+        reply_to: email.trim(),
       }),
     });
 
     let emailSent = false;
     if (notificationRes.ok) {
       emailSent = true;
-      console.log("Notification email sent successfully");
     } else {
-      console.error("Failed to send notification email:", await notificationRes.text());
+      console.error("Failed to send notification email");
     }
 
     // Send confirmation email to the sender
@@ -136,7 +225,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "Maxora <onboarding@resend.dev>",
-        to: [email],
+        to: [email.trim()],
         subject: "Thank you for contacting Maxora!",
         html: `
           <!DOCTYPE html>
@@ -167,20 +256,20 @@ const handler = async (req: Request): Promise<Response> => {
                   <p>We've received your message</p>
                 </div>
                 <div class="content">
-                  <p class="greeting">Hi ${name},</p>
+                  <p class="greeting">Hi ${safeName},</p>
                   <p class="message">
                     Thank you for reaching out to Maxora! We've received your message and are excited to learn more about your project. Our team will review your inquiry and get back to you within 24-48 hours.
                   </p>
                   <div class="summary">
                     <div class="summary-title">Your Message</div>
-                    <div class="summary-content">${message}</div>
+                    <div class="summary-content">${safeMessage}</div>
                   </div>
                   <p class="message">
                     In the meantime, feel free to explore our portfolio and learn more about what we do. We look forward to the possibility of working together!
                   </p>
                 </div>
                 <div class="footer">
-                  <p>© ${new Date().getFullYear()} Maxora. All rights reserved.</p>
+                  <p>&copy; ${new Date().getFullYear()} Maxora. All rights reserved.</p>
                 </div>
               </div>
             </div>
@@ -193,9 +282,8 @@ const handler = async (req: Request): Promise<Response> => {
     let confirmationSent = false;
     if (confirmationRes.ok) {
       confirmationSent = true;
-      console.log("Confirmation email sent successfully");
     } else {
-      console.error("Failed to send confirmation email:", await confirmationRes.text());
+      console.error("Failed to send confirmation email");
     }
 
     // Update database with email status
@@ -222,10 +310,10 @@ const handler = async (req: Request): Promise<Response> => {
         },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error in send-contact-email function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "An unexpected error occurred. Please try again later." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
