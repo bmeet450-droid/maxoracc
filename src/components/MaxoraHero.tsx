@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import VideoCollage from "./VideoCollage";
 import HeroParticles from "./HeroParticles";
+import maxoraLogo from "@/assets/maxora-logo.png";
 
 const MaxoraHero = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,9 +26,11 @@ const MaxoraHero = () => {
       opacity: isLoaded ? 1 : 0,
       transform: isLoaded ? 'translateY(0)' : 'translateY(-20px)'
     }}>
-        <div className="text-lg md:text-xl font-bold tracking-wider text-white/90 mx-0 md:mx-[29px] my-0 md:my-[9px]">
-          MAXORA
-        </div>
+        <img 
+          src={maxoraLogo} 
+          alt="Maxora" 
+          className="h-8 md:h-10 w-auto mx-0 md:mx-[29px] my-0 md:my-[9px]"
+        />
         
         {/* Desktop nav */}
         <div className="hidden md:flex gap-8">
