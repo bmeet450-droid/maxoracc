@@ -56,10 +56,10 @@ const SignUp = () => {
 
     toast({
       title: "Account created!",
-      description: "You can now sign in with your credentials.",
+      description: "Please check your email to verify your account.",
     });
     
-    navigate("/admin/login");
+    navigate("/admin/verify-email");
   };
 
   const handleGoogleSignUp = async () => {
