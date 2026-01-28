@@ -144,8 +144,8 @@ const Contact = () => {
         description: "Thank you for reaching out. We'll get back to you soon.",
       });
       setTimeout(() => setIsSuccess(false), 3000);
-    } catch (error: any) {
-      console.error("Failed to send message:", error);
+    } catch (error: unknown) {
+      // Error handling without exposing internal details
       toast({
         title: "Failed to send message",
         description: "Please try again later or email us directly.",

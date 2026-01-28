@@ -37,11 +37,11 @@ const AdminDashboard = () => {
       if (error) throw error;
       
       setSubmissions(data.submissions || []);
-    } catch (error: any) {
-      console.error("Error fetching submissions:", error);
+    } catch (error: unknown) {
+      // Log for debugging but don't expose internal details to user
       toast({
         title: "Error loading submissions",
-        description: error.message,
+        description: "Unable to load submissions. Please try again later.",
         variant: "destructive",
       });
     } finally {
