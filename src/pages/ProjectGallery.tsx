@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import CustomCursor from "@/components/CustomCursor";
 import Footer from "@/components/Footer";
+import GalleryGrid from "@/components/gallery/GalleryGrid";
+import { getGalleryImages } from "@/data/galleryData";
 
 const projects = [
   {
@@ -54,18 +56,6 @@ const projects = [
   },
 ];
 
-// Placeholder gallery images for each project
-const galleryImages = [
-  { id: 1, aspectRatio: "4/5" },
-  { id: 2, aspectRatio: "16/9" },
-  { id: 3, aspectRatio: "3/4" },
-  { id: 4, aspectRatio: "1/1" },
-  { id: 5, aspectRatio: "4/5" },
-  { id: 6, aspectRatio: "16/9" },
-  { id: 7, aspectRatio: "3/4" },
-  { id: 8, aspectRatio: "4/5" },
-];
-
 const ProjectGallery = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -74,6 +64,7 @@ const ProjectGallery = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   const project = projects.find((p) => p.slug === slug);
+  const galleryImages = slug ? getGalleryImages(slug) : [];
 
   useEffect(() => {
     // Scroll to top on mount
@@ -177,26 +168,13 @@ const ProjectGallery = () => {
       {/* Gallery Grid */}
       <section className="px-6 md:px-12 lg:px-20 pb-32">
         <div className="max-w-[1600px] mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {galleryImages.map((image, index) => (
-              <div
-                key={image.id}
-                className="overflow-hidden rounded-lg bg-white/5 transition-all duration-700"
-                style={{
-                  aspectRatio: image.aspectRatio,
-                  opacity: isVisible ? 1 : 0,
-                  transform: isVisible ? "translateY(0)" : "translateY(40px)",
-                  transitionDelay: `${0.6 + index * 0.1}s`,
-                }}
-              >
-                <div className="w-full h-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center">
-                  <span className="text-white/20 text-sm tracking-widest uppercase">
-                    Image {image.id}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {galleryImages.length > 0 && galleryImages[0].src ? (
+            <GalleryGrid images={galleryImages} isVisible={isVisible} />
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-white/40 text-lg">Gallery images coming soon...</p>
+            </div>
+          )}
         </div>
       </section>
 
