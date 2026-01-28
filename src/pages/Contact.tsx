@@ -221,7 +221,7 @@ const Contact = () => {
           }
           100% {
             transform: translate(25%, -25%) rotate(195deg) scale(1);
-            opacity: 0.6;
+            opacity: 0.15;
           }
         }
         
@@ -232,7 +232,43 @@ const Contact = () => {
           }
           100% {
             transform: translate(-25%, 25%) rotate(15deg) scale(1);
-            opacity: 0.6;
+            opacity: 0.15;
+          }
+        }
+
+        @media (min-width: 768px) {
+          @keyframes blobEnterTopRight {
+            0% {
+              transform: translate(100%, -100%) rotate(195deg) scale(0.5);
+              opacity: 0;
+            }
+            100% {
+              transform: translate(25%, -25%) rotate(195deg) scale(1);
+              opacity: 0.3;
+            }
+          }
+          
+          @keyframes blobEnterBottomLeft {
+            0% {
+              transform: translate(-100%, 100%) rotate(15deg) scale(0.5);
+              opacity: 0;
+            }
+            100% {
+              transform: translate(-25%, 25%) rotate(15deg) scale(1);
+              opacity: 0.3;
+            }
+          }
+        }
+
+        .blob-asset {
+          opacity: 0;
+        }
+        .blob-asset.visible {
+          opacity: 0.15;
+        }
+        @media (min-width: 768px) {
+          .blob-asset.visible {
+            opacity: 0.3;
           }
         }
       `}</style>
@@ -241,11 +277,10 @@ const Contact = () => {
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
+        className={`fixed top-0 right-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none blob-asset ${blobsVisible ? 'visible' : ''}`}
         style={{
           '--mx': `${topRightParallax.x}px`,
           '--my': `${topRightParallax.y}px`,
-          opacity: blobsVisible ? 0.3 : 0,
           animation: blobsVisible 
             ? 'blobEnterTopRight 1.2s ease-out forwards, blobFloatTopRight 12s ease-in-out 1.2s infinite' 
             : 'none',
@@ -257,11 +292,10 @@ const Contact = () => {
       <img 
         src={cornerBlob}
         alt=""
-        className="fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none"
+        className={`fixed bottom-0 left-0 w-[500px] md:w-[700px] lg:w-[900px] h-auto pointer-events-none blob-asset ${blobsVisible ? 'visible' : ''}`}
         style={{
           '--mx': `${bottomLeftParallax.x}px`,
           '--my': `${bottomLeftParallax.y}px`,
-          opacity: blobsVisible ? 0.3 : 0,
           animation: blobsVisible 
             ? 'blobEnterBottomLeft 1.2s ease-out forwards, blobFloatBottomLeft 15s ease-in-out 1.2s infinite' 
             : 'none',
