@@ -185,6 +185,13 @@ const AdminLogin = () => {
               {isLoading ? 'Signing in...' : 'Sign In with Email'}
             </span>
           </button>
+
+          <Link 
+            to="/admin/forgot-password" 
+            className="block mt-3 text-center text-white/40 text-sm hover:text-white/60 transition-colors"
+          >
+            Forgot your password?
+          </Link>
         </form>
 
         <p className="mt-6 text-center text-white/40 text-sm">
