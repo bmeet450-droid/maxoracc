@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectGallery from "./pages/ProjectGallery";
 import NotFound from "./pages/NotFound";
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/signup" element={<SignUp />} />
+            <Route path="/admin/forgot-password" element={<ForgotPassword />} />
+            <Route path="/admin/reset-password" element={<ResetPassword />} />
             <Route path="/admin" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
