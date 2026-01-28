@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import cursorImage from "@/assets/cursor.png";
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -52,19 +53,20 @@ const CustomCursor = () => {
         * { cursor: none !important; }
       `}</style>
       <div
-        className="pointer-events-none fixed z-[9999] mix-blend-difference"
+        className="pointer-events-none fixed z-[9999]"
         style={{
           left: position.x,
           top: position.y,
           opacity: isVisible ? 1 : 0,
         }}
       >
-        {/* Dot cursor */}
-        <div
-          className="absolute rounded-full bg-white transition-all duration-200 ease-out"
+        <img
+          src={cursorImage}
+          alt=""
+          className="absolute transition-all duration-200 ease-out"
           style={{
-            width: isHovering ? 12 : 8,
-            height: isHovering ? 12 : 8,
+            width: isHovering ? 48 : 32,
+            height: isHovering ? 48 : 32,
             transform: 'translate(-50%, -50%)',
           }}
         />
