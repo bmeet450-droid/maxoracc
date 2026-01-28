@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogOut, Mail, Calendar, User, MessageSquare, RefreshCw } from "lucide-react";
+import { ArrowLeft, LogOut, Mail, Calendar, User, MessageSquare, RefreshCw, ShieldAlert } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -22,10 +22,46 @@ const AdminDashboard = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [adminCheckLoading, setAdminCheckLoading] = useState(true);
 
+  // Verify admin role server-side before rendering dashboard
   useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/admin/login");
+    const checkAdminStatus = async () => {
+      if (!user) {
+        setAdminCheckLoading(false);
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        // Check admin role via server-side query
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+
+        if (error) {
+          console.error("Error checking admin status");
+          setIsAdmin(false);
+        } else {
+          setIsAdmin(!!data);
+        }
+      } catch {
+        setIsAdmin(false);
+      } finally {
+        setAdminCheckLoading(false);
+      }
+    };
+
+    if (!authLoading) {
+      if (!user) {
+        navigate("/admin/login");
+      } else {
+        checkAdminStatus();
+      }
     }
   }, [user, authLoading, navigate]);
 
@@ -70,16 +106,39 @@ const AdminDashboard = () => {
     });
   };
 
-  if (authLoading) {
+  if (authLoading || adminCheckLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#000000' }}>
-        <div className="text-white/60">Loading...</div>
+        <div className="text-white/60">Verifying access...</div>
       </div>
     );
   }
 
   if (!user) {
     return null;
+  }
+
+  // Server-side admin verification failed - show access denied
+  if (isAdmin === false) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000000' }}>
+        <div className="text-center">
+          <ShieldAlert size={48} className="mx-auto mb-4 text-red-400/60" />
+          <h1 className="text-xl font-bold text-white mb-2">Access Denied</h1>
+          <p className="text-white/50 mb-6">You don't have admin privileges to view this page.</p>
+          <button
+            onClick={() => navigate("/")}
+            className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300"
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <span className="text-white/70">Return to Site</span>
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
