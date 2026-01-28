@@ -157,21 +157,21 @@ const Contact = () => {
   };
 
   const getInputStyle = (fieldName: string, hasError: boolean) => ({
-    background: 'rgba(255,255,255,0.03)',
+    background: 'rgba(255,255,255,0.06)',
     border: hasError 
       ? '1px solid rgba(239,68,68,0.5)' 
       : focusedField === fieldName 
-        ? '1px solid rgba(255,255,255,0.3)' 
-        : '1px solid rgba(255,255,255,0.05)',
+        ? '1px solid rgba(255,255,255,0.4)' 
+        : '1px solid rgba(255,255,255,0.12)',
     boxShadow: focusedField === fieldName 
       ? '0 0 20px rgba(255,255,255,0.1), 0 0 40px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02)' 
       : 'none',
   });
 
   const inputClassName = `
-    w-full px-4 py-3 rounded-xl text-white/90 text-sm
+    w-full px-4 py-3 rounded-xl text-white text-sm md:text-sm
     transition-all duration-500
-    placeholder:text-white/30
+    placeholder:text-white/50 md:placeholder:text-white/30
     focus:outline-none
   `;
 
@@ -245,7 +245,7 @@ const Contact = () => {
         style={{
           '--mx': `${topRightParallax.x}px`,
           '--my': `${topRightParallax.y}px`,
-          opacity: blobsVisible ? 0.6 : 0,
+          opacity: blobsVisible ? 0.3 : 0,
           animation: blobsVisible 
             ? 'blobEnterTopRight 1.2s ease-out forwards, blobFloatTopRight 12s ease-in-out 1.2s infinite' 
             : 'none',
@@ -261,7 +261,7 @@ const Contact = () => {
         style={{
           '--mx': `${bottomLeftParallax.x}px`,
           '--my': `${bottomLeftParallax.y}px`,
-          opacity: blobsVisible ? 0.6 : 0,
+          opacity: blobsVisible ? 0.3 : 0,
           animation: blobsVisible 
             ? 'blobEnterBottomLeft 1.2s ease-out forwards, blobFloatBottomLeft 15s ease-in-out 1.2s infinite' 
             : 'none',
@@ -362,7 +362,7 @@ const Contact = () => {
                 transitionDelay: '0.2s',
               }}
             >
-              <p className="text-white/50 text-sm md:text-base leading-relaxed mb-10 max-w-md">
+              <p className="text-white/80 md:text-white/50 text-sm md:text-base leading-relaxed mb-10 max-w-md">
                 Ready to bring your vision to life? We'd love to hear about your project and explore how we can help.
               </p>
 
@@ -371,13 +371,13 @@ const Contact = () => {
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                     <Mail size={18} className="text-white/60" />
                   </div>
-                  <span className="text-white/70 text-sm">bmeet450@gmail.com</span>
+                  <span className="text-white/90 md:text-white/70 text-sm">bmeet450@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                     <MapPin size={18} className="text-white/60" />
                   </div>
-                  <span className="text-white/70 text-sm">New York</span>
+                  <span className="text-white/90 md:text-white/70 text-sm">New York</span>
                 </div>
               </div>
 
