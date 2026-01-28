@@ -20,7 +20,7 @@ const handler = async (req: Request): Promise<Response> => {
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
+        JSON.stringify({ error: "Authentication required" }),
         { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
@@ -36,24 +36,53 @@ const handler = async (req: Request): Promise<Response> => {
     const { data: claimsData, error: claimsError } = await supabaseClient.auth.getClaims(token);
 
     if (claimsError || !claimsData?.claims) {
-      console.error("Auth error:", claimsError);
+      console.error("Auth verification failed");
       return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
+        JSON.stringify({ error: "Authentication required" }),
         { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // User is authenticated, fetch submissions using service role
+    const userId = claimsData.claims.sub;
+
+    // Create admin client to check roles
     const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+    // Check if user has admin role
+    const { data: roleData, error: roleError } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (roleError) {
+      console.error("Role check failed");
+      return new Response(
+        JSON.stringify({ error: "Unable to verify permissions" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    if (!roleData) {
+      return new Response(
+        JSON.stringify({ error: "Access denied. Admin privileges required." }),
+        { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // User is authenticated AND has admin role, fetch submissions
     const { data: submissions, error: dbError } = await supabaseAdmin
       .from("contact_submissions")
       .select("*")
       .order("created_at", { ascending: false });
 
     if (dbError) {
-      console.error("Database error:", dbError);
-      throw new Error("Failed to fetch submissions");
+      console.error("Database query failed");
+      return new Response(
+        JSON.stringify({ error: "Unable to retrieve submissions" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
     }
 
     return new Response(
@@ -63,10 +92,10 @@ const handler = async (req: Request): Promise<Response> => {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
-  } catch (error: any) {
-    console.error("Error in get-contact-submissions:", error);
+  } catch (error: unknown) {
+    console.error("Unexpected error in get-contact-submissions");
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "An unexpected error occurred. Please try again later." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
