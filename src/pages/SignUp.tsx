@@ -1,29 +1,53 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { ArrowLeft, Lock, Mail } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { ArrowLeft, Lock, Mail, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-const AdminLogin = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Passwords don't match",
+        description: "Please make sure your passwords match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast({
+        title: "Password too short",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
-    const { error } = await signIn(email, password);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
+    });
 
     if (error) {
       toast({
-        title: "Login failed",
-        description: "Invalid email or password. Please try again.",
+        title: "Sign up failed",
+        description: error.message,
         variant: "destructive",
       });
       setIsLoading(false);
@@ -31,14 +55,14 @@ const AdminLogin = () => {
     }
 
     toast({
-      title: "Welcome back!",
-      description: "Redirecting to dashboard...",
+      title: "Account created!",
+      description: "You can now sign in with your credentials.",
     });
     
-    navigate("/admin");
+    navigate("/admin/login");
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true);
     
     const { error } = await supabase.auth.signInWithOAuth({
@@ -50,7 +74,7 @@ const AdminLogin = () => {
 
     if (error) {
       toast({
-        title: "Google sign-in failed",
+        title: "Google sign-up failed",
         description: error.message,
         variant: "destructive",
       });
@@ -93,16 +117,16 @@ const AdminLogin = () => {
             className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
             style={{ background: 'rgba(255,255,255,0.05)' }}
           >
-            <Lock size={28} className="text-white/60" />
+            <User size={28} className="text-white/60" />
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">Admin Login</h1>
-          <p className="text-white/50 text-sm">Sign in to access the dashboard</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Create Account</h1>
+          <p className="text-white/50 text-sm">Sign up to get started</p>
         </div>
 
-        {/* Google Sign-In Button */}
+        {/* Google Sign-Up Button */}
         <button
           type="button"
-          onClick={handleGoogleSignIn}
+          onClick={handleGoogleSignUp}
           disabled={isGoogleLoading}
           className="w-full py-3 rounded-xl text-sm font-medium transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 mb-6 hover:opacity-90"
           style={{
@@ -129,7 +153,7 @@ const AdminLogin = () => {
             />
           </svg>
           <span className="text-gray-700">
-            {isGoogleLoading ? 'Signing in...' : 'Continue with Google'}
+            {isGoogleLoading ? 'Signing up...' : 'Continue with Google'}
           </span>
         </button>
 
@@ -164,6 +188,24 @@ const AdminLogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={6}
+              className={inputClassName}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            />
+          </div>
+
+          <div className="relative">
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
+            <input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
               className={inputClassName}
               style={{
                 background: 'rgba(255,255,255,0.03)',
@@ -182,18 +224,18 @@ const AdminLogin = () => {
             }}
           >
             <span className="text-white/90">
-              {isLoading ? 'Signing in...' : 'Sign In with Email'}
+              {isLoading ? 'Creating account...' : 'Create Account'}
             </span>
           </button>
         </form>
 
         <p className="mt-6 text-center text-white/40 text-sm">
-          Don't have an account?{' '}
+          Already have an account?{' '}
           <Link 
-            to="/admin/signup" 
+            to="/admin/login" 
             className="text-white/70 hover:text-white transition-colors underline"
           >
-            Sign up
+            Sign in
           </Link>
         </p>
       </div>
@@ -201,4 +243,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default SignUp;
