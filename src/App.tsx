@@ -11,9 +11,11 @@ import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
+import VerifyEmail from "./pages/VerifyEmail";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProjectGallery from "./pages/ProjectGallery";
 import NotFound from "./pages/NotFound";
+import RequireEmailVerified from "./components/RequireEmailVerified";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -31,8 +33,9 @@ const App = () => (
             <Route path="/admin/signup" element={<SignUp />} />
             <Route path="/admin/forgot-password" element={<ForgotPassword />} />
             <Route path="/admin/reset-password" element={<ResetPassword />} />
-            <Route path="/admin/profile" element={<UserProfile />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/verify-email" element={<VerifyEmail />} />
+            <Route path="/admin/profile" element={<RequireEmailVerified><UserProfile /></RequireEmailVerified>} />
+            <Route path="/admin" element={<RequireEmailVerified><AdminDashboard /></RequireEmailVerified>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
