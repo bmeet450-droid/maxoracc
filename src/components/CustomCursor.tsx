@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import cursorImage from "@/assets/cursor.png";
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateCursor = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
     };
+
+    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => setIsVisible(false);
 
     const addHoverListeners = () => {
       const interactiveElements = document.querySelectorAll(
@@ -21,6 +25,8 @@ const CustomCursor = () => {
     };
 
     window.addEventListener('mousemove', updateCursor);
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
     
     // Initial setup and observe for new elements
     addHoverListeners();
@@ -29,6 +35,8 @@ const CustomCursor = () => {
 
     return () => {
       window.removeEventListener('mousemove', updateCursor);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       observer.disconnect();
     };
   }, []);
@@ -44,19 +52,19 @@ const CustomCursor = () => {
         * { cursor: none !important; }
       `}</style>
       <div
-        className="pointer-events-none fixed z-[9999]"
+        className="pointer-events-none fixed z-[9999] mix-blend-difference"
         style={{
           left: position.x,
           top: position.y,
+          opacity: isVisible ? 1 : 0,
         }}
       >
-        <img
-          src={cursorImage}
-          alt=""
-          className="absolute transition-all duration-200 ease-out"
+        {/* Dot cursor */}
+        <div
+          className="absolute rounded-full bg-white transition-all duration-200 ease-out"
           style={{
-            width: isHovering ? 48 : 32,
-            height: isHovering ? 48 : 32,
+            width: isHovering ? 12 : 8,
+            height: isHovering ? 12 : 8,
             transform: 'translate(-50%, -50%)',
           }}
         />
