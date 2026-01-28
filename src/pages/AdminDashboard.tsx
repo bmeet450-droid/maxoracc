@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, LogOut, Mail, Calendar, User, MessageSquare, RefreshCw, ShieldAlert } from "lucide-react";
+import { ArrowLeft, LogOut, Mail, Calendar, User, MessageSquare, RefreshCw, ShieldAlert, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -167,8 +167,19 @@ const AdminDashboard = () => {
           <h1 className="text-xl font-bold text-white">Admin Dashboard</h1>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <span className="text-white/50 text-sm hidden sm:block">{user.email}</span>
+          <button
+            onClick={() => navigate('/admin/profile')}
+            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
+            style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <Settings size={16} className="text-white/60" />
+            <span className="text-white/70 hidden sm:inline">Profile</span>
+          </button>
           <button
             onClick={handleSignOut}
             className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300"
@@ -178,7 +189,7 @@ const AdminDashboard = () => {
             }}
           >
             <LogOut size={16} className="text-white/60" />
-            <span className="text-white/70">Sign Out</span>
+            <span className="text-white/70 hidden sm:inline">Sign Out</span>
           </button>
         </div>
       </header>
