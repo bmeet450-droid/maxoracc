@@ -8,6 +8,16 @@ import phyto6 from "@/assets/gallery/phytography/DSC00559.jpg";
 import phyto7 from "@/assets/gallery/phytography/DSC00572.jpg";
 import phyto8 from "@/assets/gallery/phytography/DSC00591.jpg";
 
+// Import images for The Human Frame gallery
+import human1 from "@/assets/gallery/the-human-frame/DSC01261.jpg";
+import human2 from "@/assets/gallery/the-human-frame/DSC01275.jpg";
+import human3 from "@/assets/gallery/the-human-frame/DSC01491.jpg";
+import human4 from "@/assets/gallery/the-human-frame/DSC01765.jpg";
+import human5 from "@/assets/gallery/the-human-frame/DSC01768.jpg";
+import human6 from "@/assets/gallery/the-human-frame/portrait-profile.jpg";
+import human7 from "@/assets/gallery/the-human-frame/couple-station.jpg";
+import human8 from "@/assets/gallery/the-human-frame/street-vendor.jpg";
+
 export interface GalleryImage {
   id: number;
   src: string;
@@ -45,10 +55,14 @@ export const galleryData: Record<string, GalleryImage[]> = {
     { id: 4, src: "", alt: "Image 4", aspectRatio: "16/9" },
   ],
   "the-human-frame": [
-    { id: 1, src: "", alt: "Image 1", aspectRatio: "3/4" },
-    { id: 2, src: "", alt: "Image 2", aspectRatio: "4/5" },
-    { id: 3, src: "", alt: "Image 3", aspectRatio: "3/4" },
-    { id: 4, src: "", alt: "Image 4", aspectRatio: "4/5" },
+    { id: 1, src: human1, alt: "Person walking through grand hallway with chandeliers", aspectRatio: "3/4" },
+    { id: 2, src: human2, alt: "Silhouettes in historic building with candlelight", aspectRatio: "3/4" },
+    { id: 3, src: human3, alt: "Person feeding pigeons on city street", aspectRatio: "3/4" },
+    { id: 4, src: human4, alt: "Smiling woman with colorful scarf in snow", aspectRatio: "3/4" },
+    { id: 5, src: human5, alt: "Man with MTA beanie smiling in winter", aspectRatio: "3/4" },
+    { id: 6, src: human6, alt: "Portrait profile with bokeh lights", aspectRatio: "3/4" },
+    { id: 7, src: human7, alt: "Couple at train station", aspectRatio: "3/4" },
+    { id: 8, src: human8, alt: "Street vendor with crafts", aspectRatio: "16/9" },
   ],
   "dimensional-narratives": [
     { id: 1, src: "", alt: "Image 1", aspectRatio: "16/9" },
