@@ -244,7 +244,7 @@ const Contact = () => {
             }
             100% {
               transform: translate(25%, -25%) rotate(195deg) scale(1);
-              opacity: 0.3;
+              opacity: 0.6;
             }
           }
           
@@ -255,7 +255,7 @@ const Contact = () => {
             }
             100% {
               transform: translate(-25%, 25%) rotate(15deg) scale(1);
-              opacity: 0.3;
+              opacity: 0.6;
             }
           }
         }
@@ -268,7 +268,7 @@ const Contact = () => {
         }
         @media (min-width: 768px) {
           .blob-asset.visible {
-            opacity: 0.3;
+            opacity: 0.6;
           }
         }
       `}</style>
