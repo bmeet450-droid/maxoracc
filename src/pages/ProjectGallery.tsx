@@ -128,7 +128,7 @@ const ProjectGallery = () => {
           >
             <h1
               ref={headingRef}
-              className="text-white text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
+              className="text-white text-5xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold tracking-tighter mb-8 whitespace-nowrap"
               style={{
                 transform: `translateY(${headingParallax}px)`,
                 transition: "transform 0.1s ease-out",
