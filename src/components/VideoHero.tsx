@@ -331,9 +331,9 @@ const VideoHero = () => {
 
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 mt-16">
-        {/* Top Label */}
+        {/* Top Label - Centered */}
         <div
-          className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 text-center"
+          className="absolute top-32 md:top-36 left-1/2 -translate-x-1/2 text-center"
           style={{
             opacity: isLoaded ? 1 : 0,
             transform: `translateY(${isLoaded ? 0 : 20}px)`,
@@ -441,7 +441,7 @@ const VideoHero = () => {
         {/* Navigation Dots - Desktop only */}
         {!isMobile && (
           <div
-            className="absolute bottom-20 md:bottom-24 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3"
+            className="absolute bottom-14 md:bottom-16 left-1/2 -translate-x-1/2 flex gap-2 md:gap-3"
             style={{
               opacity: isLoaded ? 1 : 0,
               transition: "opacity 0.5s ease 0.2s",
@@ -482,9 +482,9 @@ const VideoHero = () => {
         {/* Bottom Stats/Details - Edge positioned */}
         {!isMobile && (
           <>
-            {/* Format - Left edge */}
+            {/* Format - Left side, slightly towards center */}
             <div
-              className="absolute bottom-8 md:bottom-12 left-4 md:left-8"
+              className="absolute bottom-8 md:bottom-12 left-12 md:left-24"
               style={{
                 opacity: isLoaded ? 1 : 0,
                 transform: `translateY(${isLoaded ? 0 : 20}px)`,
@@ -505,9 +505,9 @@ const VideoHero = () => {
               </span>
             </div>
 
-            {/* Clip counter - Right edge */}
+            {/* Clip counter - Right side, slightly towards center */}
             <div
-              className="absolute bottom-8 md:bottom-12 right-4 md:right-8 text-right"
+              className="absolute bottom-8 md:bottom-12 right-12 md:right-24 text-right"
               style={{
                 opacity: isLoaded ? 1 : 0,
                 transform: `translateY(${isLoaded ? 0 : 20}px)`,
