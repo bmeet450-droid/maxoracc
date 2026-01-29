@@ -2,16 +2,17 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { Menu, X } from "lucide-react";
 import maxoraLogo from "@/assets/maxora-logo.png";
 
+// Reordered sequence: 7→1, 3→2, 2→3, 8→4, 9→5, 6→6, 5→7, 4→8, 1→9
 const wideVideos = [
-  "/videos/wide2.mp4",
-  "/videos/wide3.mp4",
-  "/videos/wide4.mp4",
-  "/videos/wide5.mp4",
-  "/videos/wide6.mp4",
-  "/videos/wide10.mp4",
-  "/videos/wide11.mp4",
-  "/videos/wide12.mp4",
-  "/videos/wide13.mp4",
+  "/videos/wide11.mp4",  // was clip 7, now clip 1
+  "/videos/wide4.mp4",   // was clip 3, now clip 2
+  "/videos/wide3.mp4",   // was clip 2, now clip 3
+  "/videos/wide12.mp4",  // was clip 8, now clip 4
+  "/videos/wide13.mp4",  // was clip 9, now clip 5
+  "/videos/wide6.mp4",   // clip 6 stays the same
+  "/videos/wide5.mp4",   // was clip 5, now clip 7
+  "/videos/wide5.mp4",   // was clip 4, now clip 8 (note: wide5 for original clip 4)
+  "/videos/wide2.mp4",   // was clip 1, now clip 9
 ];
 
 interface AnimatedTextProps {
@@ -436,31 +437,6 @@ const VideoHero = () => {
           </div>
         </div>
 
-        {/* Video Progress Bar - Desktop only */}
-        {!isMobile && (
-          <div
-            className="absolute bottom-32 md:bottom-36 left-1/2 -translate-x-1/2 w-48 md:w-64"
-            style={{
-              opacity: isLoaded ? 1 : 0,
-              transition: "opacity 0.5s ease",
-              transitionDelay: "500ms",
-            }}
-          >
-            <div
-              className="h-[1px] w-full rounded-full overflow-hidden"
-              style={{ background: "rgba(255,255,255,0.15)" }}
-            >
-              <div
-                className="h-full rounded-full"
-                style={{
-                  width: `${videoProgress * 100}%`,
-                  background: "rgba(255,255,255,0.6)",
-                  transition: "width 0.1s linear",
-                }}
-              />
-            </div>
-          </div>
-        )}
 
         {/* Navigation Dots - Desktop only */}
         {!isMobile && (
@@ -503,17 +479,18 @@ const VideoHero = () => {
           </div>
         )}
 
-        {/* Bottom Stats/Details */}
-        <div
-          className="absolute bottom-8 md:bottom-12 left-0 right-0 px-8"
-          style={{
-            opacity: isLoaded ? 1 : 0,
-            transform: `translateY(${isLoaded ? 0 : 20}px)`,
-            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s",
-          }}
-        >
-          <div className="flex justify-between items-end max-w-6xl mx-auto">
-            <div className="hidden md:block">
+        {/* Bottom Stats/Details - Edge positioned */}
+        {!isMobile && (
+          <>
+            {/* Format - Left edge */}
+            <div
+              className="absolute bottom-8 md:bottom-12 left-4 md:left-8"
+              style={{
+                opacity: isLoaded ? 1 : 0,
+                transform: `translateY(${isLoaded ? 0 : 20}px)`,
+                transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s",
+              }}
+            >
               <span
                 className="text-[10px] tracking-[0.2em] uppercase block mb-1 font-extralight"
                 style={{ color: "rgba(255,255,255,0.4)" }}
@@ -528,7 +505,15 @@ const VideoHero = () => {
               </span>
             </div>
 
-            <div className="hidden md:block text-right">
+            {/* Clip counter - Right edge */}
+            <div
+              className="absolute bottom-8 md:bottom-12 right-4 md:right-8 text-right"
+              style={{
+                opacity: isLoaded ? 1 : 0,
+                transform: `translateY(${isLoaded ? 0 : 20}px)`,
+                transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s",
+              }}
+            >
               <span
                 className="text-[10px] tracking-[0.2em] uppercase block mb-1 font-extralight"
                 style={{ color: "rgba(255,255,255,0.4)" }}
@@ -542,8 +527,8 @@ const VideoHero = () => {
                 {currentVideoIndex + 1} / {wideVideos.length}
               </span>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
       {/* Scroll indicator */}
