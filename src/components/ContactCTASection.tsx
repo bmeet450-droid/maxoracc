@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import Spline from '@splinetool/react-spline';
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const ContactCTASection = () => {
@@ -113,8 +114,23 @@ const ContactCTASection = () => {
         )}
       </div>
 
-      <section id="contact" className="py-32 md:py-48 px-6 md:px-12 lg:px-20" style={{ background: '#000000' }}>
-        <div className="max-w-[1600px] mx-auto">
+      <section id="contact" className="relative py-32 md:py-48 px-6 md:px-12 lg:px-20 overflow-hidden" style={{ background: '#000000' }}>
+        {/* Spline 3D Background */}
+        <div className="absolute inset-0 z-0">
+          <Spline
+            scene="https://prod.spline.design/CO6AbJxqSVzTKFUS/scene.splinecode"
+            style={{ width: '100%', height: '100%' }}
+          />
+          {/* Gradient overlay to ensure text readability */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.8) 100%)',
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-[1600px] mx-auto">
           {/* Section Header - right aligned */}
           <div 
             ref={headerRef}

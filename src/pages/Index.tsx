@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import CustomCursor from "@/components/CustomCursor";
-import MaxoraHero from "@/components/MaxoraHero";
+import VideoHero from "@/components/VideoHero";
 import PortfolioSection from "@/components/PortfolioSection";
-import VideoShowcaseSection from "@/components/VideoShowcaseSection";
 import AboutSection from "@/components/AboutSection";
 import AboutUsSection from "@/components/AboutUsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -32,9 +31,8 @@ const Index = () => {
   return (
     <div className="min-h-screen" style={{ background: '#000000' }}>
       <CustomCursor />
-      <MaxoraHero />
+      <VideoHero />
       <PortfolioSection />
-      <VideoShowcaseSection />
       <AboutSection />
       <AboutUsSection />
       <ServicesSection />
