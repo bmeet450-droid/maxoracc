@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import CustomCursor from "@/components/CustomCursor";
 import Footer from "@/components/Footer";
 import GalleryGrid from "@/components/gallery/GalleryGrid";
 import { getGalleryImages } from "@/data/galleryData";
@@ -98,8 +97,6 @@ const ProjectGallery = () => {
 
   return (
     <div className="min-h-screen" style={{ background: "#000000" }}>
-      <CustomCursor />
-
       {/* Back Button */}
       <button
         onClick={() => navigate("/")}
