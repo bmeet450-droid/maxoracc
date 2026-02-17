@@ -361,8 +361,8 @@ const VideoHero = () => {
               className="text-3xl md:text-5xl lg:text-7xl italic mr-3 md:mr-4"
               style={{ 
                 color: "#fff",
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontWeight: 200,
+                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
+                fontWeight: 700,
               }}
             />
             <AnimatedText
@@ -373,8 +373,8 @@ const VideoHero = () => {
               className="text-3xl md:text-5xl lg:text-7xl tracking-tight"
               style={{ 
                 color: "#fff",
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontWeight: 300,
+                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
+                fontWeight: 700,
               }}
             />
           </div>
@@ -389,8 +389,8 @@ const VideoHero = () => {
               className="text-3xl md:text-5xl lg:text-7xl italic"
               style={{ 
                 color: "#fff",
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontWeight: 200,
+                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
+                fontWeight: 700,
               }}
             />
             <AnimatedText
@@ -401,8 +401,8 @@ const VideoHero = () => {
               className="text-3xl md:text-5xl lg:text-7xl tracking-wide uppercase"
               style={{ 
                 color: "#fff",
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontWeight: 300,
+                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
+                fontWeight: 700,
                 letterSpacing: "0.15em",
               }}
             />
