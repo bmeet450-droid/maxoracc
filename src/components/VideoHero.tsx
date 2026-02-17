@@ -358,11 +358,14 @@ const VideoHero = () => {
               progress={textRevealProgress}
               startAt={0}
               endAt={0.3}
-              className="text-3xl md:text-5xl lg:text-7xl italic mr-3 md:mr-4"
+              className="text-3xl md:text-5xl lg:text-7xl uppercase"
               style={{ 
-                color: "#fff",
-                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 400,
+                color: "rgb(183, 171, 152)",
+                fontFamily: "'Avant Garde', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                lineHeight: "0.84",
+                textTransform: "uppercase",
               }}
             />
             <AnimatedText
@@ -370,11 +373,14 @@ const VideoHero = () => {
               progress={textRevealProgress}
               startAt={0.1}
               endAt={0.4}
-              className="text-3xl md:text-5xl lg:text-7xl tracking-tight"
+              className="text-3xl md:text-5xl lg:text-7xl uppercase"
               style={{ 
-                color: "#fff",
-                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 400,
+                color: "rgb(183, 171, 152)",
+                fontFamily: "'Avant Garde', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                lineHeight: "0.84",
+                textTransform: "uppercase",
               }}
             />
           </div>
@@ -386,11 +392,14 @@ const VideoHero = () => {
               progress={textRevealProgress}
               startAt={0.2}
               endAt={0.5}
-              className="text-3xl md:text-5xl lg:text-7xl italic"
+              className="text-3xl md:text-5xl lg:text-7xl uppercase"
               style={{ 
-                color: "#fff",
-                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 400,
+                color: "rgb(183, 171, 152)",
+                fontFamily: "'Avant Garde', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                lineHeight: "0.84",
+                textTransform: "uppercase",
               }}
             />
             <AnimatedText
@@ -398,12 +407,14 @@ const VideoHero = () => {
               progress={textRevealProgress}
               startAt={0.3}
               endAt={0.6}
-              className="text-3xl md:text-5xl lg:text-7xl tracking-wide uppercase"
+              className="text-3xl md:text-5xl lg:text-7xl uppercase"
               style={{ 
-                color: "#fff",
-                fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 400,
-                letterSpacing: "0.15em",
+                color: "rgb(183, 171, 152)",
+                fontFamily: "'Avant Garde', sans-serif",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                lineHeight: "0.84",
+                textTransform: "uppercase",
               }}
             />
           </div>
