@@ -351,73 +351,26 @@ const VideoHero = () => {
 
         {/* Center Content - Thin premium typography */}
         <div className="text-center px-6 flex flex-col items-center">
-          {/* Line 1: "the World" */}
-          <div className="mb-2 md:mb-4">
-            <AnimatedText
-              text="the"
-              progress={textRevealProgress}
-              startAt={0}
-              endAt={0.3}
-              className="text-3xl md:text-5xl lg:text-7xl uppercase"
-              style={{ 
-                color: "rgb(183, 171, 152)",
-                fontFamily: "'Avant Garde', sans-serif",
-                fontWeight: 700,
-                letterSpacing: "-0.05em",
-                lineHeight: "0.84",
-                textTransform: "uppercase",
-              }}
-            />
-            <AnimatedText
-              text="World"
-              progress={textRevealProgress}
-              startAt={0.1}
-              endAt={0.4}
-              className="text-3xl md:text-5xl lg:text-7xl uppercase"
-              style={{ 
-                color: "rgb(183, 171, 152)",
-                fontFamily: "'Avant Garde', sans-serif",
-                fontWeight: 700,
-                letterSpacing: "-0.05em",
-                lineHeight: "0.84",
-                textTransform: "uppercase",
-              }}
-            />
-          </div>
-
-          {/* Line 2: "of the Frame" */}
-          <div className="mb-2 md:mb-4 ml-8 md:ml-16 lg:ml-24">
-            <AnimatedText
-              text="of the"
-              progress={textRevealProgress}
-              startAt={0.2}
-              endAt={0.5}
-              className="text-3xl md:text-5xl lg:text-7xl uppercase"
-              style={{ 
-                color: "rgb(183, 171, 152)",
-                fontFamily: "'Avant Garde', sans-serif",
-                fontWeight: 700,
-                letterSpacing: "-0.05em",
-                lineHeight: "0.84",
-                textTransform: "uppercase",
-              }}
-            />
-            <AnimatedText
-              text=" Frame"
-              progress={textRevealProgress}
-              startAt={0.3}
-              endAt={0.6}
-              className="text-3xl md:text-5xl lg:text-7xl uppercase"
-              style={{ 
-                color: "rgb(183, 171, 152)",
-                fontFamily: "'Avant Garde', sans-serif",
-                fontWeight: 700,
-                letterSpacing: "-0.05em",
-                lineHeight: "0.84",
-                textTransform: "uppercase",
-              }}
-            />
-          </div>
+          {["THE", "WORLD", "OF", "THE", "FRAME"].map((word, i) => (
+            <div key={i} className="leading-none">
+              <AnimatedText
+                text={word}
+                progress={textRevealProgress}
+                startAt={i * 0.1}
+                endAt={0.3 + i * 0.1}
+                className="block"
+                style={{ 
+                  color: "rgb(183, 171, 152)",
+                  fontFamily: "'Avant Garde', sans-serif",
+                  fontWeight: 700,
+                  letterSpacing: "-0.05em",
+                  lineHeight: "0.9",
+                  textTransform: "uppercase" as const,
+                  fontSize: "clamp(60px, 15vw, 168px)",
+                }}
+              />
+            </div>
+          ))}
 
           {/* Decorative Line */}
           <div
