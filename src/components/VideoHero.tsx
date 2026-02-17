@@ -360,7 +360,7 @@ const VideoHero = () => {
                 endAt={0.3 + i * 0.1}
                 className="block"
                 style={{ 
-                  color: "rgb(183, 171, 152)",
+                  color: "#FFFFFF",
                   fontFamily: "'Avant Garde', sans-serif",
                   fontWeight: 700,
                   letterSpacing: "-0.05em",
