@@ -362,7 +362,7 @@ const VideoHero = () => {
               style={{ 
                 color: "#fff",
                 fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 700,
+                fontWeight: 400,
               }}
             />
             <AnimatedText
@@ -374,7 +374,7 @@ const VideoHero = () => {
               style={{ 
                 color: "#fff",
                 fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 700,
+                fontWeight: 400,
               }}
             />
           </div>
@@ -390,7 +390,7 @@ const VideoHero = () => {
               style={{ 
                 color: "#fff",
                 fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 700,
+                fontWeight: 400,
               }}
             />
             <AnimatedText
@@ -402,7 +402,7 @@ const VideoHero = () => {
               style={{ 
                 color: "#fff",
                 fontFamily: "'ITC Avant Garde Gothic', 'Century Gothic', 'Futura', 'Avant Garde', sans-serif",
-                fontWeight: 700,
+                fontWeight: 400,
                 letterSpacing: "0.15em",
               }}
             />
