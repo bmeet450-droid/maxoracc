@@ -272,7 +272,7 @@ const VideoHero = () => {
 
       {/* Navigation */}
       <nav 
-        className="relative z-30 flex items-center justify-between px-4 md:px-8 py-4 md:py-6 transition-all duration-500" 
+        className="relative z-30 flex items-center justify-between px-3 md:px-6 py-4 md:py-6 transition-all duration-500" 
         style={{
           opacity: isLoaded ? 1 : 0,
           transform: isLoaded ? 'translateY(0)' : 'translateY(-20px)'
