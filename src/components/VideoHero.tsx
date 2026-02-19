@@ -332,22 +332,6 @@ const VideoHero = () => {
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 mt-16">
         {/* Top Label - Centered */}
-        <div
-          className="absolute top-32 md:top-36 left-1/2 -translate-x-1/2 text-center"
-          style={{
-            opacity: isLoaded ? 1 : 0,
-            transform: `translateY(${isLoaded ? 0 : 20}px)`,
-            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-            transitionDelay: "300ms",
-          }}
-        >
-          <span
-            className="text-[10px] md:text-xs tracking-[0.3em] uppercase font-extralight"
-            style={{ color: "rgba(255,255,255,0.6)" }}
-          >
-            Featured Reel
-          </span>
-        </div>
 
         {/* Center Content - Thin premium typography */}
         <div className="text-center px-6 flex flex-col items-center">
