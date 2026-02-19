@@ -366,7 +366,7 @@ const VideoHero = () => {
                   letterSpacing: "-0.05em",
                   lineHeight: "0.9",
                   textTransform: "uppercase" as const,
-                  fontSize: "clamp(60px, 15vw, 168px)",
+                  fontSize: isMobile ? "clamp(60px, 15vw, 168px)" : "clamp(40px, 8vw, 100px)",
                 }}
               />
             </div>
