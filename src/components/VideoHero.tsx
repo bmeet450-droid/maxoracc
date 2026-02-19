@@ -281,7 +281,7 @@ const VideoHero = () => {
         <img 
           src={maxoraLogo} 
           alt="Maxora" 
-          className="h-12 md:h-14 lg:h-16 w-auto mx-0 md:mx-[29px] my-0 md:my-[9px]"
+          className="h-12 md:h-14 lg:h-16 w-auto"
         />
         
         {/* Desktop nav */}
