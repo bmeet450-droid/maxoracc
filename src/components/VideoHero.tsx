@@ -22,10 +22,9 @@ interface AnimatedTextProps {
   endAt: number;
   className?: string;
   style?: React.CSSProperties;
-  letterStyle?: React.CSSProperties;
 }
 
-const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = {}, letterStyle = {} }: AnimatedTextProps) => {
+const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = {} }: AnimatedTextProps) => {
   const letters = text.split("");
   const range = endAt - startAt;
   
@@ -45,7 +44,6 @@ const AnimatedText = ({ text, progress, startAt, endAt, className = "", style = 
               transform: `translateY(${(1 - letterProgress) * 30}px)`,
               transition: "none",
               whiteSpace: letter === " " ? "pre" : "normal",
-              ...letterStyle,
             }}
           >
             {letter === " " ? "\u00A0" : letter}
@@ -76,20 +74,6 @@ const VideoHero = () => {
   const [prevVideoIndex, setPrevVideoIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [videoProgress, setVideoProgress] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-
-  // Track mouse position relative to section
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setMousePos({ x, y });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   const posterUrl = useMemo(() => generatePoster(), []);
   const navLinks = ['Work', 'About', 'Services', 'Contact'];
@@ -360,21 +344,13 @@ const VideoHero = () => {
                 endAt={0.3 + i * 0.1}
                 className="block"
                 style={{ 
+                  color: "#FFFFFF",
                   fontFamily: "'Avant Garde', sans-serif",
                   fontWeight: 700,
                   letterSpacing: "-0.05em",
                   lineHeight: "0.9",
                   textTransform: "uppercase" as const,
                   fontSize: isMobile ? "clamp(60px, 15vw, 168px)" : "clamp(40px, 8vw, 100px)",
-                }}
-                letterStyle={{
-                  background: `linear-gradient(${135 + (mousePos.x - 50) * 0.5}deg, 
-                    rgba(255,255,255,1) ${Math.max(0, mousePos.x - 30)}%, 
-                    rgba(180,160,255,0.9) ${mousePos.x}%, 
-                    rgba(100,200,255,0.85) ${Math.min(100, mousePos.x + 30)}%)`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
                 }}
               />
             </div>
