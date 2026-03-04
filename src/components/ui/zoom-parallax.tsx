@@ -59,7 +59,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
                 <img
                   src={src}
                   alt={alt || `Image ${index + 1}`}
-                  className="w-full h-full object-contain rounded-md"
+                  className="w-full h-full object-contain rounded-md max-md:rounded-xl"
                 />
               </div>
             </motion.div>
