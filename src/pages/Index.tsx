@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import VideoHero from "@/components/VideoHero";
+import ZoomParallaxSection from "@/components/ZoomParallaxSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import AboutSection from "@/components/AboutSection";
 import AboutUsSection from "@/components/AboutUsSection";
@@ -30,6 +31,7 @@ const Index = () => {
   return (
     <div className="min-h-screen" style={{ background: '#000000' }}>
       <VideoHero />
+      <ZoomParallaxSection />
       <PortfolioSection />
       <AboutSection />
       <AboutUsSection />
