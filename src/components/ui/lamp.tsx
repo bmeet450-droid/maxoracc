@@ -27,6 +27,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
+          viewport={{ once: true }}
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
           }}
@@ -43,6 +44,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
+          viewport={{ once: true }}
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
           }}
@@ -62,6 +64,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
+          viewport={{ once: true }}
           className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-cyan-400 blur-2xl"
         />
         <motion.div
@@ -72,6 +75,7 @@ export const LampContainer = ({
             duration: 0.8,
             ease: "easeInOut",
           }}
+          viewport={{ once: true }}
           className="absolute inset-auto z-50 h-0.5 w-[30rem] -translate-y-[7rem] bg-cyan-400"
         />
 
