@@ -29,12 +29,12 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 
   const positions = [
     '', // index 0: center/main
-    '-top-[30vh] left-[5vw] h-[20vh] w-[45vw] md:h-[30vh] md:w-[35vw]',
-    '-top-[10vh] -left-[25vw] h-[25vh] w-[35vw] md:h-[45vh] md:w-[20vw]',
-    'left-[27.5vw] h-[20vh] w-[40vw] md:h-[25vh] md:w-[25vw]',
-    'top-[27.5vh] left-[5vw] h-[20vh] w-[35vw] md:h-[25vh] md:w-[20vw]',
-    'top-[27.5vh] -left-[22.5vw] h-[20vh] w-[40vw] md:h-[25vh] md:w-[30vw]',
-    'top-[22.5vh] left-[25vw] h-[15vh] w-[25vw] md:h-[15vh] md:w-[15vw]',
+    '-top-[38vh] left-[5vw] h-[15vh] w-[30vw] md:-top-[30vh] md:h-[30vh] md:w-[35vw]',
+    '-top-[18vh] -left-[30vw] h-[15vh] w-[25vw] md:-top-[10vh] md:-left-[25vw] md:h-[45vh] md:w-[20vw]',
+    '-top-[18vh] left-[30vw] h-[15vh] w-[25vw] md:top-0 md:left-[27.5vw] md:h-[25vh] md:w-[25vw]',
+    'top-[20vh] left-[25vw] h-[15vh] w-[25vw] md:top-[27.5vh] md:left-[5vw] md:h-[25vh] md:w-[20vw]',
+    'top-[20vh] -left-[30vw] h-[15vh] w-[25vw] md:top-[27.5vh] md:-left-[22.5vw] md:h-[25vh] md:w-[30vw]',
+    'top-[38vh] left-[25vw] h-[12vh] w-[20vw] md:top-[22.5vh] md:left-[25vw] md:h-[15vh] md:w-[15vw]',
   ];
 
   return (
