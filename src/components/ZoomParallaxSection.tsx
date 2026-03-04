@@ -18,7 +18,7 @@ const images = [
 
 const ZoomParallaxSection = () => {
   return (
-    <section className="relative bg-background">
+    <section className="relative" style={{ background: '#000000' }}>
       <ZoomParallax images={images} />
     </section>
   );
