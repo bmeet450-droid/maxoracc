@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import VideoHero from "@/components/VideoHero";
 import ZoomParallaxSection from "@/components/ZoomParallaxSection";
 import PortfolioSection from "@/components/PortfolioSection";
+import LampSection from "@/components/LampSection";
 import AboutSection from "@/components/AboutSection";
 import AboutUsSection from "@/components/AboutUsSection";
 import ServicesSection from "@/components/ServicesSection";
@@ -33,6 +34,7 @@ const Index = () => {
       <VideoHero />
       <ZoomParallaxSection />
       <PortfolioSection />
+      <LampSection />
       <AboutSection />
       <AboutUsSection />
       <ServicesSection />
