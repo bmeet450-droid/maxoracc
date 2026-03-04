@@ -5,6 +5,7 @@ import portfolio3 from "@/assets/portfolio-3.jpg";
 import portfolio4 from "@/assets/portfolio-4.jpg";
 import portfolio5 from "@/assets/portfolio-5.jpg";
 import portfolio6 from "@/assets/portfolio-6.jpg";
+import portfolio7 from "@/assets/portfolio-7.jpg";
 
 const images = [
   { src: portfolio1, alt: "Portfolio showcase 1" },
@@ -13,7 +14,7 @@ const images = [
   { src: portfolio4, alt: "Portfolio showcase 4" },
   { src: portfolio5, alt: "Portfolio showcase 5" },
   { src: portfolio6, alt: "Portfolio showcase 6" },
-  { src: portfolio1, alt: "Portfolio showcase 7" },
+  { src: portfolio7, alt: "Portfolio showcase 7" },
 ];
 
 const ZoomParallaxSection = () => {
