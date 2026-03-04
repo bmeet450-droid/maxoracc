@@ -29,12 +29,12 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 
   const positions = [
     '', // index 0: center/main
-    '-top-[30vh] left-[5vw] h-[30vh] w-[35vw]',
-    '-top-[10vh] -left-[25vw] h-[45vh] w-[20vw]',
-    'left-[27.5vw] h-[25vh] w-[25vw]',
-    'top-[27.5vh] left-[5vw] h-[25vh] w-[20vw]',
-    'top-[27.5vh] -left-[22.5vw] h-[25vh] w-[30vw]',
-    'top-[22.5vh] left-[25vw] h-[15vh] w-[15vw]',
+    '-top-[30vh] left-[5vw] h-[20vh] w-[45vw] md:h-[30vh] md:w-[35vw]',
+    '-top-[10vh] -left-[25vw] h-[25vh] w-[35vw] md:h-[45vh] md:w-[20vw]',
+    'left-[27.5vw] h-[20vh] w-[40vw] md:h-[25vh] md:w-[25vw]',
+    'top-[27.5vh] left-[5vw] h-[20vh] w-[35vw] md:h-[25vh] md:w-[20vw]',
+    'top-[27.5vh] -left-[22.5vw] h-[20vh] w-[40vw] md:h-[25vh] md:w-[30vw]',
+    'top-[22.5vh] left-[25vw] h-[15vh] w-[25vw] md:h-[15vh] md:w-[15vw]',
   ];
 
   return (
@@ -52,7 +52,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
               <div
                 className={`relative ${
                   index === 0
-                    ? 'h-[25vh] w-[25vw]'
+                    ? 'h-[25vh] w-[40vw] md:h-[25vh] md:w-[25vw]'
                     : positions[index] || ''
                 }`}
               >
