@@ -268,6 +268,26 @@ const ScrollTimeline = () => {
                 />
               </div>
             )}
+
+            {/* Magnetic text for fifth video - on opposite side */}
+            {index === 4 && !isMobile && (
+              <div 
+                className="absolute left-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="A Deal with Mind"
+                  hoverText="The Sun Stole the Show"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                  wrapInnerText
+                />
+              </div>
+            )}
           </div>
         );
       })}
