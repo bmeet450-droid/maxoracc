@@ -9,6 +9,7 @@ interface MagneticTextProps {
   hoverText?: string
   className?: string
   circleSize?: number
+  wrapInnerText?: boolean
 }
 
 export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320 }: MagneticTextProps) {
