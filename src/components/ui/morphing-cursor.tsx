@@ -46,10 +46,6 @@ export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", classNa
         circleRef.current.style.transform = `translate(${currentPos.current.x}px, ${currentPos.current.y}px) translate(-50%, -50%)`
       }
 
-      if (innerTextRef.current) {
-        innerTextRef.current.style.transform = `translate(${-currentPos.current.x}px, ${-currentPos.current.y}px)`
-      }
-
       animationFrameRef.current = requestAnimationFrame(animate)
     }
 
@@ -112,11 +108,9 @@ export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", classNa
         )}
         style={{ willChange: "transform" }}
       >
-        <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-primary flex items-center justify-center overflow-hidden">
+        <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-primary flex items-center justify-center">
           <span
-            ref={innerTextRef}
             className="text-primary-foreground text-lg md:text-2xl font-bold tracking-tight whitespace-nowrap"
-            style={{ willChange: "transform" }}
           >
             {hoverText}
           </span>
