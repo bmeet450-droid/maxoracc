@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import VideoHero from "@/components/VideoHero";
 import MagneticTextSection from "@/components/MagneticTextSection";
 import ZoomParallaxSection from "@/components/ZoomParallaxSection";
+import CinematographyTextSection from "@/components/CinematographyTextSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import AboutSection from "@/components/AboutSection";
 import AboutUsSection from "@/components/AboutUsSection";
