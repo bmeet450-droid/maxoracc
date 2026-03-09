@@ -35,16 +35,7 @@ const Index = () => {
       <MagneticTextSection />
       <ZoomParallaxSection />
       <PortfolioSection />
-      <section className="relative py-20 md:py-32" style={{ background: '#000000' }}>
-        <div className="flex flex-col items-center">
-          <MagneticText
-            text="I specialize in Cinematography"
-            hoverText="I know a thing or two about it"
-            className="h-32 md:h-48 w-full"
-            circleSize={typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : typeof window !== 'undefined' && window.innerWidth < 1024 ? 240 : 320}
-          />
-        </div>
-      </section>
+      <CinematographyTextSection />
       <AboutSection />
       <AboutUsSection />
       <ServicesSection />
