@@ -26,6 +26,7 @@ const timelinePoints: TimelinePoint[] = [
   { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
   { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
   { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
+  { id: 7, offset: 90, side: "left", lineLength: 70, lineLengthMobile: 12 },
 ];
 
 const ScrollTimeline = () => {
