@@ -126,7 +126,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
         >
           <span
             ref={innerTextRef}
-            className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter whitespace-nowrap"
+            className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter"
             style={{ 
               color: "#000000",
               willChange: "transform",
