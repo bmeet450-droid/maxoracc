@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { MagneticText } from "./ui/morphing-cursor";
 
 interface TimelinePoint {
   id: number;
