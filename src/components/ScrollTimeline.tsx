@@ -309,6 +309,26 @@ const ScrollTimeline = () => {
                 />
               </div>
             )}
+
+            {/* Magnetic text for seventh point (between timeline and about section) */}
+            {index === 6 && !isMobile && (
+              <div 
+                className="absolute left-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="Full Stack Website Design"
+                  hoverText="I Code with Vibes"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                  wrapInnerText
+                />
+              </div>
+            )}
           </div>
         );
       })}
