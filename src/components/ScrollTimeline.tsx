@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { MagneticText } from "./ui/morphing-cursor";
-import { ShinyButton } from "./ui/shiny-button";
 
 interface TimelinePoint {
   id: number;
@@ -172,16 +171,21 @@ const ScrollTimeline = () => {
                   />
                 </div>
               ) : (
-                /* Shiny button slot */
+                /* Empty placeholder slot */
                 <div 
-                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl transition-all duration-500 flex items-center justify-center"
+                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
+                    borderColor: isActive ? 'rgba(255,255,255,0.4)' : 'rgba(115,115,115,0.5)',
+                    backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
                     opacity: isActive ? 1 : 0.5,
                   }}
                 >
-                  <ShinyButton onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                    Explore
-                  </ShinyButton>
+                  <span 
+                    className="text-xs md:text-sm transition-colors duration-300"
+                    style={{ color: isActive ? 'rgba(255,255,255,0.5)' : 'rgba(115,115,115,0.5)' }}
+                  >
+                    Video Slot {point.id}
+                  </span>
                 </div>
               )}
             </div>
