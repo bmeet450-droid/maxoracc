@@ -216,7 +216,7 @@ const ScrollTimeline = () => {
                 style={{ 
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
                 }}
               >
                 <MagneticText
@@ -256,7 +256,7 @@ const ScrollTimeline = () => {
                 style={{ 
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
                 }}
               >
                 <MagneticText
@@ -296,7 +296,7 @@ const ScrollTimeline = () => {
                 style={{ 
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
                 }}
               >
                 <MagneticText
