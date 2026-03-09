@@ -14,11 +14,27 @@ interface MagneticTextProps {
 export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 250 }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
+  const innerTextRef = useRef<HTMLSpanElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const [containerCenter, setContainerCenter] = useState({ x: 0, y: 0 })
 
   const mousePos = useRef({ x: 0, y: 0 })
   const currentPos = useRef({ x: 0, y: 0 })
   const animationFrameRef = useRef<number>()
+
+  useEffect(() => {
+    const updateCenter = () => {
+      if (containerRef.current) {
+        setContainerCenter({
+          x: containerRef.current.offsetWidth / 2,
+          y: containerRef.current.offsetHeight / 2,
+        })
+      }
+    }
+    updateCenter()
+    window.addEventListener("resize", updateCenter)
+    return () => window.removeEventListener("resize", updateCenter)
+  }, [])
 
   useEffect(() => {
     const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor
@@ -31,6 +47,13 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
         circleRef.current.style.transform = `translate(${currentPos.current.x}px, ${currentPos.current.y}px) translate(-50%, -50%)`
       }
 
+      if (innerTextRef.current) {
+        // Counter-translate to keep text aligned with container center
+        const offsetX = containerCenter.x - currentPos.current.x
+        const offsetY = containerCenter.y - currentPos.current.y
+        innerTextRef.current.style.transform = `translate(${offsetX}px, ${offsetY}px)`
+      }
+
       animationFrameRef.current = requestAnimationFrame(animate)
     }
 
@@ -38,7 +61,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
     }
-  }, [])
+  }, [containerCenter])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return
@@ -102,10 +125,11 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
           style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
         >
           <span
+            ref={innerTextRef}
             className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter whitespace-nowrap"
             style={{ 
               color: "#000000",
-              transform: `translate(${-currentPos.current.x + circleSize / 2}px, ${-currentPos.current.y + circleSize / 2}px)`,
+              willChange: "transform",
             }}
           >
             {displayHoverText}
