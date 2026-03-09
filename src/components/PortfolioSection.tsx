@@ -274,7 +274,7 @@ const PortfolioSection = () => {
         </div>
 
         {/* Collage Grid - Asymmetric Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-12 lg:gap-20 xl:gap-24 overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4 sm:gap-10 md:gap-16 lg:gap-24 xl:gap-32 overflow-hidden">
           {/* Left Column */}
           <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 flex flex-col gap-4 sm:gap-12 md:gap-24 lg:gap-36 xl:gap-40">
             <PortfolioCard
