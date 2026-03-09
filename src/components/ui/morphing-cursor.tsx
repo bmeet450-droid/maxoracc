@@ -8,41 +8,28 @@ interface MagneticTextProps {
   text: string
   hoverText?: string
   className?: string
+  circleSize?: number
 }
 
-export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", className }: MagneticTextProps) {
+export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 250 }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const circleRef = useRef<HTMLDivElement>(null)
+  const clipRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
   const mousePos = useRef({ x: 0, y: 0 })
   const currentPos = useRef({ x: 0, y: 0 })
   const animationFrameRef = useRef<number>()
 
   useEffect(() => {
-    const updateSize = () => {
-      if (containerRef.current) {
-        setContainerSize({
-          width: containerRef.current.offsetWidth,
-          height: containerRef.current.offsetHeight,
-        })
-      }
-    }
-    updateSize()
-    window.addEventListener("resize", updateSize)
-    return () => window.removeEventListener("resize", updateSize)
-  }, [])
-
-  useEffect(() => {
     const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor
 
     const animate = () => {
-      currentPos.current.x = lerp(currentPos.current.x, mousePos.current.x, 0.15)
-      currentPos.current.y = lerp(currentPos.current.y, mousePos.current.y, 0.15)
+      currentPos.current.x = lerp(currentPos.current.x, mousePos.current.x, 0.12)
+      currentPos.current.y = lerp(currentPos.current.y, mousePos.current.y, 0.12)
 
-      if (circleRef.current) {
-        circleRef.current.style.transform = `translate(${currentPos.current.x}px, ${currentPos.current.y}px) translate(-50%, -50%)`
+      if (clipRef.current) {
+        const r = isHovered ? circleSize / 2 : 0
+        clipRef.current.style.clipPath = `circle(${r}px at ${currentPos.current.x}px ${currentPos.current.y}px)`
       }
 
       animationFrameRef.current = requestAnimationFrame(animate)
@@ -52,7 +39,7 @@ export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", classNa
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
     }
-  }, [])
+  }, [isHovered, circleSize])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return
@@ -77,6 +64,8 @@ export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", classNa
     setIsHovered(false)
   }, [])
 
+  const displayHoverText = hoverText || text
+
   return (
     <div
       ref={containerRef}
@@ -88,32 +77,30 @@ export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", classNa
         className
       )}
     >
-      {/* Base text layer - original text */}
+      {/* Base text layer - dim */}
       <span
-        className={cn(
-          "text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter transition-opacity duration-500 text-foreground",
-          isHovered ? "opacity-20" : "opacity-100"
-        )}
+        className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter"
+        style={{ color: "rgba(255,255,255,0.12)" }}
       >
         {text}
       </span>
 
-      {/* Magnetic circle with inner text */}
+      {/* Masked overlay - bright text revealed by circle */}
       <div
-        ref={circleRef}
-        className={cn(
-          "absolute top-0 left-0 pointer-events-none transition-all duration-500 ease-out",
-          isHovered ? "opacity-100 scale-100" : "opacity-0 scale-50"
-        )}
-        style={{ willChange: "transform" }}
+        ref={clipRef}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        style={{
+          clipPath: "circle(0px at 0px 0px)",
+          transition: isHovered ? "none" : "clip-path 0.5s ease-out",
+          willChange: "clip-path",
+        }}
       >
-        <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-primary flex items-center justify-center">
-          <span
-            className="text-primary-foreground text-lg md:text-2xl font-bold tracking-tight whitespace-nowrap"
-          >
-            {hoverText}
-          </span>
-        </div>
+        <span
+          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter"
+          style={{ color: "rgba(255,255,255,1)" }}
+        >
+          {displayHoverText}
+        </span>
       </div>
     </div>
   )
