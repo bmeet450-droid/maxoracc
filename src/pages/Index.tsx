@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import VideoHero from "@/components/VideoHero";
 import MagneticTextSection from "@/components/MagneticTextSection";
