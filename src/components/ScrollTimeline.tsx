@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { MagneticText } from "./ui/morphing-cursor";
 
 interface TimelinePoint {
   id: number;
@@ -187,6 +188,25 @@ const ScrollTimeline = () => {
                 </div>
               )}
             </div>
+
+            {/* Magnetic text for first video - on opposite side */}
+            {index === 0 && !isMobile && (
+              <div 
+                className="absolute left-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="An Existential hike in Cold Spring NY"
+                  hoverText="Almost fell off a cliff making this"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                />
+              </div>
+            )}
           </div>
         );
       })}
