@@ -20,8 +20,8 @@ const CinematographyTextSection = () => {
     <section className="relative py-20 md:py-32" style={{ background: '#000000' }}>
       <div className="flex flex-col items-center">
         <MagneticText
-          text="I specialize in Cinematography"
-          hoverText="I know a thing or two about it"
+          text="I SPECIALIZE IN CINEMATOGRAPHY"
+          hoverText="I KNOW A THING OR TWO ABOUT IT"
           className="h-32 md:h-48 w-full"
           circleSize={circleSize}
         />
