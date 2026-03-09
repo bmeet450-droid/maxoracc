@@ -261,7 +261,7 @@ const ScrollTimeline = () => {
               >
                 <MagneticText
                   text="The Art in Harlem"
-                  hoverText="Meet the Artist there"
+                  hoverText="Met the Artist There"
                   className="h-24 md:h-32 w-56 md:w-80"
                   circleSize={240}
                   wrapInnerText
