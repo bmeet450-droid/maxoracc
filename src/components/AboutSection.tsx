@@ -15,9 +15,8 @@ const AboutSection = () => {
         <MagneticText
           text="Full Stack Website Design"
           hoverText="I Code with Vibes"
-          className="h-32 md:h-44 w-72 md:w-[500px]"
-          circleSize={320}
-          wrapInnerText
+          className="h-40 md:h-56 w-full"
+          circleSize={400}
         />
       </div>
     </section>
