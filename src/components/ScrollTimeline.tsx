@@ -248,6 +248,26 @@ const ScrollTimeline = () => {
                 />
               </div>
             )}
+
+            {/* Magnetic text for fourth video - on opposite side */}
+            {index === 3 && !isMobile && (
+              <div 
+                className="absolute right-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginRight: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="The Art in Harlem"
+                  hoverText="Meet the Artist there"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                  wrapInnerText
+                />
+              </div>
+            )}
           </div>
         );
       })}
