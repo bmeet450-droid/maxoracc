@@ -13,7 +13,6 @@ interface MagneticTextProps {
 export function MagneticText({ text = "CREATIVE", hoverText = "EXPLORE", className }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
-  const innerTextRef = useRef<HTMLSpanElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
