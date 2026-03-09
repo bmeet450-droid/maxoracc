@@ -228,6 +228,26 @@ const ScrollTimeline = () => {
                 />
               </div>
             )}
+
+            {/* Magnetic text for third video - on opposite side */}
+            {index === 2 && !isMobile && (
+              <div 
+                className="absolute left-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="Ending of a Great Movie"
+                  hoverText="Historic Spectacle Part 2"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                  wrapInnerText
+                />
+              </div>
+            )}
           </div>
         );
       })}
