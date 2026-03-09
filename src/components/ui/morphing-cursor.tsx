@@ -13,7 +13,7 @@ interface MagneticTextProps {
 
 export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 250 }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const clipRef = useRef<HTMLDivElement>(null)
+  const circleRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
 
   const mousePos = useRef({ x: 0, y: 0 })
@@ -27,9 +27,8 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
       currentPos.current.x = lerp(currentPos.current.x, mousePos.current.x, 0.12)
       currentPos.current.y = lerp(currentPos.current.y, mousePos.current.y, 0.12)
 
-      if (clipRef.current) {
-        const r = isHovered ? circleSize / 2 : 0
-        clipRef.current.style.clipPath = `circle(${r}px at ${currentPos.current.x}px ${currentPos.current.y}px)`
+      if (circleRef.current) {
+        circleRef.current.style.transform = `translate(${currentPos.current.x}px, ${currentPos.current.y}px) translate(-50%, -50%)`
       }
 
       animationFrameRef.current = requestAnimationFrame(animate)
@@ -39,7 +38,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
     return () => {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
     }
-  }, [isHovered, circleSize])
+  }, [])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!containerRef.current) return
@@ -85,22 +84,33 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
         {text}
       </span>
 
-      {/* Masked overlay - bright text revealed by circle */}
+      {/* White circle with black text */}
       <div
-        ref={clipRef}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        ref={circleRef}
+        className={cn(
+          "absolute top-0 left-0 pointer-events-none transition-all duration-300 ease-out",
+          isHovered ? "opacity-100 scale-100" : "opacity-0 scale-50"
+        )}
         style={{
-          clipPath: "circle(0px at 0px 0px)",
-          transition: isHovered ? "none" : "clip-path 0.5s ease-out",
-          willChange: "clip-path",
+          width: circleSize,
+          height: circleSize,
+          willChange: "transform",
         }}
       >
-        <span
-          className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter"
-          style={{ color: "rgba(255,255,255,1)" }}
+        <div
+          className="w-full h-full rounded-full flex items-center justify-center overflow-hidden"
+          style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
         >
-          {displayHoverText}
-        </span>
+          <span
+            className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter whitespace-nowrap"
+            style={{ 
+              color: "#000000",
+              transform: `translate(${-currentPos.current.x + circleSize / 2}px, ${-currentPos.current.y + circleSize / 2}px)`,
+            }}
+          >
+            {displayHoverText}
+          </span>
+        </div>
       </div>
     </div>
   )
