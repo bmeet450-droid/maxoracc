@@ -208,6 +208,25 @@ const ScrollTimeline = () => {
                 />
               </div>
             )}
+
+            {/* Magnetic text for second video - on opposite side */}
+            {index === 1 && !isMobile && (
+              <div 
+                className="absolute right-full"
+                style={{ 
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  marginRight: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                }}
+              >
+                <MagneticText
+                  text="Historic Spectacle"
+                  hoverText="Got CapCut premium for this"
+                  className="h-24 md:h-32 w-56 md:w-80"
+                  circleSize={240}
+                />
+              </div>
+            )}
           </div>
         );
       })}
