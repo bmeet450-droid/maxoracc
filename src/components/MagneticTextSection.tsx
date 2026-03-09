@@ -33,12 +33,6 @@ const MagneticTextSection = () => {
           className="h-32 md:h-48 w-full"
           circleSize={circleSize}
         />
-        <MagneticText
-          text="STUDIO"
-          hoverText="DISCOVER"
-          className="h-32 md:h-48 w-full"
-          circleSize={circleSize}
-        />
       </div>
     </section>
   );
