@@ -11,7 +11,7 @@ interface MagneticTextProps {
   circleSize?: number
 }
 
-export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 250 }: MagneticTextProps) {
+export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320 }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
   const innerTextRef = useRef<HTMLSpanElement>(null)
