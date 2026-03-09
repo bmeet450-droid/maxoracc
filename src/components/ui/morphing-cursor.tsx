@@ -9,9 +9,10 @@ interface MagneticTextProps {
   hoverText?: string
   className?: string
   circleSize?: number
+  wrapInnerText?: boolean
 }
 
-export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320 }: MagneticTextProps) {
+export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320, wrapInnerText = false }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
   const innerTextRef = useRef<HTMLSpanElement>(null)
@@ -126,7 +127,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
         >
           <span
             ref={innerTextRef}
-            className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter whitespace-nowrap"
+            className={cn("text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter", !wrapInnerText && "whitespace-nowrap")}
             style={{ 
               color: "#000000",
               willChange: "transform",
