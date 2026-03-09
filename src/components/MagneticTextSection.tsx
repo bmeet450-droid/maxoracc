@@ -28,8 +28,8 @@ const MagneticTextSection = () => {
     <section className="relative py-20 md:py-32" style={{ background: '#000000' }}>
       <div className="flex flex-col items-center gap-12 md:gap-16">
         <MagneticText
-          text="CREATIVE"
-          hoverText="EXPLORE"
+          text="I am a 20 y/o with a mind of an Engineer and heart of a Creative"
+          hoverText="I am a 20 y/o chronically figuring shit out"
           className="h-32 md:h-48 w-full"
           circleSize={circleSize}
         />
