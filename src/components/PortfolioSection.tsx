@@ -313,7 +313,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Right Column (offset down) */}
-          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 lg:col-start-8 flex flex-col gap-4 sm:gap-12 md:gap-32 lg:gap-48 xl:gap-56 md:mt-32 lg:mt-48 xl:mt-64">
+          <div className="col-span-1 sm:col-span-1 md:col-span-6 lg:col-span-5 lg:col-start-8 flex flex-col gap-8 sm:gap-12 md:gap-32 lg:gap-48 xl:gap-56 md:mt-32 lg:mt-48 xl:mt-64">
             <PortfolioCard
               project={projects[1]}
               isHovered={hoveredId === 2}
