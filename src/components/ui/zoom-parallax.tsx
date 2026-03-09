@@ -44,11 +44,11 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
   const positions = [
     '', // index 0: center/main
     '-top-[30vh] left-[5vw] h-[30vh] w-[35vw]',
-    '-top-[10vh] -left-[25vw] h-[45vh] w-[20vw]',
-    'left-[27.5vw] h-[25vh] w-[25vw]',
-    'top-[27.5vh] left-[5vw] h-[25vh] w-[20vw]',
-    'top-[27.5vh] -left-[22.5vw] h-[25vh] w-[30vw]',
-    'top-[22.5vh] left-[25vw] h-[15vh] w-[15vw]',
+    '-top-[10vh] -left-[30vw] h-[45vh] w-[20vw]',
+    'left-[30vw] h-[25vh] w-[25vw]',
+    'top-[30vh] left-[5vw] h-[25vh] w-[20vw]',
+    'top-[30vh] -left-[27vw] h-[25vh] w-[28vw]',
+    'top-[27vh] left-[30vw] h-[15vh] w-[15vw]',
   ];
 
   const activeImages = liteMode ? images.slice(0, 4) : images;
