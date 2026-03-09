@@ -26,7 +26,6 @@ const timelinePoints: TimelinePoint[] = [
   { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
   { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
   { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
-  { id: 7, offset: 90, side: "left", lineLength: 70, lineLengthMobile: 12 },
 ];
 
 const ScrollTimeline = () => {
@@ -310,25 +309,6 @@ const ScrollTimeline = () => {
               </div>
             )}
 
-            {/* Magnetic text for seventh point (between timeline and about section) */}
-            {index === 6 && !isMobile && (
-              <div 
-                className="absolute left-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="Full Stack Website Design"
-                  hoverText="I Code with Vibes"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
           </div>
         );
       })}
