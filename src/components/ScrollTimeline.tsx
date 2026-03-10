@@ -175,7 +175,7 @@ const ScrollTimeline = () => {
                     <MagneticText
                       text={magneticTexts[index].text}
                       hoverText={magneticTexts[index].hoverText}
-                      className="h-16 w-[calc(100vw-120px)]"
+                      className="h-12 w-[calc(100vw-120px)]"
                       circleSize={240}
                       circleSizeMobile={160}
                       wrapInnerText
