@@ -15,8 +15,10 @@ const AboutSection = () => {
         <MagneticText
           text="Full Stack Website Design"
           hoverText="I Code with Vibes"
-          className="h-40 md:h-56 w-full"
+          className="h-28 sm:h-36 md:h-56 w-full"
           circleSize={400}
+          circleSizeTablet={280}
+          circleSizeMobile={180}
         />
       </div>
     </section>
