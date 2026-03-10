@@ -81,7 +81,7 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
+      className="relative w-full min-h-[280vh] md:min-h-[200vh] lg:min-h-[250vh]"
       style={{ background: '#000000' }}
     >
       {/* Central vertical line */}
