@@ -3,10 +3,10 @@ import { MagneticText } from "./ui/morphing-cursor";
 
 interface TimelinePoint {
   id: number;
-  offset: number; // percentage from top (0-100)
+  offset: number;
   side: "left" | "right";
-  lineLength: number; // px for desktop
-  lineLengthMobile: number; // px for mobile
+  lineLength: number;
+  lineLengthMobile: number;
   content?: React.ReactNode;
 }
 
@@ -17,6 +17,15 @@ const youtubeVideos = [
   "27f6MRjFOzg",
   "1lJVOyULdrM",
   "EuN9eaezi5E",
+];
+
+const magneticTexts = [
+  { text: "An Existential hike in Cold Spring NY", hoverText: "Almost fell off a cliff making this" },
+  { text: "Historic Spectacle", hoverText: "Got CapCut premium for this" },
+  { text: "Ending of a Great Movie", hoverText: "Historic Spectacle Part 2" },
+  { text: "The Art in Harlem", hoverText: "Met the Artist There" },
+  { text: "A Deal with Mind", hoverText: "The Sun Stole the Show" },
+  { text: "How Did the Chinese Get here", hoverText: "Asian Invasion" },
 ];
 
 const timelinePoints: TimelinePoint[] = [
@@ -52,7 +61,6 @@ const ScrollTimeline = () => {
       const windowHeight = window.innerHeight;
       const containerHeight = container.offsetHeight;
 
-      // Calculate progress: 0 when container top hits viewport bottom, 1 when container bottom leaves viewport top
       const scrollStart = windowHeight;
       const scrollEnd = -containerHeight;
       const totalDistance = scrollStart - scrollEnd;
@@ -75,12 +83,9 @@ const ScrollTimeline = () => {
       className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
       style={{ background: '#000000' }}
     >
-      {/* Central vertical line - positioned left on mobile, center on desktop */}
+      {/* Central vertical line */}
       <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px]">
-        {/* Base gray line */}
         <div className="absolute inset-0 bg-neutral-700" />
-        
-        {/* Glowing white fill */}
         <div 
           className="absolute top-0 left-0 right-0 transition-none"
           style={{ 
@@ -96,8 +101,8 @@ const ScrollTimeline = () => {
         const pointProgress = point.offset / 100;
         const isActive = scrollProgress >= pointProgress;
         const lineLength = isMobile ? point.lineLengthMobile : point.lineLength;
-        // On mobile, all videos go to the right
         const effectiveSide = isMobile ? 'right' : point.side;
+        const oppositeSide = effectiveSide === 'left' ? 'right' : 'left';
 
         return (
           <div
@@ -105,11 +110,10 @@ const ScrollTimeline = () => {
             className="absolute left-6 md:left-1/2 md:-translate-x-1/2 flex items-center"
             style={{ top: `${point.offset}%` }}
           >
-            {/* Perpendicular line and circle - positioned based on side */}
+            {/* Perpendicular line and circle */}
             <div 
               className={`flex items-center ${effectiveSide === 'left' ? 'flex-row-reverse' : 'flex-row'}`}
             >
-              {/* Circle at center */}
               <div 
                 className="w-3 h-3 md:w-4 md:h-4 rounded-full border-2 transition-all duration-300"
                 style={{
@@ -118,8 +122,6 @@ const ScrollTimeline = () => {
                   boxShadow: isActive ? '0 0 15px rgba(255,255,255,0.6)' : 'none',
                 }}
               />
-              
-              {/* Perpendicular line */}
               <div 
                 className="h-[2px] transition-all duration-300"
                 style={{
@@ -130,8 +132,6 @@ const ScrollTimeline = () => {
                   boxShadow: isActive ? '0 0 10px rgba(255,255,255,0.4)' : 'none',
                 }}
               />
-              
-              {/* Small circle at end */}
               <div 
                 className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300"
                 style={{
@@ -141,7 +141,7 @@ const ScrollTimeline = () => {
               />
             </div>
 
-            {/* Content slot - positioned to align circle with video center */}
+            {/* Video content */}
             <div 
               className={`absolute ${effectiveSide === 'left' ? 'right-full' : 'left-full'}`}
               style={{ 
@@ -151,26 +151,37 @@ const ScrollTimeline = () => {
               }}
             >
               {youtubeVideos[index] ? (
-                /* YouTube embed */
-                <div 
-                  className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
-                  style={{
-                    opacity: isActive ? 1 : 0.3,
-                    boxShadow: isActive 
-                      ? '0 0 30px rgba(255,255,255,0.2), 0 10px 40px rgba(0,0,0,0.5)' 
-                      : '0 5px 20px rgba(0,0,0,0.3)',
-                  }}
-                >
-                  <iframe
-                    src={`https://www.youtube.com/embed/${youtubeVideos[index]}`}
-                    title={`YouTube video ${point.id}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
+                <div className="flex flex-col gap-3">
+                  <div 
+                    className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500"
+                    style={{
+                      opacity: isActive ? 1 : 0.3,
+                      boxShadow: isActive 
+                        ? '0 0 30px rgba(255,255,255,0.2), 0 10px 40px rgba(0,0,0,0.5)' 
+                        : '0 5px 20px rgba(0,0,0,0.3)',
+                    }}
+                  >
+                    <iframe
+                      src={`https://www.youtube.com/embed/${youtubeVideos[index]}`}
+                      title={`YouTube video ${point.id}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  </div>
+                  {/* Mobile: show magnetic text below video */}
+                  {isMobile && magneticTexts[index] && (
+                    <MagneticText
+                      text={magneticTexts[index].text}
+                      hoverText={magneticTexts[index].hoverText}
+                      className="h-16 w-[calc(100vw-120px)]"
+                      circleSize={240}
+                      circleSizeMobile={160}
+                      wrapInnerText
+                    />
+                  )}
                 </div>
               ) : (
-                /* Empty placeholder slot */
                 <div 
                   className="w-[calc(100vw-120px)] sm:w-56 md:w-56 lg:w-80 aspect-video rounded-xl md:rounded-2xl border-2 border-dashed transition-all duration-500 flex items-center justify-center"
                   style={{
@@ -189,126 +200,26 @@ const ScrollTimeline = () => {
               )}
             </div>
 
-            {/* Magnetic text for first video - on opposite side */}
-            {index === 0 && !isMobile && (
+            {/* Desktop/Tablet: Magnetic text on opposite side */}
+            {!isMobile && magneticTexts[index] && (
               <div 
-                className="absolute left-full"
+                className={`absolute ${oppositeSide === 'left' ? 'right-full' : 'left-full'}`}
                 style={{ 
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
+                  [oppositeSide === 'right' ? 'marginLeft' : 'marginRight']: `${(oppositeSide === 'left' ? timelinePoints[0].lineLength : point.lineLength) + 12}px`,
                 }}
               >
                 <MagneticText
-                  text="An Existential hike in Cold Spring NY"
-                  hoverText="Almost fell off a cliff making this"
-                  className="h-24 md:h-32 w-56 md:w-80"
+                  text={magneticTexts[index].text}
+                  hoverText={magneticTexts[index].hoverText}
+                  className="h-24 md:h-32 w-44 md:w-56 lg:w-80"
                   circleSize={240}
+                  circleSizeTablet={180}
                   wrapInnerText
                 />
               </div>
             )}
-
-            {/* Magnetic text for second video - on opposite side */}
-            {index === 1 && !isMobile && (
-              <div 
-                className="absolute right-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="Historic Spectacle"
-                  hoverText="Got CapCut premium for this"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
-
-            {/* Magnetic text for third video - on opposite side */}
-            {index === 2 && !isMobile && (
-              <div 
-                className="absolute left-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="Ending of a Great Movie"
-                  hoverText="Historic Spectacle Part 2"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
-
-            {/* Magnetic text for fourth video - on opposite side */}
-            {index === 3 && !isMobile && (
-              <div 
-                className="absolute right-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="The Art in Harlem"
-                  hoverText="Met the Artist There"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
-
-            {/* Magnetic text for fifth video - on opposite side */}
-            {index === 4 && !isMobile && (
-              <div 
-                className="absolute left-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginLeft: `${(isMobile ? point.lineLengthMobile : point.lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="A Deal with Mind"
-                  hoverText="The Sun Stole the Show"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
-
-            {/* Magnetic text for sixth video - on opposite side */}
-            {index === 5 && !isMobile && (
-              <div 
-                className="absolute right-full"
-                style={{ 
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  marginRight: `${(isMobile ? timelinePoints[0].lineLengthMobile : timelinePoints[0].lineLength) + 12}px`,
-                }}
-              >
-                <MagneticText
-                  text="How Did the Chinese Get here"
-                  hoverText="Asian Invasion"
-                  className="h-24 md:h-32 w-56 md:w-80"
-                  circleSize={240}
-                  wrapInnerText
-                />
-              </div>
-            )}
-
           </div>
         );
       })}
