@@ -30,11 +30,11 @@ const magneticTexts = [
 
 const timelinePoints: TimelinePoint[] = [
   { id: 1, offset: 10, side: "left", lineLength: 60, lineLengthMobile: 12 },
-  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12 },
-  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12 },
-  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
-  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
-  { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
+  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12, offsetMobile: 20 },
+  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12, offsetMobile: 34 },
+  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12, offsetMobile: 48 },
+  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12, offsetMobile: 62 },
+  { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12, offsetMobile: 76 },
 ];
 
 const ScrollTimeline = () => {
