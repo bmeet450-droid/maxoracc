@@ -9,15 +9,18 @@ interface MagneticTextProps {
   hoverText?: string
   className?: string
   circleSize?: number
+  circleSizeMobile?: number
+  circleSizeTablet?: number
   wrapInnerText?: boolean
 }
 
-export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320, wrapInnerText = false }: MagneticTextProps) {
+export function MagneticText({ text = "CREATIVE", hoverText, className, circleSize = 320, circleSizeMobile, circleSizeTablet, wrapInnerText = false }: MagneticTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
   const innerTextRef = useRef<HTMLSpanElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   const [containerCenter, setContainerCenter] = useState({ x: 0, y: 0 })
+  const [effectiveCircleSize, setEffectiveCircleSize] = useState(circleSize)
 
   const mousePos = useRef({ x: 0, y: 0 })
   const currentPos = useRef({ x: 0, y: 0 })
@@ -31,11 +34,19 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
           y: containerRef.current.offsetHeight / 2,
         })
       }
+      const w = window.innerWidth
+      if (w < 768 && circleSizeMobile) {
+        setEffectiveCircleSize(circleSizeMobile)
+      } else if (w < 1024 && circleSizeTablet) {
+        setEffectiveCircleSize(circleSizeTablet)
+      } else {
+        setEffectiveCircleSize(circleSize)
+      }
     }
     updateCenter()
     window.addEventListener("resize", updateCenter)
     return () => window.removeEventListener("resize", updateCenter)
-  }, [])
+  }, [circleSize, circleSizeMobile, circleSizeTablet])
 
   useEffect(() => {
     const lerp = (start: number, end: number, factor: number) => start + (end - start) * factor
@@ -49,7 +60,6 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
       }
 
       if (innerTextRef.current) {
-        // Counter-translate to keep text aligned with container center
         const offsetX = containerCenter.x - currentPos.current.x
         const offsetY = containerCenter.y - currentPos.current.y
         innerTextRef.current.style.transform = `translate(${offsetX}px, ${offsetY}px)`
@@ -96,13 +106,13 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative flex items-center justify-center cursor-none select-none",
+        "relative flex items-center justify-center cursor-none select-none overflow-hidden",
         className
       )}
     >
       {/* Base text layer - dim */}
       <span
-        className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter"
+        className="text-xl sm:text-2xl md:text-5xl lg:text-7xl font-bold tracking-tighter"
         style={{ color: "rgba(255,255,255,0.12)" }}
       >
         {text}
@@ -116,8 +126,8 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
           isHovered ? "opacity-100 scale-100" : "opacity-0 scale-50"
         )}
         style={{
-          width: circleSize,
-          height: circleSize,
+          width: effectiveCircleSize,
+          height: effectiveCircleSize,
           willChange: "transform",
         }}
       >
@@ -127,7 +137,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
         >
           <span
             ref={innerTextRef}
-            className={cn("text-3xl md:text-5xl lg:text-7xl font-bold tracking-tighter flex items-center justify-center", !wrapInnerText && "whitespace-nowrap")}
+            className={cn("text-xl sm:text-2xl md:text-5xl lg:text-7xl font-bold tracking-tighter flex items-center justify-center", !wrapInnerText && "whitespace-nowrap")}
             style={{ 
               color: "#000000",
               willChange: "transform",
