@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import VideoHero from "@/components/VideoHero";
 import MagneticTextSection from "@/components/MagneticTextSection";
-import ZoomParallaxSection from "@/components/ZoomParallaxSection";
 import CinematographyTextSection from "@/components/CinematographyTextSection";
 import PortfolioSection from "@/components/PortfolioSection";
 import AboutSection from "@/components/AboutSection";
@@ -15,17 +14,14 @@ const Index = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle scroll restoration from contact page
     const state = location.state as { scrollTo?: string } | null;
     if (state?.scrollTo) {
-      // Small delay to ensure DOM is ready
       setTimeout(() => {
         const element = document.getElementById(state.scrollTo!);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
         }
       }, 100);
-      // Clear state to prevent re-scrolling on refresh
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -34,7 +30,6 @@ const Index = () => {
     <div className="min-h-screen" style={{ background: '#000000' }}>
       <VideoHero />
       <MagneticTextSection />
-      <ZoomParallaxSection />
       <PortfolioSection />
       <CinematographyTextSection />
       <AboutSection />
