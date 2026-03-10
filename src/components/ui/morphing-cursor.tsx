@@ -106,7 +106,7 @@ export function MagneticText({ text = "CREATIVE", hoverText, className, circleSi
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative flex items-center justify-center cursor-none select-none overflow-hidden",
+        "relative flex items-center justify-center cursor-none select-none",
         className
       )}
     >

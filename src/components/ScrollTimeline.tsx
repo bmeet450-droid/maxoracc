@@ -4,6 +4,7 @@ import { MagneticText } from "./ui/morphing-cursor";
 interface TimelinePoint {
   id: number;
   offset: number;
+  offsetMobile?: number;
   side: "left" | "right";
   lineLength: number;
   lineLengthMobile: number;
@@ -29,12 +30,12 @@ const magneticTexts = [
 ];
 
 const timelinePoints: TimelinePoint[] = [
-  { id: 1, offset: 10, side: "left", lineLength: 60, lineLengthMobile: 12 },
-  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12 },
-  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12 },
-  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12 },
-  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12 },
-  { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12 },
+  { id: 1, offset: 10, side: "left", lineLength: 60, lineLengthMobile: 12, offsetMobile: 6 },
+  { id: 2, offset: 24, side: "right", lineLength: 80, lineLengthMobile: 12, offsetMobile: 20 },
+  { id: 3, offset: 38, side: "left", lineLength: 70, lineLengthMobile: 12, offsetMobile: 34 },
+  { id: 4, offset: 52, side: "right", lineLength: 65, lineLengthMobile: 12, offsetMobile: 48 },
+  { id: 5, offset: 66, side: "left", lineLength: 75, lineLengthMobile: 12, offsetMobile: 62 },
+  { id: 6, offset: 80, side: "right", lineLength: 60, lineLengthMobile: 12, offsetMobile: 76 },
 ];
 
 const ScrollTimeline = () => {
@@ -80,7 +81,7 @@ const ScrollTimeline = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-[180vh] md:min-h-[200vh] lg:min-h-[250vh]"
+      className="relative w-full min-h-[280vh] md:min-h-[200vh] lg:min-h-[250vh]"
       style={{ background: '#000000' }}
     >
       {/* Central vertical line */}
@@ -108,7 +109,7 @@ const ScrollTimeline = () => {
           <div
             key={point.id}
             className="absolute left-6 md:left-1/2 md:-translate-x-1/2 flex items-center"
-            style={{ top: `${point.offset}%` }}
+            style={{ top: `${isMobile && point.offsetMobile !== undefined ? point.offsetMobile : point.offset}%` }}
           >
             {/* Perpendicular line and circle */}
             <div 
@@ -174,7 +175,7 @@ const ScrollTimeline = () => {
                     <MagneticText
                       text={magneticTexts[index].text}
                       hoverText={magneticTexts[index].hoverText}
-                      className="h-16 w-[calc(100vw-120px)]"
+                      className="h-12 w-[calc(100vw-120px)]"
                       circleSize={240}
                       circleSizeMobile={160}
                       wrapInnerText
