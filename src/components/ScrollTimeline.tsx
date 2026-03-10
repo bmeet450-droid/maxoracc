@@ -109,7 +109,7 @@ const ScrollTimeline = () => {
           <div
             key={point.id}
             className="absolute left-6 md:left-1/2 md:-translate-x-1/2 flex items-center"
-            style={{ top: `${point.offset}%` }}
+            style={{ top: `${isMobile && point.offsetMobile !== undefined ? point.offsetMobile : point.offset}%` }}
           >
             {/* Perpendicular line and circle */}
             <div 
