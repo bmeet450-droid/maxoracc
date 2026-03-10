@@ -4,15 +4,9 @@ import maxoraLogo from "@/assets/maxora-logo.png";
 
 // Reordered sequence: 7→1, 3→2, 2→3, 8→4, 9→5, 6→6, 5→7, 4→8, 1→9
 const wideVideos = [
-  "/videos/wide11.mp4",  // was clip 7, now clip 1
-  "/videos/wide4.mp4",   // was clip 3, now clip 2
-  "/videos/wide3.mp4",   // was clip 2, now clip 3
-  "/videos/wide12.mp4",  // was clip 8, now clip 4
-  "/videos/wide13.mp4",  // was clip 9, now clip 5
-  "/videos/wide6.mp4",   // clip 6 stays the same
-  "/videos/wide5.mp4",   // was clip 5, now clip 7
-  "/videos/wide5.mp4",   // was clip 4, now clip 8 (note: wide5 for original clip 4)
-  "/videos/wide2.mp4",   // was clip 1, now clip 9
+  "/videos/wide11.mp4",
+  "/videos/wide4.mp4",
+  "/videos/wide3.mp4",
 ];
 
 interface AnimatedTextProps {
