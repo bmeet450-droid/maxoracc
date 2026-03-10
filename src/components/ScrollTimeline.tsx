@@ -4,6 +4,7 @@ import { MagneticText } from "./ui/morphing-cursor";
 interface TimelinePoint {
   id: number;
   offset: number;
+  offsetMobile?: number;
   side: "left" | "right";
   lineLength: number;
   lineLengthMobile: number;
