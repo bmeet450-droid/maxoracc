@@ -178,7 +178,7 @@ const ContactSection = () => {
                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <Mail size={18} className="text-white/60" />
                 </div>
-                <span className="text-white/70 text-sm">bmeet450@gmail.com</span>
+                <span className="text-white/70 text-sm">Agent@maxora.cc</span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
