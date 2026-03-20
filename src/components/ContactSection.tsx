@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Youtube } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 // Custom TikTok icon (not available in lucide-react)
