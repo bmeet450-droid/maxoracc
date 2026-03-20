@@ -182,7 +182,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "Maxora Contact <onboarding@resend.dev>",
-        to: ["bmeet450@gmail.com"],
+        to: ["agent@maxora.cc"],
         subject: `New Contact Form Submission from ${safeName}`,
         html: `
           <!DOCTYPE html>
