@@ -16,12 +16,11 @@ const Index = () => {
   useEffect(() => {
     const state = location.state as { scrollTo?: string } | null;
     if (state?.scrollTo) {
-      setTimeout(() => {
-        const element = document.getElementById(state.scrollTo!);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
+      const element = document.getElementById(state.scrollTo!);
+      if (element) {
+        // Instant jump, no smooth scroll
+        element.scrollIntoView({ behavior: 'instant' });
+      }
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);

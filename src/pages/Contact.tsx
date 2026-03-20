@@ -98,11 +98,7 @@ const Contact = () => {
   }, []);
 
   const handleBack = () => {
-    if (scrollToSection) {
-      navigate('/', { state: { scrollTo: scrollToSection } });
-    } else {
-      navigate(-1);
-    }
+    navigate('/', { state: { scrollTo: 'contact' } });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
