@@ -23,12 +23,11 @@ const SubstackIcon = ({ size = 20, className = "" }: { size?: number; className?
 );
 
 const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com/yourprofile", label: "Instagram" },
-  { icon: Linkedin, href: "https://linkedin.com/in/yourprofile", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com/yourprofile", label: "Twitter" },
-  { icon: TikTokIcon, href: "https://tiktok.com/@yourprofile", label: "TikTok", isCustom: true },
-  { icon: Youtube, href: "https://youtube.com/@yourprofile", label: "YouTube" },
-  { icon: SubstackIcon, href: "https://yourprofile.substack.com", label: "Substack", isCustom: true },
+  { icon: Instagram, href: "https://www.instagram.com/_m2et_?igsh=b3UxbzYzdzMzZWR0&utm_source=qr", label: "Instagram" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/meet-bhatt-9a470b291?utm_source=share_via&utm_content=profile&utm_medium=member_ios", label: "LinkedIn" },
+  { icon: TikTokIcon, href: "https://www.tiktok.com/@m2et3141?_r=1&_t=ZT-94qqiqeFS8b", label: "TikTok", isCustom: true },
+  { icon: Youtube, href: "https://youtube.com/@m2et?si=kvN19BzNIHwTgMD9", label: "YouTube" },
+  { icon: SubstackIcon, href: "https://substack.com/@m2et?r=5g3hzm&utm_medium=ios&utm_source=profile&shareImageVariant=image", label: "Substack", isCustom: true },
 ];
 
 const contactSchema = z.object({
