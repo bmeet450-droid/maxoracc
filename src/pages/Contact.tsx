@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube, ArrowLeft } from "lucide-react";
+import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Youtube, ArrowLeft } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
