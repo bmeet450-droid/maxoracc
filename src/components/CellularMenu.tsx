@@ -1,13 +1,18 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import vedasImg from "@/assets/project-vedas.jpeg";
+import logoImg from "@/assets/project-logo.png";
 
 const menuData = [
-  { id: "1", label: "Project 1" },
-  { id: "2", label: "Project 2" },
+  { id: "1", label: "Vedas", image: vedasImg },
+  { id: "2", label: "Project 2", image: null },
+  { id: "3", label: "Logo", image: logoImg },
 ];
 
 const CIRCLE_SIZE = 180;
-const EXPANDED_GAP = 40;
+const EXPANDED_GAP = 50;
+
+const springTransition = { type: "spring" as const, stiffness: 80, damping: 20 };
 
 const CellularMenu = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -19,12 +24,13 @@ const CellularMenu = () => {
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    timeoutRef.current = setTimeout(() => setIsExpanded(false), 400);
+    timeoutRef.current = setTimeout(() => setIsExpanded(false), 600);
   }, []);
+
+  const totalSpread = CIRCLE_SIZE + EXPANDED_GAP;
 
   return (
     <div className="flex items-center justify-center py-20 md:py-32">
-      {/* Hidden SVG filter for gooey effect */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="goo-filter">
@@ -44,25 +50,28 @@ const CellularMenu = () => {
         className="relative flex items-center justify-center cursor-pointer"
         style={{
           minHeight: CIRCLE_SIZE + 60,
-          minWidth: CIRCLE_SIZE * 3,
+          minWidth: CIRCLE_SIZE * 4,
           filter: "url(#goo-filter)",
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Main circle (visible when collapsed) */}
+        {/* Center circle - always visible */}
         <motion.div
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
           style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
           animate={{
-            scale: isExpanded ? 0.4 : 1,
-            opacity: isExpanded ? 0 : 1,
+            scale: isExpanded ? 0.85 : 1,
           }}
-          transition={{ type: "spring", stiffness: 200, damping: 24 }}
+          transition={springTransition}
         >
-          <span className="text-sm font-semibold tracking-widest uppercase text-black">
-            Explore
-          </span>
+          {menuData[1].image ? (
+            <img src={menuData[1].image} alt={menuData[1].label} className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-sm font-semibold tracking-widest uppercase text-black">
+              Explore
+            </span>
+          )}
         </motion.div>
 
         {/* Left child */}
@@ -70,15 +79,19 @@ const CellularMenu = () => {
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
           style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
           animate={{
-            x: isExpanded ? -(CIRCLE_SIZE / 2 + EXPANDED_GAP / 2) : 0,
+            x: isExpanded ? -totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
             opacity: isExpanded ? 1 : 0,
           }}
-          transition={{ type: "spring", stiffness: 180, damping: 22 }}
+          transition={springTransition}
         >
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-neutral-300" />
-            <span className="text-[10px] font-medium tracking-widest uppercase text-black/60">
+          <div className="flex flex-col items-center gap-2 w-full h-full relative">
+            {menuData[0].image ? (
+              <img src={menuData[0].image} alt={menuData[0].label} className="w-full h-full object-cover absolute inset-0" />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-neutral-300" />
+            )}
+            <span className="absolute bottom-4 text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
               {menuData[0].label}
             </span>
           </div>
@@ -89,34 +102,56 @@ const CellularMenu = () => {
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
           style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
           animate={{
-            x: isExpanded ? (CIRCLE_SIZE / 2 + EXPANDED_GAP / 2) : 0,
+            x: isExpanded ? totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
             opacity: isExpanded ? 1 : 0,
           }}
-          transition={{ type: "spring", stiffness: 180, damping: 22, delay: isExpanded ? 0.05 : 0 }}
+          transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
         >
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-neutral-300" />
-            <span className="text-[10px] font-medium tracking-widest uppercase text-black/60">
-              {menuData[1].label}
+          <div className="flex flex-col items-center gap-2 w-full h-full relative">
+            {menuData[2].image ? (
+              <img src={menuData[2].image} alt={menuData[2].label} className="w-full h-full object-cover absolute inset-0" />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-neutral-300" />
+            )}
+            <span className="absolute bottom-4 text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
+              {menuData[2].label}
             </span>
           </div>
         </motion.div>
 
-        {/* Bridge blob for gooey connection */}
+        {/* Left bridge blob */}
         <motion.div
           className="absolute rounded-full pointer-events-none"
           style={{
-            width: CIRCLE_SIZE * 0.6,
-            height: CIRCLE_SIZE * 0.6,
+            width: CIRCLE_SIZE * 0.5,
+            height: CIRCLE_SIZE * 0.5,
             backgroundColor: "#ffffff",
           }}
           animate={{
-            scaleX: isExpanded ? 3.5 : 0.5,
-            scaleY: isExpanded ? 0.6 : 0.5,
+            x: isExpanded ? -(totalSpread / 2) : 0,
+            scaleX: isExpanded ? 3 : 0.5,
+            scaleY: isExpanded ? 0.5 : 0.5,
             opacity: isExpanded ? 1 : 0,
           }}
-          transition={{ type: "spring", stiffness: 160, damping: 22 }}
+          transition={springTransition}
+        />
+
+        {/* Right bridge blob */}
+        <motion.div
+          className="absolute rounded-full pointer-events-none"
+          style={{
+            width: CIRCLE_SIZE * 0.5,
+            height: CIRCLE_SIZE * 0.5,
+            backgroundColor: "#ffffff",
+          }}
+          animate={{
+            x: isExpanded ? totalSpread / 2 : 0,
+            scaleX: isExpanded ? 3 : 0.5,
+            scaleY: isExpanded ? 0.5 : 0.5,
+            opacity: isExpanded ? 1 : 0,
+          }}
+          transition={springTransition}
         />
       </div>
     </div>
