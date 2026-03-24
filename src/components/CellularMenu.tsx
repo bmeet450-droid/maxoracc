@@ -180,7 +180,7 @@ const CellularMenu = () => {
           {menuData[1].image ? (
             <img src={menuData[1].image} alt={menuData[1].label} className="w-full h-full object-cover" />
           ) : (
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold tracking-widest uppercase text-black`}>Explore</span>
+            <span className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-semibold tracking-widest uppercase text-black`}>Explore</span>
           )}
         </motion.div>
 
