@@ -19,18 +19,18 @@ const menuData = [
 
 const CIRCLE_SIZE = 180;
 const VISIT_SIZE = 100;
-const DESC_SIZE = 160;
+const DESC_SIZE = 180;
 const EXPANDED_GAP = 50;
 
 // Visit bubbles go downward, description bubbles go upward — balanced symmetry
 const bubbleOffsets = {
   left: {
-    visit: { angle: -135, distance: CIRCLE_SIZE * 0.78 },
-    desc:  { angle: 135, distance: CIRCLE_SIZE * 0.78 },
+    visit: { angle: -135, distance: CIRCLE_SIZE * 0.95 },
+    desc:  { angle: 135, distance: CIRCLE_SIZE * 0.95 },
   },
   right: {
-    visit: { angle: -45, distance: CIRCLE_SIZE * 0.78 },
-    desc:  { angle: 45, distance: CIRCLE_SIZE * 0.78 },
+    visit: { angle: -45, distance: CIRCLE_SIZE * 0.95 },
+    desc:  { angle: 45, distance: CIRCLE_SIZE * 0.95 },
   },
 };
 
