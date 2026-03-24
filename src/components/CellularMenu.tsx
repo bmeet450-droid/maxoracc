@@ -59,7 +59,7 @@ const CellularMenu = () => {
         {/* Center circle - always visible */}
         <motion.div
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff", border: "2px solid white" }}
           animate={{
             scale: isExpanded ? 0.85 : 1,
           }}
@@ -77,7 +77,7 @@ const CellularMenu = () => {
         {/* Left child */}
         <motion.div
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, border: "2px solid white" }}
           animate={{
             x: isExpanded ? -totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -100,7 +100,7 @@ const CellularMenu = () => {
         {/* Right child */}
         <motion.div
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, border: "2px solid white" }}
           animate={{
             x: isExpanded ? totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -120,39 +120,6 @@ const CellularMenu = () => {
           </div>
         </motion.div>
 
-        {/* Left bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? -(totalSpread / 2) : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
-
-        {/* Right bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? totalSpread / 2 : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
       </div>
     </div>
   );
