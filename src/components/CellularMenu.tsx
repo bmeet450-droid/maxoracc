@@ -92,14 +92,15 @@ const CellularMenu = () => {
   const DESC_SIZE = isMobile ? 90 : 180;
   const EXPANDED_GAP = isMobile ? 10 : 50;
 
+  const bubbleDistMult = isMobile ? 0.85 : 0.95;
   const bubbleOffsets = {
     left: {
-      visit: { angle: -135, distance: CIRCLE_SIZE * 0.95 },
-      desc:  { angle: 135, distance: CIRCLE_SIZE * 0.95 },
+      visit: { angle: -135, distance: CIRCLE_SIZE * bubbleDistMult },
+      desc:  { angle: 135, distance: CIRCLE_SIZE * bubbleDistMult },
     },
     right: {
-      visit: { angle: -45, distance: CIRCLE_SIZE * 0.95 },
-      desc:  { angle: 45, distance: CIRCLE_SIZE * 0.95 },
+      visit: { angle: -45, distance: CIRCLE_SIZE * bubbleDistMult },
+      desc:  { angle: 45, distance: CIRCLE_SIZE * bubbleDistMult },
     },
   };
 
