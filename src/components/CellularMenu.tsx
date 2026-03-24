@@ -31,27 +31,11 @@ const CellularMenu = () => {
 
   return (
     <div className="flex items-center justify-center py-20 md:py-32">
-      <svg className="absolute w-0 h-0" aria-hidden="true">
-        <defs>
-          <filter id="goo-filter">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
-              result="goo"
-            />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-          </filter>
-        </defs>
-      </svg>
-
       <div
         className="relative flex items-center justify-center cursor-pointer"
         style={{
           minHeight: CIRCLE_SIZE + 60,
           minWidth: CIRCLE_SIZE * 4,
-          filter: "url(#goo-filter)",
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -76,8 +60,8 @@ const CellularMenu = () => {
 
         {/* Left child */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          className="absolute rounded-full flex items-center justify-center overflow-hidden border-[3px] border-white"
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE }}
           animate={{
             x: isExpanded ? -totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -99,8 +83,8 @@ const CellularMenu = () => {
 
         {/* Right child */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          className="absolute rounded-full flex items-center justify-center overflow-hidden border-[3px] border-white"
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE }}
           animate={{
             x: isExpanded ? totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -120,39 +104,6 @@ const CellularMenu = () => {
           </div>
         </motion.div>
 
-        {/* Left bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? -(totalSpread / 2) : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
-
-        {/* Right bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? totalSpread / 2 : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
       </div>
     </div>
   );
