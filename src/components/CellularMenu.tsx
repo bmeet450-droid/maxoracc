@@ -4,9 +4,9 @@ import vedasImg from "@/assets/project-vedas.jpeg";
 import logoImg from "@/assets/project-logo.png";
 
 const menuData = [
-  { id: "1", label: "Vedas", image: vedasImg, link: "https://example.com/vedas" },
+  { id: "1", label: "Bayshore Tiles Boutique", image: vedasImg, link: "https://bayshoretiles.com/" },
   { id: "2", label: "Project 2", image: null, link: null },
-  { id: "3", label: "Logo", image: logoImg, link: "https://example.com/logo" },
+  { id: "3", label: "Maxora", image: logoImg, link: "https://maxora.cc/" },
 ];
 
 const CIRCLE_SIZE = 180;
