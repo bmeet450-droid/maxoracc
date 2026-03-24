@@ -83,8 +83,8 @@ const CellularMenu = () => {
 
         {/* Right child */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          className="absolute rounded-full flex items-center justify-center overflow-hidden border-[3px] border-white"
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE }}
           animate={{
             x: isExpanded ? totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
