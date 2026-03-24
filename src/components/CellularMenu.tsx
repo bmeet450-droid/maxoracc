@@ -4,18 +4,31 @@ import vedasImg from "@/assets/project-vedas.jpeg";
 import logoImg from "@/assets/project-logo.png";
 
 const menuData = [
-  { id: "1", label: "Vedas", image: vedasImg },
-  { id: "2", label: "Project 2", image: null },
-  { id: "3", label: "Logo", image: logoImg },
+  { id: "1", label: "Vedas", image: vedasImg, link: "https://example.com/vedas" },
+  { id: "2", label: "Project 2", image: null, link: null },
+  { id: "3", label: "Logo", image: logoImg, link: "https://example.com/logo" },
 ];
 
 const CIRCLE_SIZE = 180;
+const VISIT_SIZE = 100;
 const EXPANDED_GAP = 50;
+
+// Each child gets a fixed "visit" bubble direction (angle in degrees, distance)
+const visitOffsets = {
+  left: { angle: -120, distance: CIRCLE_SIZE * 0.75 },   // bottom-left
+  right: { angle: -60, distance: CIRCLE_SIZE * 0.75 },    // bottom-right
+};
 
 const springTransition = { type: "spring" as const, stiffness: 80, damping: 20 };
 
+const getOffsetXY = (angleDeg: number, dist: number) => ({
+  x: Math.cos((angleDeg * Math.PI) / 180) * dist,
+  y: -Math.sin((angleDeg * Math.PI) / 180) * dist,
+});
+
 const CellularMenu = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [hoveredChild, setHoveredChild] = useState<"left" | "right" | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const handleMouseEnter = useCallback(() => {
@@ -24,14 +37,23 @@ const CellularMenu = () => {
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    timeoutRef.current = setTimeout(() => setIsExpanded(false), 600);
+    timeoutRef.current = setTimeout(() => {
+      setIsExpanded(false);
+      setHoveredChild(null);
+    }, 600);
   }, []);
 
   const totalSpread = CIRCLE_SIZE + EXPANDED_GAP;
 
+  const leftVisit = getOffsetXY(visitOffsets.left.angle, visitOffsets.left.distance);
+  const rightVisit = getOffsetXY(visitOffsets.right.angle, visitOffsets.right.distance);
+
+  const isLeftVisitVisible = isExpanded && hoveredChild === "left";
+  const isRightVisitVisible = isExpanded && hoveredChild === "right";
+
   return (
     <div className="flex items-center justify-center py-20 md:py-32">
-      {/* SVG goo filter for the morphing background layer */}
+      {/* SVG goo filter */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="goo-filter">
@@ -49,13 +71,13 @@ const CellularMenu = () => {
       <div
         className="relative flex items-center justify-center cursor-pointer"
         style={{
-          minHeight: CIRCLE_SIZE + 60,
-          minWidth: CIRCLE_SIZE * 4,
+          minHeight: CIRCLE_SIZE * 2.5,
+          minWidth: CIRCLE_SIZE * 5,
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* GOO LAYER — white filled shapes that morph together behind everything */}
+        {/* GOO LAYER */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ filter: "url(#goo-filter)" }}
@@ -114,7 +136,7 @@ const CellularMenu = () => {
             transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
           />
 
-          {/* Left bridge connector — stretches between center and left circle */}
+          {/* Left bridge connector */}
           <motion.div
             className="absolute rounded-full"
             style={{
@@ -134,7 +156,7 @@ const CellularMenu = () => {
             }}
             transition={springTransition}
           />
-          {/* Right bridge connector — stretches between center and right circle */}
+          {/* Right bridge connector */}
           <motion.div
             className="absolute rounded-full"
             style={{
@@ -154,9 +176,95 @@ const CellularMenu = () => {
             }}
             transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
           />
+
+          {/* Left visit goo circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: VISIT_SIZE,
+              height: VISIT_SIZE,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -VISIT_SIZE / 2,
+              marginLeft: -VISIT_SIZE / 2,
+            }}
+            animate={{
+              x: isLeftVisitVisible ? -totalSpread + leftVisit.x : -totalSpread,
+              y: isLeftVisitVisible ? leftVisit.y : 0,
+              scale: isLeftVisitVisible ? 1 : 0.2,
+              opacity: isLeftVisitVisible ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
+          {/* Left visit bridge */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: VISIT_SIZE * 0.5,
+              height: VISIT_SIZE * 0.5,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -VISIT_SIZE * 0.25,
+              marginLeft: -VISIT_SIZE * 0.25,
+            }}
+            animate={{
+              x: isLeftVisitVisible ? -totalSpread + leftVisit.x * 0.45 : -totalSpread,
+              y: isLeftVisitVisible ? leftVisit.y * 0.45 : 0,
+              scaleX: isLeftVisitVisible ? 2 : 0.3,
+              scaleY: isLeftVisitVisible ? 0.6 : 0.3,
+              rotate: isLeftVisitVisible ? visitOffsets.left.angle + 180 : 0,
+              opacity: isLeftVisitVisible ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
+
+          {/* Right visit goo circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: VISIT_SIZE,
+              height: VISIT_SIZE,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -VISIT_SIZE / 2,
+              marginLeft: -VISIT_SIZE / 2,
+            }}
+            animate={{
+              x: isRightVisitVisible ? totalSpread + rightVisit.x : totalSpread,
+              y: isRightVisitVisible ? rightVisit.y : 0,
+              scale: isRightVisitVisible ? 1 : 0.2,
+              opacity: isRightVisitVisible ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
+          {/* Right visit bridge */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: VISIT_SIZE * 0.5,
+              height: VISIT_SIZE * 0.5,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -VISIT_SIZE * 0.25,
+              marginLeft: -VISIT_SIZE * 0.25,
+            }}
+            animate={{
+              x: isRightVisitVisible ? totalSpread + rightVisit.x * 0.45 : totalSpread,
+              y: isRightVisitVisible ? rightVisit.y * 0.45 : 0,
+              scaleX: isRightVisitVisible ? 2 : 0.3,
+              scaleY: isRightVisitVisible ? 0.6 : 0.3,
+              rotate: isRightVisitVisible ? -visitOffsets.right.angle : 0,
+              opacity: isRightVisitVisible ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
         </div>
 
-        {/* CONTENT LAYER — circles with images/text rendered on top, no goo filter */}
+        {/* CONTENT LAYER */}
 
         {/* Center circle */}
         <motion.div
@@ -192,6 +300,8 @@ const CellularMenu = () => {
             opacity: isExpanded ? 1 : 0,
           }}
           transition={springTransition}
+          onMouseEnter={() => setHoveredChild("left")}
+          onMouseLeave={() => setHoveredChild(null)}
         >
           <div className="w-full h-full relative">
             {menuData[0].image ? (
@@ -204,6 +314,30 @@ const CellularMenu = () => {
             </span>
           </div>
         </motion.div>
+
+        {/* Left visit content circle */}
+        <motion.a
+          href={menuData[0].link || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute rounded-full flex items-center justify-center z-20"
+          style={{
+            width: VISIT_SIZE,
+            height: VISIT_SIZE,
+          }}
+          animate={{
+            x: isLeftVisitVisible ? -totalSpread + leftVisit.x : -totalSpread,
+            y: isLeftVisitVisible ? leftVisit.y : 0,
+            scale: isLeftVisitVisible ? 1 : 0.2,
+            opacity: isLeftVisitVisible ? 1 : 0,
+          }}
+          transition={springTransition}
+          onMouseEnter={() => setHoveredChild("left")}
+        >
+          <span className="text-xs font-bold tracking-widest uppercase text-black">
+            Visit
+          </span>
+        </motion.a>
 
         {/* Right child */}
         <motion.div
@@ -219,6 +353,8 @@ const CellularMenu = () => {
             opacity: isExpanded ? 1 : 0,
           }}
           transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
+          onMouseEnter={() => setHoveredChild("right")}
+          onMouseLeave={() => setHoveredChild(null)}
         >
           <div className="w-full h-full relative">
             {menuData[2].image ? (
@@ -231,6 +367,30 @@ const CellularMenu = () => {
             </span>
           </div>
         </motion.div>
+
+        {/* Right visit content circle */}
+        <motion.a
+          href={menuData[2].link || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute rounded-full flex items-center justify-center z-20"
+          style={{
+            width: VISIT_SIZE,
+            height: VISIT_SIZE,
+          }}
+          animate={{
+            x: isRightVisitVisible ? totalSpread + rightVisit.x : totalSpread,
+            y: isRightVisitVisible ? rightVisit.y : 0,
+            scale: isRightVisitVisible ? 1 : 0.2,
+            opacity: isRightVisitVisible ? 1 : 0,
+          }}
+          transition={springTransition}
+          onMouseEnter={() => setHoveredChild("right")}
+        >
+          <span className="text-xs font-bold tracking-widest uppercase text-black">
+            Visit
+          </span>
+        </motion.a>
       </div>
     </div>
   );
