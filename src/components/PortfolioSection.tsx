@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
-import portfolio1 from "@/assets/portfolio-1.jpg";
-import portfolio2 from "@/assets/portfolio-2.jpg";
-import portfolio3 from "@/assets/portfolio-3.jpg";
-import portfolio4 from "@/assets/portfolio-4.jpg";
-import portfolio5 from "@/assets/portfolio-5.jpg";
-import portfolio6 from "@/assets/portfolio-6.jpg";
+import portfolio1 from "@/assets/portfolio-1.webp";
+import portfolio2 from "@/assets/portfolio-2.webp";
+import portfolio3 from "@/assets/portfolio-3.webp";
+import portfolio4 from "@/assets/portfolio-4.webp";
+import portfolio5 from "@/assets/portfolio-5.webp";
+import portfolio6 from "@/assets/portfolio-6.webp";
 
 const projects = [
   {
