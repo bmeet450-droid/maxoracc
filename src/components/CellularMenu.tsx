@@ -10,7 +10,7 @@ const menuData = [
 ];
 
 const CIRCLE_SIZE = 180;
-const EXPANDED_GAP = 50;
+const EXPANDED_GAP = 10;
 
 const springTransition = { type: "spring" as const, stiffness: 80, damping: 20 };
 
