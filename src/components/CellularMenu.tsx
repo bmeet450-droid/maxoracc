@@ -113,6 +113,47 @@ const CellularMenu = () => {
             }}
             transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
           />
+
+          {/* Left bridge connector — stretches between center and left circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: CIRCLE_SIZE * 0.45,
+              height: CIRCLE_SIZE * 0.45,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -(CIRCLE_SIZE * 0.45) / 2,
+              marginLeft: -(CIRCLE_SIZE * 0.45) / 2,
+            }}
+            animate={{
+              x: isExpanded ? -(totalSpread * 0.35) : 0,
+              scaleX: isExpanded ? 2.8 : 0.5,
+              scaleY: isExpanded ? 0.7 : 0.5,
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
+          {/* Right bridge connector — stretches between center and right circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: CIRCLE_SIZE * 0.45,
+              height: CIRCLE_SIZE * 0.45,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -(CIRCLE_SIZE * 0.45) / 2,
+              marginLeft: -(CIRCLE_SIZE * 0.45) / 2,
+            }}
+            animate={{
+              x: isExpanded ? totalSpread * 0.35 : 0,
+              scaleX: isExpanded ? 2.8 : 0.5,
+              scaleY: isExpanded ? 0.7 : 0.5,
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
+          />
         </div>
 
         {/* CONTENT LAYER — circles with images/text rendered on top, no goo filter */}
