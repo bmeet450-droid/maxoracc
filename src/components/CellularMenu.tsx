@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import vedasImg from "@/assets/project-vedas.jpeg";
 import logoImg from "@/assets/project-logo.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuData = [
   {
@@ -16,23 +17,6 @@ const menuData = [
     description: "Creative agency crafting digital experiences",
   },
 ];
-
-const CIRCLE_SIZE = 180;
-const VISIT_SIZE = 100;
-const DESC_SIZE = 180;
-const EXPANDED_GAP = 50;
-
-// Visit bubbles go downward, description bubbles go upward — balanced symmetry
-const bubbleOffsets = {
-  left: {
-    visit: { angle: -135, distance: CIRCLE_SIZE * 0.95 },
-    desc:  { angle: 135, distance: CIRCLE_SIZE * 0.95 },
-  },
-  right: {
-    visit: { angle: -45, distance: CIRCLE_SIZE * 0.95 },
-    desc:  { angle: 45, distance: CIRCLE_SIZE * 0.95 },
-  },
-};
 
 const springTransition = { type: "spring" as const, stiffness: 80, damping: 20 };
 
@@ -100,6 +84,24 @@ const CellularMenu = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [hoveredChild, setHoveredChild] = useState<"left" | "right" | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const isMobile = useIsMobile();
+
+  // Responsive sizes
+  const CIRCLE_SIZE = isMobile ? 100 : 180;
+  const VISIT_SIZE = isMobile ? 60 : 100;
+  const DESC_SIZE = isMobile ? 110 : 180;
+  const EXPANDED_GAP = isMobile ? 20 : 50;
+
+  const bubbleOffsets = {
+    left: {
+      visit: { angle: -135, distance: CIRCLE_SIZE * 0.95 },
+      desc:  { angle: 135, distance: CIRCLE_SIZE * 0.95 },
+    },
+    right: {
+      visit: { angle: -45, distance: CIRCLE_SIZE * 0.95 },
+      desc:  { angle: 45, distance: CIRCLE_SIZE * 0.95 },
+    },
+  };
 
   const handleMouseEnter = useCallback(() => {
     clearTimeout(timeoutRef.current);
@@ -124,11 +126,11 @@ const CellularMenu = () => {
   const isRightHovered = isExpanded && hoveredChild === "right";
 
   return (
-    <div className="flex items-center justify-center py-20 md:py-32">
+    <div className="flex items-center justify-center py-12 md:py-32">
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="goo-filter">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation={isMobile ? 18 : 30} result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -16" result="goo" />
           </filter>
         </defs>
@@ -136,9 +138,10 @@ const CellularMenu = () => {
 
       <div
         className="relative flex items-center justify-center cursor-pointer"
-        style={{ minHeight: CIRCLE_SIZE * 3, minWidth: CIRCLE_SIZE * 5 }}
+        style={{ minHeight: CIRCLE_SIZE * 3, minWidth: isMobile ? CIRCLE_SIZE * 4 : CIRCLE_SIZE * 5 }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={isMobile ? () => setIsExpanded(prev => !prev) : undefined}
       >
         {/* GOO LAYER */}
         <div className="absolute inset-0 pointer-events-none" style={{ filter: "url(#goo-filter)" }}>
@@ -176,7 +179,7 @@ const CellularMenu = () => {
           {menuData[1].image ? (
             <img src={menuData[1].image} alt={menuData[1].label} className="w-full h-full object-cover" />
           ) : (
-            <span className="text-sm font-semibold tracking-widest uppercase text-black">Explore</span>
+            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold tracking-widest uppercase text-black`}>Explore</span>
           )}
         </motion.div>
 
@@ -186,7 +189,8 @@ const CellularMenu = () => {
           animate={{ x: isExpanded ? -totalSpread : 0, scale: isExpanded ? 1 : 0.2, opacity: isExpanded ? 1 : 0 }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("left")}
-          onMouseLeave={() => setHoveredChild(null)}>
+          onMouseLeave={() => setHoveredChild(null)}
+          onClick={isMobile && isExpanded ? (e) => { e.stopPropagation(); setHoveredChild(prev => prev === "left" ? null : "left"); } : undefined}>
           <div className="w-full h-full relative">
             {menuData[0].image ? (
               <img src={menuData[0].image} alt={menuData[0].label} className="w-full h-full object-cover absolute inset-0" />
@@ -208,12 +212,12 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("left")}>
-          <span className="text-xs font-bold tracking-widest uppercase text-black">Visit</span>
+          <span className={`${isMobile ? 'text-[10px]' : 'text-xs'} font-bold tracking-widest uppercase text-black`}>Visit</span>
         </motion.a>
 
         {/* Left description bubble */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center z-20 p-3"
+          className="absolute rounded-full flex items-center justify-center z-20 p-2 md:p-3"
           style={{ width: DESC_SIZE, height: DESC_SIZE }}
           animate={{
             x: isLeftHovered ? -totalSpread + leftDescOff.x : -totalSpread,
@@ -223,7 +227,7 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("left")}>
-          <span className="text-sm font-medium leading-snug text-center text-black/80">
+          <span className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-medium leading-snug text-center text-black/80`}>
             {menuData[0].description}
           </span>
         </motion.div>
@@ -234,7 +238,8 @@ const CellularMenu = () => {
           animate={{ x: isExpanded ? totalSpread : 0, scale: isExpanded ? 1 : 0.2, opacity: isExpanded ? 1 : 0 }}
           transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
           onMouseEnter={() => setHoveredChild("right")}
-          onMouseLeave={() => setHoveredChild(null)}>
+          onMouseLeave={() => setHoveredChild(null)}
+          onClick={isMobile && isExpanded ? (e) => { e.stopPropagation(); setHoveredChild(prev => prev === "right" ? null : "right"); } : undefined}>
           <div className="w-full h-full relative">
             {menuData[2].image ? (
               <img src={menuData[2].image} alt={menuData[2].label} className="w-full h-full object-cover absolute inset-0" />
@@ -256,12 +261,12 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("right")}>
-          <span className="text-xs font-bold tracking-widest uppercase text-black">Visit</span>
+          <span className={`${isMobile ? 'text-[10px]' : 'text-xs'} font-bold tracking-widest uppercase text-black`}>Visit</span>
         </motion.a>
 
         {/* Right description bubble */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center z-20 p-3"
+          className="absolute rounded-full flex items-center justify-center z-20 p-2 md:p-3"
           style={{ width: DESC_SIZE, height: DESC_SIZE }}
           animate={{
             x: isRightHovered ? totalSpread + rightDescOff.x : totalSpread,
@@ -271,7 +276,7 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("right")}>
-          <span className="text-sm font-medium leading-snug text-center text-black/80">
+          <span className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-medium leading-snug text-center text-black/80`}>
             {menuData[2].description}
           </span>
         </motion.div>
