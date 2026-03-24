@@ -31,6 +31,7 @@ const CellularMenu = () => {
 
   return (
     <div className="flex items-center justify-center py-20 md:py-32">
+      {/* SVG goo filter for the morphing background layer */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="goo-filter">
@@ -41,7 +42,6 @@ const CellularMenu = () => {
               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
               result="goo"
             />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
           </filter>
         </defs>
       </svg>
@@ -51,18 +51,81 @@ const CellularMenu = () => {
         style={{
           minHeight: CIRCLE_SIZE + 60,
           minWidth: CIRCLE_SIZE * 4,
-          filter: "url(#goo-filter)",
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Center circle - always visible */}
+        {/* GOO LAYER — white filled shapes that morph together behind everything */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ filter: "url(#goo-filter)" }}
+        >
+          {/* Center goo circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: CIRCLE_SIZE,
+              height: CIRCLE_SIZE,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -CIRCLE_SIZE / 2,
+              marginLeft: -CIRCLE_SIZE / 2,
+            }}
+            animate={{ scale: isExpanded ? 0.85 : 1 }}
+            transition={springTransition}
+          />
+          {/* Left goo circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: CIRCLE_SIZE,
+              height: CIRCLE_SIZE,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -CIRCLE_SIZE / 2,
+              marginLeft: -CIRCLE_SIZE / 2,
+            }}
+            animate={{
+              x: isExpanded ? -totalSpread : 0,
+              scale: isExpanded ? 1 : 0.2,
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={springTransition}
+          />
+          {/* Right goo circle */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: CIRCLE_SIZE,
+              height: CIRCLE_SIZE,
+              backgroundColor: "white",
+              top: "50%",
+              left: "50%",
+              marginTop: -CIRCLE_SIZE / 2,
+              marginLeft: -CIRCLE_SIZE / 2,
+            }}
+            animate={{
+              x: isExpanded ? totalSpread : 0,
+              scale: isExpanded ? 1 : 0.2,
+              opacity: isExpanded ? 1 : 0,
+            }}
+            transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
+          />
+        </div>
+
+        {/* CONTENT LAYER — circles with images/text rendered on top, no goo filter */}
+
+        {/* Center circle */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff", border: "2px solid white" }}
-          animate={{
-            scale: isExpanded ? 0.85 : 1,
+          className="absolute rounded-full flex items-center justify-center overflow-hidden z-10"
+          style={{
+            width: CIRCLE_SIZE,
+            height: CIRCLE_SIZE,
+            border: "2px solid rgba(255,255,255,0.6)",
           }}
+          animate={{ scale: isExpanded ? 0.85 : 1 }}
           transition={springTransition}
         >
           {menuData[1].image ? (
@@ -76,8 +139,12 @@ const CellularMenu = () => {
 
         {/* Left child */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, border: "2px solid white" }}
+          className="absolute rounded-full flex items-center justify-center overflow-hidden z-10"
+          style={{
+            width: CIRCLE_SIZE,
+            height: CIRCLE_SIZE,
+            border: "2px solid rgba(255,255,255,0.6)",
+          }}
           animate={{
             x: isExpanded ? -totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -85,13 +152,13 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
         >
-          <div className="flex flex-col items-center gap-2 w-full h-full relative">
+          <div className="w-full h-full relative">
             {menuData[0].image ? (
               <img src={menuData[0].image} alt={menuData[0].label} className="w-full h-full object-cover absolute inset-0" />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-neutral-300" />
+              <div className="w-full h-full bg-neutral-300" />
             )}
-            <span className="absolute bottom-4 text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
+            <span className="absolute bottom-4 left-0 right-0 text-center text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
               {menuData[0].label}
             </span>
           </div>
@@ -99,8 +166,12 @@ const CellularMenu = () => {
 
         {/* Right child */}
         <motion.div
-          className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, border: "2px solid white" }}
+          className="absolute rounded-full flex items-center justify-center overflow-hidden z-10"
+          style={{
+            width: CIRCLE_SIZE,
+            height: CIRCLE_SIZE,
+            border: "2px solid rgba(255,255,255,0.6)",
+          }}
           animate={{
             x: isExpanded ? totalSpread : 0,
             scale: isExpanded ? 1 : 0.2,
@@ -108,18 +179,17 @@ const CellularMenu = () => {
           }}
           transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
         >
-          <div className="flex flex-col items-center gap-2 w-full h-full relative">
+          <div className="w-full h-full relative">
             {menuData[2].image ? (
               <img src={menuData[2].image} alt={menuData[2].label} className="w-full h-full object-cover absolute inset-0" />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-neutral-300" />
+              <div className="w-full h-full bg-neutral-300" />
             )}
-            <span className="absolute bottom-4 text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
+            <span className="absolute bottom-4 left-0 right-0 text-center text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
               {menuData[2].label}
             </span>
           </div>
         </motion.div>
-
       </div>
     </div>
   );
