@@ -87,19 +87,20 @@ const CellularMenu = () => {
   const isMobile = useIsMobile();
 
   // Responsive sizes
-  const CIRCLE_SIZE = isMobile ? 70 : 180;
-  const VISIT_SIZE = isMobile ? 40 : 100;
-  const DESC_SIZE = isMobile ? 75 : 180;
-  const EXPANDED_GAP = isMobile ? 12 : 50;
+  const CIRCLE_SIZE = isMobile ? 80 : 180;
+  const VISIT_SIZE = isMobile ? 50 : 100;
+  const DESC_SIZE = isMobile ? 90 : 180;
+  const EXPANDED_GAP = isMobile ? 10 : 50;
 
+  const bubbleDistMult = isMobile ? 0.85 : 0.95;
   const bubbleOffsets = {
     left: {
-      visit: { angle: -135, distance: CIRCLE_SIZE * 0.95 },
-      desc:  { angle: 135, distance: CIRCLE_SIZE * 0.95 },
+      visit: { angle: -135, distance: CIRCLE_SIZE * bubbleDistMult },
+      desc:  { angle: 135, distance: CIRCLE_SIZE * bubbleDistMult },
     },
     right: {
-      visit: { angle: -45, distance: CIRCLE_SIZE * 0.95 },
-      desc:  { angle: 45, distance: CIRCLE_SIZE * 0.95 },
+      visit: { angle: -45, distance: CIRCLE_SIZE * bubbleDistMult },
+      desc:  { angle: 45, distance: CIRCLE_SIZE * bubbleDistMult },
     },
   };
 
@@ -179,7 +180,7 @@ const CellularMenu = () => {
           {menuData[1].image ? (
             <img src={menuData[1].image} alt={menuData[1].label} className="w-full h-full object-cover" />
           ) : (
-            <span className={`${isMobile ? 'text-xs' : 'text-sm'} font-semibold tracking-widest uppercase text-black`}>Explore</span>
+            <span className={`${isMobile ? 'text-[10px]' : 'text-sm'} font-semibold tracking-widest uppercase text-black`}>Explore</span>
           )}
         </motion.div>
 
