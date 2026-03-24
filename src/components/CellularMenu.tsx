@@ -85,7 +85,7 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
         >
-          <div className="flex flex-col items-center gap-2 w-full h-full relative border-4 border-white rounded-full overflow-hidden">
+          <div className="flex flex-col items-center gap-2 w-full h-full relative">
             {menuData[0].image ? (
               <img src={menuData[0].image} alt={menuData[0].label} className="w-full h-full object-cover absolute inset-0" />
             ) : (
@@ -108,9 +108,9 @@ const CellularMenu = () => {
           }}
           transition={{ ...springTransition, delay: isExpanded ? 0.05 : 0 }}
         >
-          <div className="flex flex-col items-center gap-2 w-full h-full relative border-4 border-white rounded-full overflow-hidden">
+          <div className="flex flex-col items-center gap-2 w-full h-full relative">
             {menuData[2].image ? (
-              <img src={menuData[2].image} alt={menuData[2].label} className="w-full h-full object-cover absolute inset-0 object-contain bg-white p-2" />
+              <img src={menuData[2].image} alt={menuData[2].label} className="w-full h-full object-cover absolute inset-0" />
             ) : (
               <div className="w-20 h-20 rounded-full bg-neutral-300" />
             )}
