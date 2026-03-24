@@ -1,5 +1,6 @@
 import ScrollTimeline from "./ScrollTimeline";
 import { MagneticText } from "./ui/morphing-cursor";
+import CellularMenu from "./CellularMenu";
 
 const AboutSection = () => {
   return (
@@ -21,6 +22,9 @@ const AboutSection = () => {
           circleSizeMobile={180}
         />
       </div>
+
+      {/* Cellular expandable menu */}
+      <CellularMenu />
     </section>
   );
 };
