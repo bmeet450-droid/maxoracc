@@ -87,10 +87,10 @@ const CellularMenu = () => {
   const isMobile = useIsMobile();
 
   // Responsive sizes
-  const CIRCLE_SIZE = isMobile ? 100 : 180;
-  const VISIT_SIZE = isMobile ? 60 : 100;
-  const DESC_SIZE = isMobile ? 110 : 180;
-  const EXPANDED_GAP = isMobile ? 20 : 50;
+  const CIRCLE_SIZE = isMobile ? 70 : 180;
+  const VISIT_SIZE = isMobile ? 40 : 100;
+  const DESC_SIZE = isMobile ? 75 : 180;
+  const EXPANDED_GAP = isMobile ? 12 : 50;
 
   const bubbleOffsets = {
     left: {
