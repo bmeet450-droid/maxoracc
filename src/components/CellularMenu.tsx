@@ -277,7 +277,7 @@ const CellularMenu = () => {
           }}
           transition={springTransition}
           onMouseEnter={() => setHoveredChild("right")}>
-          <span className="text-[8px] font-medium leading-tight text-center text-black/80">
+          <span className="text-xs font-medium leading-tight text-center text-black/80">
             {menuData[2].description}
           </span>
         </motion.div>
