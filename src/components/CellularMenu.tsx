@@ -19,7 +19,7 @@ const menuData = [
 
 const CIRCLE_SIZE = 180;
 const VISIT_SIZE = 100;
-const DESC_SIZE = 120;
+const DESC_SIZE = 160;
 const EXPANDED_GAP = 50;
 
 // Visit bubbles go downward, description bubbles go upward — balanced symmetry
