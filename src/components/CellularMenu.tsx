@@ -120,39 +120,6 @@ const CellularMenu = () => {
           </div>
         </motion.div>
 
-        {/* Left bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? -(totalSpread / 2) : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
-
-        {/* Right bridge blob */}
-        <motion.div
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: CIRCLE_SIZE * 0.5,
-            height: CIRCLE_SIZE * 0.5,
-            backgroundColor: "#ffffff",
-          }}
-          animate={{
-            x: isExpanded ? totalSpread / 2 : 0,
-            scaleX: isExpanded ? 3 : 0.5,
-            scaleY: isExpanded ? 0.5 : 0.5,
-            opacity: isExpanded ? 1 : 0,
-          }}
-          transition={springTransition}
-        />
       </div>
     </div>
   );
