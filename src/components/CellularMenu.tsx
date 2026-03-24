@@ -59,7 +59,7 @@ const CellularMenu = () => {
         {/* Center circle - always visible */}
         <motion.div
           className="absolute rounded-full flex items-center justify-center overflow-hidden"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff" }}
+          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, backgroundColor: "#ffffff", border: "2px solid white" }}
           animate={{
             scale: isExpanded ? 0.85 : 1,
           }}
