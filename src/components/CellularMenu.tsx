@@ -35,11 +35,11 @@ const CellularMenu = () => {
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="goo-filter">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="30" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -10"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -16"
               result="goo"
             />
           </filter>
