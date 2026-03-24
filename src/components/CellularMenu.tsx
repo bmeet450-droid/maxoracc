@@ -193,9 +193,6 @@ const CellularMenu = () => {
             ) : (
               <div className="w-full h-full bg-neutral-300" />
             )}
-            <span className="absolute bottom-4 left-0 right-0 text-center text-[10px] font-medium tracking-widest uppercase text-white/80 drop-shadow-lg">
-              {menuData[0].label}
-            </span>
           </div>
         </motion.div>
 
