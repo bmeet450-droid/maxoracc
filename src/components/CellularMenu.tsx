@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import { EtheralShadow } from "./ui/etheral-shadow";
 
 const menuData = [
   { id: "1", label: "Project 1" },
@@ -23,7 +24,15 @@ const CellularMenu = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center py-20 md:py-32">
+    <div className="relative flex items-center justify-center py-20 md:py-32">
+      {/* Ethereal shadow background */}
+      <EtheralShadow
+        color="rgba(255, 255, 255, 0.06)"
+        animation={{ scale: 40, speed: 20 }}
+        noise={{ opacity: 0.15, scale: 2 }}
+        className="!absolute inset-0"
+      />
+
       {/* Hidden SVG filter for gooey effect */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
@@ -41,7 +50,7 @@ const CellularMenu = () => {
       </svg>
 
       <div
-        className="relative flex items-center justify-center cursor-pointer"
+        className="relative z-10 flex items-center justify-center cursor-pointer"
         style={{
           minHeight: CIRCLE_SIZE + 60,
           minWidth: CIRCLE_SIZE * 3,
@@ -59,11 +68,7 @@ const CellularMenu = () => {
             opacity: isExpanded ? 0 : 1,
           }}
           transition={{ type: "spring", stiffness: 200, damping: 24 }}
-        >
-          <span className="text-sm font-semibold tracking-widest uppercase text-black">
-            Explore
-          </span>
-        </motion.div>
+        />
 
         {/* Left child */}
         <motion.div
@@ -76,12 +81,8 @@ const CellularMenu = () => {
           }}
           transition={{ type: "spring", stiffness: 180, damping: 22 }}
         >
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-neutral-300" />
-            <span className="text-[10px] font-medium tracking-widest uppercase text-black/60">
-              {menuData[0].label}
-            </span>
-          </div>
+          {/* Photo placeholder */}
+          <div className="w-20 h-20 rounded-full bg-neutral-300" />
         </motion.div>
 
         {/* Right child */}
@@ -95,12 +96,8 @@ const CellularMenu = () => {
           }}
           transition={{ type: "spring", stiffness: 180, damping: 22, delay: isExpanded ? 0.05 : 0 }}
         >
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-neutral-300" />
-            <span className="text-[10px] font-medium tracking-widest uppercase text-black/60">
-              {menuData[1].label}
-            </span>
-          </div>
+          {/* Photo placeholder */}
+          <div className="w-20 h-20 rounded-full bg-neutral-300" />
         </motion.div>
 
         {/* Bridge blob for gooey connection */}
