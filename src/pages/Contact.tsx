@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
-import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Youtube, ArrowLeft } from "lucide-react";
+import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube, ArrowLeft } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+// Note: Supabase import removed since we are using Google Apps Script now
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import cornerBlob from "@/assets/corner-blob.png";
 import ContactParticles from "@/components/ContactParticles";
@@ -23,11 +23,12 @@ const SubstackIcon = ({ size = 20, className = "" }: { size?: number; className?
 );
 
 const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/_m2et_?igsh=b3UxbzYzdzMzZWR0&utm_source=qr", label: "Instagram" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/meet-bhatt-9a470b291?utm_source=share_via&utm_content=profile&utm_medium=member_ios", label: "LinkedIn" },
-  { icon: TikTokIcon, href: "https://www.tiktok.com/@m2et3141?_r=1&_t=ZT-94qqiqeFS8b", label: "TikTok", isCustom: true },
-  { icon: Youtube, href: "https://youtube.com/@m2et?si=kvN19BzNIHwTgMD9", label: "YouTube" },
-  { icon: SubstackIcon, href: "https://substack.com/@m2et?r=5g3hzm&utm_medium=ios&utm_source=profile&shareImageVariant=image", label: "Substack", isCustom: true },
+  { icon: Instagram, href: "https://instagram.com/yourprofile", label: "Instagram" },
+  { icon: Linkedin, href: "https://linkedin.com/in/yourprofile", label: "LinkedIn" },
+  { icon: Twitter, href: "https://twitter.com/yourprofile", label: "Twitter" },
+  { icon: TikTokIcon, href: "https://tiktok.com/@yourprofile", label: "TikTok", isCustom: true },
+  { icon: Youtube, href: "https://youtube.com/@yourprofile", label: "YouTube" },
+  { icon: SubstackIcon, href: "https://yourprofile.substack.com", label: "Substack", isCustom: true },
 ];
 
 const contactSchema = z.object({
@@ -98,7 +99,11 @@ const Contact = () => {
   }, []);
 
   const handleBack = () => {
-    navigate('/', { state: { scrollTo: 'contact' } });
+    if (scrollToSection) {
+      navigate('/', { state: { scrollTo: scrollToSection } });
+    } else {
+      navigate(-1);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -120,16 +125,25 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
+      // REPLACE THIS URL with your actual Google Apps Script Web App URL
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyaQMH-BmGguDV3sxSmCw6RnrgmfBSeodUmwHmRTyjah_scEa9ljXx87ihgkj.';
+
+      const response = await fetch(scriptUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8', 
+        },
+        body: JSON.stringify({
           name: form.name,
           email: form.email,
           message: form.message,
-        },
+        }),
       });
 
-      if (error) {
-        throw error;
+      const data = await response.json();
+
+      if (data.status !== 'success') {
+        throw new Error(data.message || 'Failed to submit form');
       }
 
       setIsSuccess(true);
@@ -140,7 +154,7 @@ const Contact = () => {
       });
       setTimeout(() => setIsSuccess(false), 3000);
     } catch (error: unknown) {
-      // Error handling without exposing internal details
+      console.error("Submission error:", error);
       toast({
         title: "Failed to send message",
         description: "Please try again later or email us directly.",
@@ -379,7 +393,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Reduced gap between columns */}
           <div ref={contentRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 max-w-5xl mx-auto">
             {/* Left Column - Info */}
             <div
@@ -400,7 +413,7 @@ const Contact = () => {
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                     <Mail size={18} className="text-white/60" />
                   </div>
-                  <span className="text-white/90 md:text-white/70 text-sm">agent@maxora.cc</span>
+                  <span className="text-white/90 md:text-white/70 text-sm">bmeet450@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
