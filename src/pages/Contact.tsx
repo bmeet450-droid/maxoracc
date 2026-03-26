@@ -3,7 +3,6 @@ import { z } from "zod";
 import { Mail, MapPin, ArrowRight, Instagram, Linkedin, Twitter, Youtube, ArrowLeft } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-// Note: Supabase import removed since we are using Google Apps Script now
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import cornerBlob from "@/assets/corner-blob.png";
 import ContactParticles from "@/components/ContactParticles";
@@ -126,10 +125,12 @@ const Contact = () => {
     
     try {
       // REPLACE THIS URL with your actual Google Apps Script Web App URL
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyaQMH-BmGguDV3sxSmCw6RnrgmfBSeodUmwHmRTyjah_scEa9IjXx87ihgkjJmXNg_/exec.';
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyaQMH-BmGguDV3sxSmCw6RnrgmfBSeodUmwHmRTyjah_scEa9IjXx87ihgkjJmXNg_/exec';
 
-      const response = await fetch(scriptUrl, {
+      // 'no-cors' allows the request to pass through the browser's redirect block
+      await fetch(scriptUrl, {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8', 
         },
@@ -140,12 +141,7 @@ const Contact = () => {
         }),
       });
 
-      const data = await response.json();
-
-      if (data.status !== 'success') {
-        throw new Error(data.message || 'Failed to submit form');
-      }
-
+      // Since 'no-cors' makes the response opaque, we assume success if no network error occurred
       setIsSuccess(true);
       setForm({ name: "", email: "", message: "" });
       toast({
@@ -153,6 +149,7 @@ const Contact = () => {
         description: "Thank you for reaching out. We'll get back to you soon.",
       });
       setTimeout(() => setIsSuccess(false), 3000);
+      
     } catch (error: unknown) {
       console.error("Submission error:", error);
       toast({
