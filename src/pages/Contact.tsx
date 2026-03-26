@@ -126,7 +126,7 @@ const Contact = () => {
     
     try {
       // REPLACE THIS URL with your actual Google Apps Script Web App URL
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyaQMH-BmGguDV3sxSmCw6RnrgmfBSeodUmwHmRTyjah_scEa9ljXx87ihgkj.';
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbyaQMH-BmGguDV3sxSmCw6RnrgmfBSeodUmwHmRTyjah_scEa9IjXx87ihgkjJmXNg_/exec.';
 
       const response = await fetch(scriptUrl, {
         method: 'POST',
