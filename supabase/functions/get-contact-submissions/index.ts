@@ -6,8 +6,9 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 // Allowed origins for CORS - restrict to production and development domains
 const ALLOWED_ORIGINS = [
-  // "https://maxoracc.lovable.app",
-  "https://maxora.cc",
+  "https://maxoracc.lovable.app",
+  "https://maxora.cc",          // <-- ADD THIS (Your main domain)
+  "https://www.maxora.cc",      // <-- ADD THIS (Just in case they type www)
   "https://id-preview--ad622568-224d-4720-a5d7-65a7c80db699.lovable.app",
   "http://localhost:5173",
   "http://localhost:3000",
